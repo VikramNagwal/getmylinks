@@ -1,0 +1,4 @@
+bun lint
+bun format
+
+git diff --check

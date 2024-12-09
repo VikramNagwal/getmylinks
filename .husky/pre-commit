@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+pnpm --filter client lint
+bun run lint --cwd server
+
+
+git commit -m "husky testing"

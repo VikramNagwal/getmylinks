@@ -1,13 +1,13 @@
 import { Hono } from "hono";
 
-const app = new Hono()
+const app = new Hono();
 
 app.get("/", (c) => {
-    return c.json("hello world")
-})
+	return c.json("hello world");
+});
 
 app.notFound((c) => {
-    return c.text("not found", 404)
-})
+	return c.text("not found", 404);
+});
 
-export default app
+export default app;

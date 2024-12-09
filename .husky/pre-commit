@@ -1,1 +1,4 @@
-bun run lint
+bun lint
+bun format
+
+git diff --check

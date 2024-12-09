@@ -5,6 +5,7 @@
   },
   "scripts": {
     "prepare": "husky",
-    "lint": "cd client && npm run lint && cd .. && cd server && npm run lint"
+    "lint": "cd client && bun run lint && cd .. && cd server && bun run lint",
+    "format": "cd client && bun format && cd .. && cd server && bun format"
   }
 }

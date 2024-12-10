@@ -1,15 +1,19 @@
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
-
-function App() {
-
+export default function App() {
   return (
-    <div>
-    <h1 className="text-xl text-center font-semibold capitalize">hello world</h1>
-    <button 
-      className="bg-blue-500 text-white p-2 rounded-md mt-4 hover:bg-blue-700"
-      onClick={() => alert("hii stranger")}>hii</button>
-    </div>
-  )
+    <header>
+      <SignedOut>
+        <SignInButton />
+      </SignedOut>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
+    </header>
+  );
 }
-
-export default App

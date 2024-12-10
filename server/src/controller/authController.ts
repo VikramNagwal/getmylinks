@@ -1,7 +1,7 @@
-import { Context } from "hono";
+import type { Context } from "hono";
 
 const userAuth = {
-    registerUser: async (c: Context) => {
-         const { name, email, password } = c.req.param()
-    }
-}
+	registerUser: async (c: Context) => {
+		const { name, email, password } = c.req.param();
+	},
+};

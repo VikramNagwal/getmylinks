@@ -1,7 +1,6 @@
-import { Provider } from './../types/globalTypes';
-import { UserProfile } from "../types/userTypes";
-import { ApiError } from "./errorHandler";
-
+import { Provider } from "./../types/globalTypes";
+import type { UserProfile } from "../types/userTypes";
+import { ApiError } from "./ApiError";
 
 export function organizeData(data: UserProfile) {
 	console.log("od");
@@ -22,6 +21,11 @@ export function organizeData(data: UserProfile) {
 		};
 	} catch (error) {
 		console.log("Unable to organize user data", error);
-		throw new ApiError(Provider.Data, "Unable to organize user data", 500, error);
+		throw new ApiError(
+			Provider.Data,
+			"Unable to organize user data",
+			500,
+			error as string[] | undefined,
+		);
 	}
 }

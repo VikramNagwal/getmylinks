@@ -2,6 +2,8 @@ import type { Context } from "hono";
 import type { UserProfile } from "../types/userTypes";
 import { db } from "../config/db";
 import { organizeData } from "../utils/dataHandler";
+import { ApiError } from "../utils/ApiError";
+import { HttpStatusCode, Provider } from "../types/globalTypes";
 
 const createUserProfile = async (c: Context) => {
 	try {
@@ -27,8 +29,13 @@ const createUserProfile = async (c: Context) => {
 		console.log(user);
 
 		return c.newResponse("User profile created successfully", 201);
-	} catch (error: any) {
-		throw c.json({ error: error.message }, 400);
+	} catch (error: unknown) {
+		throw new ApiError(
+			Provider.Auth,
+			"Unable to create user profile",
+			400,
+			error,
+		);
 	}
 };
 
@@ -37,15 +44,24 @@ const sayhii = (c: Context) => {
 };
 
 const getUserProfile = async (c: Context) => {
-	try {
-		const userId = c.req.param("userId") as string;
-		const userProfile = await db.userProfile.findUnique({ where: { userId } });
-		if (!userProfile) throw new Error("User profile not found");
-		c.newResponse("user found successfully", 200);
-		return c.json({ userProfile }, 200);
-	} catch (error: any) {
-		throw c.json({ error: error.message }, 404);
-	}
+    try {
+        const userId = c.req.param("userId") as string;
+
+        if (!userId || typeof userId !== "string") {
+            return new ApiError(Provider.Auth, "Invalid user ID", HttpStatusCode.BadRequest);
+        }
+
+        const userProfile = await db.userProfile.findUnique({ where: { userId } });
+
+        if (!userProfile) {
+            return new ApiError(Provider.Auth, "User profile not found", HttpStatusCode.NotFound);
+        }
+
+        return c.json({ message: "User found successfully", userProfile }, HttpStatusCode.Ok);
+    } catch (error: unknown) {
+        return new ApiError(Provider.Auth, `Unable to get user profile: ${error}`, HttpStatusCode.BadRequest, error);
+    }
 };
+
 
 export { createUserProfile, sayhii, getUserProfile };

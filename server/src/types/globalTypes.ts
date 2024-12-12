@@ -11,5 +11,16 @@ export enum Provider {
 	Routing = "routing error",
 	Internal = "internal server error",
 	Data = "data handling error",
-	Unknown = "unknown"
+	Unknown = "unknown",
+}
+
+export enum HttpStatusCode {
+	Ok = 200,
+	Created = 201,
+	NoContent = 204,
+	BadRequest = 400,
+	Unauthorized = 401,
+	Forbidden = 403,
+	NotFound = 404,
+	InternalServerError = 500,
 }

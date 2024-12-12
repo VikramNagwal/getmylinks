@@ -11,6 +11,7 @@
     "@prisma/client": "^6.0.1",
     "hono": "^4.6.13",
     "prisma": "^6.0.1",
+    "winston": "^3.17.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {

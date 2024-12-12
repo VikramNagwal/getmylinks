@@ -1,16 +1,23 @@
 {
   "name": "server",
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
-    "start": "bun run src/index.ts",
+    "dev": "bun run --hot src/app.ts",
+    "start": "bun run src/app.ts",
     "lint": "biome lint --error-on-warnings --write ./src",
-    "format": "biome format --write src/**/*.ts",
-    "prepare": "husky"
+    "format": "biome format --write src/**/*.ts"
   },
   "dependencies": {
-    "hono": "^4.6.13"
+    "@hono/zod-validator": "^0.4.1",
+    "@prisma/client": "^6.0.1",
+    "hono": "^4.6.13",
+    "prisma": "^6.0.1",
+    "winston": "^3.17.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@biomejs/biome": "1.9.4",
+    "@types/bun": "^1.1.14",
+    "@types/express": "^5.0.0",
+    "chalk": "^5.3.0"
   }
 }

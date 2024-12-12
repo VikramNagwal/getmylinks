@@ -44,24 +44,39 @@ const sayhii = (c: Context) => {
 };
 
 const getUserProfile = async (c: Context) => {
-    try {
-        const userId = c.req.param("userId") as string;
+	try {
+		const userId = c.req.param("userId") as string;
 
-        if (!userId || typeof userId !== "string") {
-            return new ApiError(Provider.Auth, "Invalid user ID", HttpStatusCode.BadRequest);
-        }
+		if (!userId || typeof userId !== "string") {
+			return new ApiError(
+				Provider.Auth,
+				"Invalid user ID",
+				HttpStatusCode.BadRequest,
+			);
+		}
 
-        const userProfile = await db.userProfile.findUnique({ where: { userId } });
+		const userProfile = await db.userProfile.findUnique({ where: { userId } });
 
-        if (!userProfile) {
-            return new ApiError(Provider.Auth, "User profile not found", HttpStatusCode.NotFound);
-        }
+		if (!userProfile) {
+			return new ApiError(
+				Provider.Auth,
+				"User profile not found",
+				HttpStatusCode.NotFound,
+			);
+		}
 
-        return c.json({ message: "User found successfully", userProfile }, HttpStatusCode.Ok);
-    } catch (error: unknown) {
-        return new ApiError(Provider.Auth, `Unable to get user profile: ${error}`, HttpStatusCode.BadRequest, error);
-    }
+		return c.json(
+			{ message: "User found successfully", userProfile },
+			HttpStatusCode.Ok,
+		);
+	} catch (error: unknown) {
+		return new ApiError(
+			Provider.Auth,
+			`Unable to get user profile: ${error}`,
+			HttpStatusCode.BadRequest,
+			error,
+		);
+	}
 };
-
 
 export { createUserProfile, sayhii, getUserProfile };

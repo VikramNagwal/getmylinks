@@ -8,7 +8,6 @@ import { logger } from "hono/logger";
 import { appRouter } from "./routes";
 import { simpleMiddleware } from "./middlewares/errorHandler";
 
-
 const app = new Hono();
 
 // middlewares
@@ -21,6 +20,6 @@ app.use("/api/v1", etag({ weak: true }));
 app.route("/api/v1/", appRouter);
 app.get("/", (c) => c.text("hey from the server!"));
 
-app.use('*', simpleMiddleware)
+app.use("*", simpleMiddleware);
 
 export default app;

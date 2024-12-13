@@ -1,6 +1,6 @@
-import { Provider } from "./../types/globalTypes";
+import { HttpStatusCode, Provider } from "./../types/globalTypes";
 import type { UserProfile } from "../types/userTypes";
-import { ApiError } from "./ApiError";
+import { logger } from "../config/logger";
 
 export function organizeData(data: UserProfile) {
 	console.log("od");
@@ -20,12 +20,12 @@ export function organizeData(data: UserProfile) {
 			),
 		};
 	} catch (error) {
-		console.log("Unable to organize user data", error);
-		throw new ApiError(
-			Provider.Data,
-			"Unable to organize user data",
-			500,
-			error as string[] | undefined,
-		);
+		logger.error(`Error in organizeData: ${error}`);
+		return {
+			error: "Unable to organize data",
+			status: HttpStatusCode.InternalServerError,
+			fault: [error],
+			isOperational: true,
+		};
 	}
 }

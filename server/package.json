@@ -1,8 +1,8 @@
 {
   "name": "server",
   "scripts": {
-    "dev": "bun run --hot src/app.ts",
-    "start": "bun run src/app.ts",
+    "dev": "bun run --hot src/index.ts",
+    "start": "bun run src/index.ts",
     "lint": "biome lint --error-on-warnings --write ./src",
     "format": "biome format --write src/**/*.ts"
   },

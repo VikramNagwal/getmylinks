@@ -2,14 +2,14 @@ import type { Context } from "hono";
 import type { UserProfile } from "../types/userTypes";
 import { db } from "../config/db";
 import { organizeData } from "../utils/dataHandler";
-import { ApiError } from "../utils/ApiError";
-import { HttpStatusCode, Provider } from "../types/globalTypes";
+import { HttpStatusCode } from "../types/globalTypes";
+import { logger } from "../config/logger";
 
 const createUserProfile = async (c: Context) => {
 	try {
-		console.log("initiated");
+		console.log("initiated"); //remove this line in production
 		const rawBody = await c.req.formData();
-		console.log(rawBody);
+		logger.info(rawBody);
 
 		const userProfile: UserProfile = {
 			userId: rawBody.get("userId") as string,
@@ -20,27 +20,24 @@ const createUserProfile = async (c: Context) => {
 			coverUrl: rawBody.get("coverUrl") as string,
 			interests: rawBody.getAll("interests") as string[],
 		};
-		console.log(userProfile.interests);
+		logger.info(userProfile.interests);
 		const user = organizeData(userProfile);
-
 		const result = await db.userProfile.create({ data: user });
-		if (!result) throw new Error("Unable to create user profile");
-		console.log(result);
-		console.log(user);
-
-		return c.newResponse("User profile created successfully", 201);
+		if (!result)
+			return c.json(
+				{ message: "Unable to create user profile" },
+				HttpStatusCode.BadRequest,
+			);
+		return c.json(
+			{ message: "User profile created successfully" },
+			HttpStatusCode.Created,
+		);
 	} catch (error: unknown) {
-		throw new ApiError(
-			Provider.Auth,
-			"Unable to create user profile",
-			400,
-			error,
+		return c.json(
+			{ message: `Unable to create user profile: ${error}` },
+			HttpStatusCode.BadRequest,
 		);
 	}
-};
-
-const sayhii = (c: Context) => {
-	return c.text("Hello from the controller!");
 };
 
 const getUserProfile = async (c: Context) => {
@@ -48,21 +45,13 @@ const getUserProfile = async (c: Context) => {
 		const userId = c.req.param("userId") as string;
 
 		if (!userId || typeof userId !== "string") {
-			return new ApiError(
-				Provider.Auth,
-				"Invalid user ID",
-				HttpStatusCode.BadRequest,
-			);
+			return c.json({ message: "Invalid user id" }, HttpStatusCode.BadRequest);
 		}
 
 		const userProfile = await db.userProfile.findUnique({ where: { userId } });
 
 		if (!userProfile) {
-			return new ApiError(
-				Provider.Auth,
-				"User profile not found",
-				HttpStatusCode.NotFound,
-			);
+			throw c.json({ message: "User not found" }, HttpStatusCode.NotFound);
 		}
 
 		return c.json(
@@ -70,13 +59,37 @@ const getUserProfile = async (c: Context) => {
 			HttpStatusCode.Ok,
 		);
 	} catch (error: unknown) {
-		return new ApiError(
-			Provider.Auth,
-			`Unable to get user profile: ${error}`,
+		return c.json(
+			{ message: `Unable to get user profile: ${error}` },
 			HttpStatusCode.BadRequest,
-			error,
 		);
 	}
 };
 
-export { createUserProfile, sayhii, getUserProfile };
+const updateUserProfile = async (c: Context) => {
+	try {
+		const username = c.req.param("id") as string;
+		const userData = await c.req.parseBody();
+
+		const user = await db.userProfile.findUnique({
+			where: { userId: username },
+		});
+		if (!user)
+			return c.json(
+				{ message: "User not found! please signin to make your account" },
+				HttpStatusCode.NotFound,
+			);
+		// await db.userProfile.update()
+		return c.json(
+			{ message: "User profile updated successfully" },
+			HttpStatusCode.Ok,
+		);
+	} catch (error) {
+		return c.json(
+			{ message: `Unable to update user profile: ${error}` },
+			HttpStatusCode.BadRequest,
+		);
+	}
+};
+
+export { createUserProfile, getUserProfile, updateUserProfile };

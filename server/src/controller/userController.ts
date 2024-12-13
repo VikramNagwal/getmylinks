@@ -23,10 +23,20 @@ const createUserProfile = async (c: Context) => {
 		logger.info(userProfile.interests);
 		const user = organizeData(userProfile);
 		const result = await db.userProfile.create({ data: user });
-		if (!result) return c.json({ message: "Unable to create user profile" }, HttpStatusCode.BadRequest);
-		return c.json({ message: "User profile created successfully" }, HttpStatusCode.Created);
+		if (!result)
+			return c.json(
+				{ message: "Unable to create user profile" },
+				HttpStatusCode.BadRequest,
+			);
+		return c.json(
+			{ message: "User profile created successfully" },
+			HttpStatusCode.Created,
+		);
 	} catch (error: unknown) {
-		return c.json({ message: `Unable to create user profile: ${error}` }, HttpStatusCode.BadRequest);
+		return c.json(
+			{ message: `Unable to create user profile: ${error}` },
+			HttpStatusCode.BadRequest,
+		);
 	}
 };
 
@@ -49,23 +59,37 @@ const getUserProfile = async (c: Context) => {
 			HttpStatusCode.Ok,
 		);
 	} catch (error: unknown) {
-		return c.json({ message: `Unable to get user profile: ${error}` }, HttpStatusCode.BadRequest);
+		return c.json(
+			{ message: `Unable to get user profile: ${error}` },
+			HttpStatusCode.BadRequest,
+		);
 	}
 };
 
-const updateUserProfile = async ( c: Context ) => {
+const updateUserProfile = async (c: Context) => {
 	try {
-		const username = c.req.param("id") as string;	
+		const username = c.req.param("id") as string;
 		const userData = await c.req.parseBody();
-		
-		const user = await db.userProfile.findUnique({ where: { userId: username } });
-		if(!user) return c.json({ message: "User not found! please signin to make your account" }, HttpStatusCode.NotFound);
-		// await db.userProfile.update()
-		return c.json({ message: "User profile updated successfully" }, HttpStatusCode.Ok);
-	} catch (error) {
-		return c.json({ message: `Unable to update user profile: ${error}` }, HttpStatusCode.BadRequest);
-	}
-}
 
+		const user = await db.userProfile.findUnique({
+			where: { userId: username },
+		});
+		if (!user)
+			return c.json(
+				{ message: "User not found! please signin to make your account" },
+				HttpStatusCode.NotFound,
+			);
+		// await db.userProfile.update()
+		return c.json(
+			{ message: "User profile updated successfully" },
+			HttpStatusCode.Ok,
+		);
+	} catch (error) {
+		return c.json(
+			{ message: `Unable to update user profile: ${error}` },
+			HttpStatusCode.BadRequest,
+		);
+	}
+};
 
 export { createUserProfile, getUserProfile, updateUserProfile };

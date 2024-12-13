@@ -5,12 +5,11 @@ import {
 	updateUserProfile,
 } from "../controller/userController";
 
-
 const userRouter = new Hono();
 
 userRouter
-.post("/profile", createUserProfile)
-.get("/profile/:userId", getUserProfile)
-.post("/profile/:userId/update", updateUserProfile);
+	.post("/profile", createUserProfile)
+	.get("/profile/:userId", getUserProfile)
+	.post("/profile/:userId/update", updateUserProfile);
 
 export { userRouter };

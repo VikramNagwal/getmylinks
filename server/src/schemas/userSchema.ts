@@ -9,4 +9,3 @@ export const userProfileSchema = z.object({
 	coverUrl: z.string().url(),
 	interests: z.array(z.string().min(2).max(40)),
 });
-

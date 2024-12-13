@@ -21,6 +21,11 @@ export function organizeData(data: UserProfile) {
 		};
 	} catch (error) {
 		logger.error(`Error in organizeData: ${error}`);
-		return { error: "Unable to organize data", status: HttpStatusCode.InternalServerError, fault: [error], isOperational: true };
+		return {
+			error: "Unable to organize data",
+			status: HttpStatusCode.InternalServerError,
+			fault: [error],
+			isOperational: true,
+		};
 	}
 }

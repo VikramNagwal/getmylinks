@@ -8,9 +8,7 @@ export const simpleMiddleware = async (
 		return await next();
 	} catch (err) {
 		console.error(err);
-
 		c.status(500);
-
 		return c.json({ error: "Internal Server Error" });
 	}
 };

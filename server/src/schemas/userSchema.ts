@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const userRequestSchema = z.object({
+export const userProfileSchema = z.object({
 	userId: z.string().max(40).min(3),
 	name: z.string(),
 	email: z.string().email(),
@@ -9,3 +9,4 @@ export const userRequestSchema = z.object({
 	coverUrl: z.string().url(),
 	interests: z.array(z.string().min(2).max(40)),
 });
+

@@ -64,3 +64,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .primary-btn {
+    @apply bg-primary text-primary-foreground font-thin rounded-md px-4 py-2 hover:bg-primary/80;
+  }
+
+  .input-form {
+    @apply bg-input text-primary-foreground font-thin rounded-md border-2 border-black px-4 py-2 my-4 max-w-[400px] w-full;
+  }
+}

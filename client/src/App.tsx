@@ -1,19 +1,12 @@
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
+import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
+import Navbar from "./components/Navbar/Navbar";
+import Profile from "./components/Profile/Profile";
 
 export default function App() {
   return (
-    <header>
-      <SignedOut>
-        <SignInButton />
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-    </header>
+    <>
+      <Navbar />
+      <Profile />
+    </>
   );
 }

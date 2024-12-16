@@ -6,7 +6,7 @@ export function organizeData(data: UserProfile) {
 	try {
 		if (!(data.email && data.userId && data.name))
 			console.log("Data is missing required fields", data);
-logger.info('go')
+		logger.info("go");
 		return {
 			userId: data.userId.trim().toLowerCase(),
 			name: data.name.trim().toLowerCase(),
@@ -14,8 +14,8 @@ logger.info('go')
 			bio: data.bio?.trim().toLowerCase(),
 			avatarUrl: data.avatarUrl?.trim().toLowerCase(),
 			coverUrl: data.coverUrl?.trim().toLowerCase(),
-			interests: data.interests?.map((interest) =>
-				interest.trim().toLowerCase() || "no interests",
+			interests: data.interests?.map(
+				(interest) => interest.trim().toLowerCase() || "no interests",
 			),
 		};
 	} catch (error) {

@@ -6,19 +6,25 @@ import { HttpStatusCode } from "../types/globalTypes";
 import { logger } from "../config/logger";
 
 const createUserProfile = async (c: Context) => {
-console.log(await c.req.json())
+	console.log(await c.req.json());
 	try {
 		const rawBody = await c.req.json();
 		logger.info(rawBody);
 
 		const user = organizeData(rawBody);
 
-		if ('error' in user) {
-			logger.error("cannot orgnized data! check utility class")
+		if ("error" in user) {
+			logger.error("cannot orgnized data! check utility class");
 			return c.json({ message: user.error }, HttpStatusCode.BadRequest);
 		}
-		const existingUser = await db.userProfile.findUnique({ where: { email: user.email } })
-		if(existingUser) return c.json({message: `user ${user.email} already exist! Please login`}, HttpStatusCode.BadRequest)
+		const existingUser = await db.userProfile.findUnique({
+			where: { email: user.email },
+		});
+		if (existingUser)
+			return c.json(
+				{ message: `user ${user.email} already exist! Please login` },
+				HttpStatusCode.BadRequest,
+			);
 		const result = await db.userProfile.create({ data: user });
 		if (!result)
 			return c.json(

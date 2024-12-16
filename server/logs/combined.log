@@ -1,2 +1,16 @@
 2024-12-13T15:29:57.556Z [[32minfo[39m]: [object FormData]
 2024-12-13T15:29:57.581Z [[32minfo[39m]: ['singing', 'taylor swift', 'shreya goswal']
+2024-12-16T13:59:19.862Z [[32minfo[39m]: [object FormData]
+2024-12-16T13:59:19.880Z [[32minfo[39m]: ['singing', 'taylor swift', 'shreya goswal']
+2024-12-16T14:04:23.585Z [[32minfo[39m]: [object FormData]
+2024-12-16T14:04:23.586Z [[32minfo[39m]: ['singing', 'taylor swift', 'shreya goswal']
+2024-12-16T14:33:00.583Z [[32minfo[39m]: [object Object]
+2024-12-16T14:34:44.679Z [[32minfo[39m]: [object Object]
+2024-12-16T14:34:44.684Z [[31merror[39m]: Error in organizeData: TypeError: undefined is not an object (evaluating 'data.interests.map')
+2024-12-16T14:34:44.685Z [[31merror[39m]: cannot orgnized data! check utility class
+2024-12-16T14:35:42.398Z [[32minfo[39m]: [object Object]
+2024-12-16T14:35:42.399Z [[32minfo[39m]: go
+2024-12-16T14:35:42.400Z [[31merror[39m]: Error in organizeData: TypeError: undefined is not an object (evaluating 'data.interests.map')
+2024-12-16T14:35:42.400Z [[31merror[39m]: cannot orgnized data! check utility class
+2024-12-16T14:36:51.256Z [[32minfo[39m]: [object Object]
+2024-12-16T14:36:51.259Z [[32minfo[39m]: go

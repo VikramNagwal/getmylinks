@@ -71,6 +71,6 @@
   }
 
   .input-form {
-    @apply bg-input text-primary-foreground font-thin rounded-md border-2 border-black px-4 py-2 my-4 max-w-[400px] w-full;
+    @apply bg-input text-primary-foreground font-thin rounded-md border-2 dark:text-white border-black dark:border-gray-400 px-4 py-2 my-4 max-w-[400px] w-full;
   }
 }

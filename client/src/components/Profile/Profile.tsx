@@ -8,6 +8,7 @@ let cover =
 
 
 const Profile = () => {
+
   return (
     <main className="max-w-[1280px] mx-auto px-4 py-3 md:mt-4">
       <ImageSection avatarImage={avtimg} coverImage={cover} />

@@ -1,0 +1,4 @@
+2024-12-16T14:34:44.684Z [[31merror[39m]: Error in organizeData: TypeError: undefined is not an object (evaluating 'data.interests.map')
+2024-12-16T14:34:44.685Z [[31merror[39m]: cannot orgnized data! check utility class
+2024-12-16T14:35:42.400Z [[31merror[39m]: Error in organizeData: TypeError: undefined is not an object (evaluating 'data.interests.map')
+2024-12-16T14:35:42.400Z [[31merror[39m]: cannot orgnized data! check utility class

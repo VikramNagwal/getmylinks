@@ -11,4 +11,9 @@ export default defineConfig({
       '@': '/d:/ADMIN/Coding/auth-server/client/src',
     },
   },
+  server: {
+    proxy: {
+      "/api": "http:localhost:8080"
+    }
+  }
 });

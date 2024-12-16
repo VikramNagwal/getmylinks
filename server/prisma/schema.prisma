@@ -19,9 +19,9 @@ model userProfile {
   name          String
   email         String   @unique
   bio           String?
-  avatarUrl     String?
+  avatarUrl     String?  
   coverUrl      String?
-  interests     String[]
+  interests     String[] @default(["no interest"])
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }

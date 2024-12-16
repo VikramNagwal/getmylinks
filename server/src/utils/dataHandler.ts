@@ -3,11 +3,10 @@ import type { UserProfile } from "../types/userTypes";
 import { logger } from "../config/logger";
 
 export function organizeData(data: UserProfile) {
-	console.log("od");
 	try {
 		if (!(data.email && data.userId && data.name))
 			console.log("Data is missing required fields", data);
-
+		logger.info("go");
 		return {
 			userId: data.userId.trim().toLowerCase(),
 			name: data.name.trim().toLowerCase(),
@@ -15,8 +14,8 @@ export function organizeData(data: UserProfile) {
 			bio: data.bio?.trim().toLowerCase(),
 			avatarUrl: data.avatarUrl?.trim().toLowerCase(),
 			coverUrl: data.coverUrl?.trim().toLowerCase(),
-			interests: data.interests.map((interest) =>
-				interest.trim().toLowerCase(),
+			interests: data.interests?.map(
+				(interest) => interest.trim().toLowerCase() || "no interests",
 			),
 		};
 	} catch (error) {

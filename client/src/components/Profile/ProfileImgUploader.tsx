@@ -68,7 +68,7 @@ export function ProfileImageUploaderClient() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-sm">
+    <div className="max-w-2xl mx-auto p-6 bg-background rounded-lg shadow-sm">
       <Tabs
         value={activeTab}
         onValueChange={(value: string) => setActiveTab(value as ImageType)}
@@ -93,7 +93,7 @@ export function ProfileImageUploaderClient() {
                 )}
               </div>
             ) : (
-              <div className="relative w-full h-48 rounded-lg overflow-hidden bg-gray-100">
+              <div className="relative w-full h-48 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-200">
                 {images.cover.url ? (
                   <img
                     src={images.cover.url}

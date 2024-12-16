@@ -33,16 +33,15 @@ const ProfileForm = ({name = 'john Doe', userId = "@username", email = "johndoe@
         const result = await axios.post(
           "http://localhost:8080/api/v1/user/profile", data,
         );
-        if(result.status < 200) {
-          toast({
-            variant: "destructive",
-            title: "failed to update profile",
-          });
-        }
-        toast({
+        if(result.status > 199 && result.status < 300) {
+       return toast({
           variant: "success",
-          title: "failed to update profile",
+          title: "Profile Updated successfully",
+          description: result.data.message
         });
+      }
+
+        console.log(result)
       }
 
           const userData = {

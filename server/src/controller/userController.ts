@@ -6,7 +6,6 @@ import { HttpStatusCode } from "../types/globalTypes";
 import { logger } from "../config/logger";
 
 const createUserProfile = async (c: Context) => {
-	console.log(await c.req.json());
 	try {
 		const rawBody = await c.req.json();
 		logger.info(rawBody);
@@ -14,30 +13,34 @@ const createUserProfile = async (c: Context) => {
 		const user = organizeData(rawBody);
 
 		if ("error" in user) {
-			logger.error("cannot orgnized data! check utility class");
+			logger.error("Cannot organize data! Check utility class");
 			return c.json({ message: user.error }, HttpStatusCode.BadRequest);
 		}
+
 		const existingUser = await db.userProfile.findUnique({
 			where: { email: user.email },
 		});
+
 		if (existingUser)
 			return c.json(
-				{ message: `user ${user.email} already exist! Please login` },
-				HttpStatusCode.BadRequest,
+				{ message: "user already exists!! Please login" },
+				HttpStatusCode.Conflict,
 			);
 		const result = await db.userProfile.create({ data: user });
-		if (!result)
-			return c.json(
-				{ message: "Unable to create user profile" },
-				HttpStatusCode.BadRequest,
-			);
-		return c.json(
-			{ message: "User profile created successfully" },
-			HttpStatusCode.Created,
-		);
+
+		return result
+			? c.json(
+					{ message: "User profile created successfully" },
+					HttpStatusCode.Created,
+				)
+			: c.json(
+					{ message: "Unable to create user profile" },
+					HttpStatusCode.BadRequest,
+				);
 	} catch (error: unknown) {
+		logger.error(`User profile creation error: ${error}`);
 		return c.json(
-			{ message: `Unable to create user profile: ${error}` },
+			{ message: `Unable to create user profile` },
 			HttpStatusCode.BadRequest,
 		);
 	}

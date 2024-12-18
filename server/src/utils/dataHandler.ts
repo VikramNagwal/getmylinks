@@ -1,22 +1,49 @@
-import { HttpStatusCode, Provider } from "./../types/globalTypes";
+import { HttpStatusCode } from "./../types/globalTypes";
 import type { UserProfile } from "../types/userTypes";
 import { logger } from "../config/logger";
 
 export function organizeData(data: UserProfile) {
-	try {
-		if (!(data.email && data.userId && data.name))
-			console.log("Data is missing required fields", data);
-		logger.info("go");
+	const requiredFields = ["email", "userId", "name"] as const;
+	const missingFields = requiredFields.filter(
+		(field): field is typeof field => !(field in data) || !data[field],
+	);
+
+	if (missingFields.length > 0) {
+		logger.error(`Missing required fields: ${missingFields.join(", ")}`);
 		return {
-			userId: data.userId.trim().toLowerCase(),
-			name: data.name.trim().toLowerCase(),
-			email: data.email.trim().toLowerCase(),
-			bio: data.bio?.trim().toLowerCase(),
-			avatarUrl: data.avatarUrl?.trim().toLowerCase(),
-			coverUrl: data.coverUrl?.trim().toLowerCase(),
-			interests: data.interests?.map(
-				(interest) => interest.trim().toLowerCase() || "no interests",
-			),
+			error: `Missing required fields: ${missingFields.join(", ")}`,
+			status: HttpStatusCode.BadRequest,
+			fault: missingFields,
+			isOperational: true,
+		};
+	}
+
+	try {
+		const {
+			userId,
+			name,
+			email,
+			bio = "",
+			avatarUrl = "no",
+			coverUrl = "no",
+			interests = [],
+		} = data;
+
+		// Centralized sanitization method
+		const sanitize = (value: string | undefined) =>
+			value ? value.trim().toLowerCase() : "no";
+
+		return {
+			userId: sanitize(userId),
+			name: sanitize(name),
+			email: sanitize(email),
+			bio: sanitize(bio),
+			avatarUrl: sanitize(avatarUrl),
+			coverUrl: sanitize(coverUrl),
+			interests:
+				interests.length > 0
+					? interests.map(sanitize).filter(Boolean)
+					: ["no interests"],
 		};
 	} catch (error) {
 		logger.error(`Error in organizeData: ${error}`);

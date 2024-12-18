@@ -23,7 +23,7 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({isAuthenticated}) => {
           >
             Sign Up
           </Button>
-          <Button type="button" className="mx-2" onClick={() => login()}>
+          <Button type="button" className="mx-2 bg-blue-600 text-white hover:bg-blue-500 duration-300 ease-in-out" onClick={() => login()}>
             Login
           </Button>
         </div>

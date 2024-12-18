@@ -29,20 +29,29 @@ const ProfileForm = ({name = 'john Doe', userId = "@username", email = "johndoe@
     const { toast } = useToast();
 
       const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
+        // console.log(data)
         const result = await axios.post(
           "http://localhost:8080/api/v1/user/profile", data,
         );
-        if(result.status < 200) {
+        if (result && result.status === 201) {
           toast({
-            variant: "destructive",
-            title: "failed to update profile",
+            title: "Profile Updated",
+            description: "Your profile has been updated successfully",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            title: "Profile Update Failed",
+            description: result.data?.message || "Failed to update your profile",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
           });
         }
-        toast({
-          variant: "success",
-          title: "failed to update profile",
-        });
+          console.log("result", result)
+          console.log("result data", result.data)
       }
 
           const userData = {

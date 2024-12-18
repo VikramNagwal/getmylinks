@@ -2,3 +2,47 @@
 2024-12-16T14:34:44.685Z [[31merror[39m]: cannot orgnized data! check utility class
 2024-12-16T14:35:42.400Z [[31merror[39m]: Error in organizeData: TypeError: undefined is not an object (evaluating 'data.interests.map')
 2024-12-16T14:35:42.400Z [[31merror[39m]: cannot orgnized data! check utility class
+2024-12-17T05:09:03.132Z [[31merror[39m]: User profile creation error: PrismaClientInitializationError: 
+Invalid `db.userProfile.findUnique()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\controller\userController.ts:20:45
+
+  17 	return c.json({ message: user.error }, HttpStatusCode.BadRequest);
+  18 }
+  19 
+→ 20 const existingUser = await db.userProfile.findUnique(
+Can't reach database server at `localhost:5433`
+
+Please make sure your database server is running at `localhost:5433`.
+2024-12-17T05:10:25.677Z [[31merror[39m]: User profile creation error: PrismaClientInitializationError: 
+Invalid `db.userProfile.findUnique()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\controller\userController.ts:20:45
+
+  17 	return c.json({ message: user.error }, HttpStatusCode.BadRequest);
+  18 }
+  19 
+→ 20 const existingUser = await db.userProfile.findUnique(
+Can't reach database server at `localhost:5433`
+
+Please make sure your database server is running at `localhost:5433`.
+2024-12-17T05:10:25.678Z [[31merror[39m]: User profile creation error: PrismaClientInitializationError: 
+Invalid `db.userProfile.findUnique()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\controller\userController.ts:20:45
+
+  17 	return c.json({ message: user.error }, HttpStatusCode.BadRequest);
+  18 }
+  19 
+→ 20 const existingUser = await db.userProfile.findUnique(
+Can't reach database server at `localhost:5433`
+
+Please make sure your database server is running at `localhost:5433`.
+2024-12-17T05:10:51.806Z [[31merror[39m]: User profile creation error: PrismaClientInitializationError: 
+Invalid `db.userProfile.findUnique()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\controller\userController.ts:20:45
+
+  17 	return c.json({ message: user.error }, HttpStatusCode.BadRequest);
+  18 }
+  19 
+→ 20 const existingUser = await db.userProfile.findUnique(
+Can't reach database server at `localhost:5433`
+
+Please make sure your database server is running at `localhost:5433`.

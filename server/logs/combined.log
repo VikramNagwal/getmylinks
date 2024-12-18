@@ -51,3 +51,52 @@
 2024-12-16T15:44:52.695Z [[32minfo[39m]: [object Object]
 2024-12-16T15:47:05.372Z [[32minfo[39m]: [object Object]
 2024-12-16T15:50:30.746Z [[32minfo[39m]: [object Object]
+2024-12-17T05:08:58.955Z [[32minfo[39m]: [object Object]
+2024-12-17T05:09:03.132Z [[31merror[39m]: User profile creation error: PrismaClientInitializationError: 
+Invalid `db.userProfile.findUnique()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\controller\userController.ts:20:45
+
+  17 	return c.json({ message: user.error }, HttpStatusCode.BadRequest);
+  18 }
+  19 
+→ 20 const existingUser = await db.userProfile.findUnique(
+Can't reach database server at `localhost:5433`
+
+Please make sure your database server is running at `localhost:5433`.
+2024-12-17T05:10:21.568Z [[32minfo[39m]: [object Object]
+2024-12-17T05:10:24.329Z [[32minfo[39m]: [object Object]
+2024-12-17T05:10:25.677Z [[31merror[39m]: User profile creation error: PrismaClientInitializationError: 
+Invalid `db.userProfile.findUnique()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\controller\userController.ts:20:45
+
+  17 	return c.json({ message: user.error }, HttpStatusCode.BadRequest);
+  18 }
+  19 
+→ 20 const existingUser = await db.userProfile.findUnique(
+Can't reach database server at `localhost:5433`
+
+Please make sure your database server is running at `localhost:5433`.
+2024-12-17T05:10:25.678Z [[31merror[39m]: User profile creation error: PrismaClientInitializationError: 
+Invalid `db.userProfile.findUnique()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\controller\userController.ts:20:45
+
+  17 	return c.json({ message: user.error }, HttpStatusCode.BadRequest);
+  18 }
+  19 
+→ 20 const existingUser = await db.userProfile.findUnique(
+Can't reach database server at `localhost:5433`
+
+Please make sure your database server is running at `localhost:5433`.
+2024-12-17T05:10:47.720Z [[32minfo[39m]: [object Object]
+2024-12-17T05:10:51.806Z [[31merror[39m]: User profile creation error: PrismaClientInitializationError: 
+Invalid `db.userProfile.findUnique()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\controller\userController.ts:20:45
+
+  17 	return c.json({ message: user.error }, HttpStatusCode.BadRequest);
+  18 }
+  19 
+→ 20 const existingUser = await db.userProfile.findUnique(
+Can't reach database server at `localhost:5433`
+
+Please make sure your database server is running at `localhost:5433`.
+2024-12-17T05:11:36.169Z [[32minfo[39m]: [object Object]

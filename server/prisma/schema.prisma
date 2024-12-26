@@ -13,7 +13,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model userProfile {
+enum Organization {
+  INDIVIDUAL
+  BUISNESS
+}
+
+enum UserType {
+  Beta
+  Premium
+}
+model User {
+  id              Int    @id @default(autoincrement())
+  name            String
+  organization   Organization
+  userType        UserType   @default(Beta)
+}
+model UserProfile {
   id            String   @id @default(cuid())
   userId        String   @unique
   name          String
@@ -26,3 +41,8 @@ model userProfile {
   updatedAt     DateTime @updatedAt
 }
 
+model Url {
+  id            String   @id @default(cuid())
+  originalUrl   String   @unique
+  shortUrl      String   @unique
+}

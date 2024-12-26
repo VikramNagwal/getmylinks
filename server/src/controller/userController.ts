@@ -12,7 +12,7 @@ const createUserProfile = async (c: Context) => {
 
 		const user = organizeData(rawBody);
 
-		if ("error" in user) {
+		if (!user || "error" in user) {
 			logger.error("Cannot organize data! Check utility class");
 			return c.json({ message: user.error }, HttpStatusCode.BadRequest);
 		}

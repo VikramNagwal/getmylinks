@@ -30,12 +30,12 @@ const createUserProfile = async (c: Context) => {
 
 		const result = await db.userProfile.create({ data: user });
 		return c.json(
-			{ 
-				message: result 
-					? "User profile created successfully" 
-					: "Unable to create user profile"
+			{
+				message: result
+					? "User profile created successfully"
+					: "Unable to create user profile",
 			},
-			result ? HttpStatusCode.Created : HttpStatusCode.BadRequest
+			result ? HttpStatusCode.Created : HttpStatusCode.BadRequest,
 		);
 	} catch (error: unknown) {
 		logger.error(`User profile creation error: ${error}`);

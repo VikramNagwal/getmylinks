@@ -26,7 +26,6 @@ export enum HttpStatusCode {
 	InternalServerError = 500,
 }
 
-
 export type UserProfile = {
 	userId: string;
 	name: string;

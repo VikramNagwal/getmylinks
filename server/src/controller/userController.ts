@@ -2,7 +2,7 @@ import type { Context } from "hono";
 import type { UserProfile } from "../types/userTypes";
 import { db } from "../config/db";
 import { organizeData } from "../utils/dataHandler";
-import { HttpStatusCode } from "../types/globalTypes";
+import { HttpStatusCode } from "../types/Index";
 import { logger } from "../config/logger";
 
 const createUserProfile = async (c: Context) => {
@@ -21,26 +21,26 @@ const createUserProfile = async (c: Context) => {
 			where: { email: user.email },
 		});
 
-		if (existingUser)
+		if (existingUser) {
 			return c.json(
 				{ message: "user already exists!! Please login" },
 				HttpStatusCode.Conflict,
 			);
-		const result = await db.userProfile.create({ data: user });
+		}
 
-		return result
-			? c.json(
-					{ message: "User profile created successfully" },
-					HttpStatusCode.Created,
-				)
-			: c.json(
-					{ message: "Unable to create user profile" },
-					HttpStatusCode.BadRequest,
-				);
+		const result = await db.userProfile.create({ data: user });
+		return c.json(
+			{ 
+				message: result 
+					? "User profile created successfully" 
+					: "Unable to create user profile"
+			},
+			result ? HttpStatusCode.Created : HttpStatusCode.BadRequest
+		);
 	} catch (error: unknown) {
 		logger.error(`User profile creation error: ${error}`);
 		return c.json(
-			{ message: `Unable to create user profile` },
+			{ message: "Unable to create user profile" },
 			HttpStatusCode.BadRequest,
 		);
 	}
@@ -48,7 +48,7 @@ const createUserProfile = async (c: Context) => {
 
 const getUserProfile = async (c: Context) => {
 	try {
-		const userId = c.req.param("userId") as string;
+		const userId = c.req.param("userId");
 
 		if (!userId || typeof userId !== "string") {
 			return c.json({ message: "Invalid user id" }, HttpStatusCode.BadRequest);
@@ -57,7 +57,7 @@ const getUserProfile = async (c: Context) => {
 		const userProfile = await db.userProfile.findUnique({ where: { userId } });
 
 		if (!userProfile) {
-			throw c.json({ message: "User not found" }, HttpStatusCode.NotFound);
+			return c.json({ message: "User not found" }, HttpStatusCode.NotFound);
 		}
 
 		return c.json(
@@ -66,7 +66,7 @@ const getUserProfile = async (c: Context) => {
 		);
 	} catch (error: unknown) {
 		return c.json(
-			{ message: `Unable to get user profile: ${error}` },
+			{ message: "Unable to get user profile" },
 			HttpStatusCode.BadRequest,
 		);
 	}
@@ -74,25 +74,33 @@ const getUserProfile = async (c: Context) => {
 
 const updateUserProfile = async (c: Context) => {
 	try {
-		const username = c.req.param("id") as string;
+		const userId = c.req.param("id");
 		const userData = await c.req.parseBody();
 
 		const user = await db.userProfile.findUnique({
-			where: { userId: username },
+			where: { userId },
 		});
-		if (!user)
+
+		if (!user) {
 			return c.json(
 				{ message: "User not found! please signin to make your account" },
 				HttpStatusCode.NotFound,
 			);
-		// await db.userProfile.update()
+		}
+
+		// Uncomment and implement update logic
+		// const updatedUser = await db.userProfile.update({
+		//     where: { userId },
+		//     data: userData
+		// });
+
 		return c.json(
 			{ message: "User profile updated successfully" },
 			HttpStatusCode.Ok,
 		);
 	} catch (error) {
 		return c.json(
-			{ message: `Unable to update user profile: ${error}` },
+			{ message: "Unable to update user profile" },
 			HttpStatusCode.BadRequest,
 		);
 	}

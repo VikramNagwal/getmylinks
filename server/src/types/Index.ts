@@ -25,3 +25,13 @@ export enum HttpStatusCode {
 	Conflict = 409,
 	InternalServerError = 500,
 }
+
+export type UserProfile = {
+	userId: string;
+	name: string;
+	email: string;
+	bio: string;
+	avatarUrl?: string;
+	coverUrl?: string;
+	interests: string[];
+};

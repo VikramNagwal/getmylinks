@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "./../types/globalTypes";
+import { HttpStatusCode } from "../types/Index";
 import type { UserProfile } from "../types/userTypes";
 import { logger } from "../config/logger";
 

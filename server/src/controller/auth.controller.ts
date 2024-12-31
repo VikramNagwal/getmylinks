@@ -38,12 +38,13 @@ const registerUser = async (c: Context) => {
 			return c.json(
 				{ message: "Unable to register user in database" },
 				HttpStatusCode.InternalServerError,
-			)};
+			);
+		}
 
-			// remove password and refresh token from response
+		// remove password and refresh token from response
 		const { password: _, refreshToken, ...userData } = registerdUser;
 
-			// return response
+		// return response
 		return c.json(
 			{
 				success: true,
@@ -79,7 +80,7 @@ const loginUser = async (c: Context) => {
 				HttpStatusCode.NotFound,
 			);
 		}
- 		// compare password
+		// compare password
 		const isPasswordMatch = await AuthHandler.comparePassword(
 			password,
 			User.password,
@@ -115,22 +116,23 @@ const loginUser = async (c: Context) => {
 			success: true,
 			message: "User logged in successfully",
 			data: userData,
-			accessTokens,  //remove them in production
+			accessTokens, //remove them in production
 			refreshTokens, //remove them in production
 		});
 	} catch (error) {
-		return c.json({
-			success: false,
-			isOperational: true,
-			message: "Unable to login User, Internal server error",
-			errorMessage: (error as any)?.message,
-			error
-		}, HttpStatusCode.InternalServerError);
+		return c.json(
+			{
+				success: false,
+				isOperational: true,
+				message: "Unable to login User, Internal server error",
+				errorMessage: (error as any)?.message,
+				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
 	}
 };
 
-const logoutUser = async (c: Context) => {
-	
-}
- 
+const logoutUser = async (c: Context) => {};
+
 export { registerUser, loginUser };

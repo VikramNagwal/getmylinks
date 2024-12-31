@@ -29,7 +29,7 @@ model UserTable {
   password        String
   organization    Organization?   @default(INDIVIDUAL)
   userType        UserType        @default(Beta)
-  refreshTokens   String?
+  refreshToken   String?
 }
 model UserProfileTable {
   id            String   @id @default(cuid())

@@ -28,7 +28,7 @@ class AuthHandler {
 
 	static async generateAccessToken(payload: TokenPaylod): Promise<string> {
 		const accessToken = sign(
-			{ payload, exp: 900 },
+			{ payload, exp: Math.floor(Date.now() / 1000) + 900 },
 			process.env.ACCESS_TOKEN_SECRET!,
 		);
 		return accessToken;
@@ -36,22 +36,31 @@ class AuthHandler {
 
 	static async generateRefreshToken(userId: number): Promise<string> {
 		const refreshToken = sign(
-			{ userId, exp: 86400 },
+			{ userId, exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60 },
 			process.env.REFRESH_TOKEN_SECRET!,
 		);
 		return refreshToken;
 	}
 
 	static async generateRefreshandAccessToken(userId: number) {
-		const user = await db.userTable.findUnique({ where: { id: userId } });
-		const accessTokens = await this.generateAccessToken({
-			userId: user!.id,
-			name: user!.name,
-			email: user!.email,
-			organization: user!.organization as OrganizationType,
-		});
-		const refreshTokens = await this.generateRefreshToken(user!.id);
-		return { accessTokens, refreshTokens };
+		try {
+			const user = await db.userTable.findUnique({ where: { id: userId } });
+			const accessTokens = await this.generateAccessToken({
+				userId: user!.id,
+				name: user!.name,
+				email: user!.email,
+				organization: user!.organization as OrganizationType,
+			});
+			const refreshTokens = await this.generateRefreshToken(user!.id);
+			await db.userTable.update({
+				where: { id: user!.id },
+				data: { refreshToken: refreshTokens },
+			});
+
+			return { accessTokens, refreshTokens };
+		} catch (error) {
+			throw new Error("Error generating tokens");
+		}
 	}
 }
 

@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "../types/Index";
-import type { UserProfile } from "../types/userTypes";
-import { logger } from "../config/logger";
+import * as logger from "../config/logger";
+import { UserProfile } from "../types/Index";
 
 export function organizeData(data: UserProfile) {
 	const requiredFields = ["email", "userId", "name"] as const;
@@ -9,7 +9,7 @@ export function organizeData(data: UserProfile) {
 	);
 
 	if (missingFields.length > 0) {
-		logger.error(`Missing required fields: ${missingFields.join(", ")}`);
+		logger.logger.error(`Missing required fields: ${missingFields.join(", ")}`);
 		return {
 			error: `Missing required fields: ${missingFields.join(", ")}`,
 			status: HttpStatusCode.BadRequest,
@@ -46,7 +46,7 @@ export function organizeData(data: UserProfile) {
 					: ["no interests"],
 		};
 	} catch (error) {
-		logger.error(`Error in organizeData: ${error}`);
+		logger.logger.error(`Error in organizeData: ${error}`);
 		return {
 			error: "Unable to organize data",
 			status: HttpStatusCode.InternalServerError,

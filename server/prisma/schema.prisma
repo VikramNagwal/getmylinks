@@ -22,13 +22,16 @@ enum UserType {
   Beta
   Premium
 }
-model User {
-  id              Int    @id @default(autoincrement())
+model UserTable {
+  id              Int             @id @default(autoincrement())
   name            String
-  organization   Organization
-  userType        UserType   @default(Beta)
+  email           String          @unique
+  password        String
+  organization    Organization?   @default(INDIVIDUAL)
+  userType        UserType        @default(Beta)
+  refreshTokens   String?
 }
-model UserProfile {
+model UserProfileTable {
   id            String   @id @default(cuid())
   userId        String   @unique
   name          String
@@ -39,10 +42,4 @@ model UserProfile {
   interests     String[] @default(["no interest"])
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-}
-
-model Url {
-  id            String   @id @default(cuid())
-  originalUrl   String   @unique
-  shortUrl      String   @unique
 }

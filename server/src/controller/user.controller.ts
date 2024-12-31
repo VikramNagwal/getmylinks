@@ -1,5 +1,4 @@
 import type { Context } from "hono";
-import type { UserProfile } from "../types/userTypes";
 import { db } from "../config/db";
 import { organizeData } from "../utils/dataHandler";
 import { HttpStatusCode } from "../types/Index";

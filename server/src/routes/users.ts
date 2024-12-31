@@ -3,7 +3,7 @@ import {
 	createUserProfile,
 	getUserProfile,
 	updateUserProfile,
-} from "../controller/userController";
+} from "../controller/user.controller";
 
 const userRouter = new Hono();
 

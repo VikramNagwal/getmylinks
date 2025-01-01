@@ -5,7 +5,7 @@ import { verifyJWT } from "../middlewares/auth.middleware";
 
 const appRouter = new Hono();
 
-appRouter.use("/user/*", verifyJWT)
+appRouter.use("/user/*", verifyJWT);
 
 appRouter.route("/user", userRouter);
 appRouter.route("/auth", authRouter);

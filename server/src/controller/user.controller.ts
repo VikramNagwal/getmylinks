@@ -6,8 +6,8 @@ import { logger } from "../config/logger";
 
 const createUserProfile = async (c: Context) => {
 	try {
-		console.log("initiated")
-		const rawBody = await c.get("user")
+		console.log("initiated");
+		const rawBody = await c.get("user");
 		logger.info(rawBody);
 
 		const user = organizeData(rawBody);

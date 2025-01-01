@@ -38,7 +38,6 @@ export type UserProfile = {
 	interests: string[];
 };
 
-
 export type TokenPaylod = {
 	userId: number;
 	name: string;

@@ -3,8 +3,7 @@ import { etag } from "hono/etag";
 import { logger } from "hono/logger";
 import { cors } from "hono/cors";
 
-
-const app = new Hono()
+const app = new Hono();
 
 // router imports
 import { appRouter } from "./routes";

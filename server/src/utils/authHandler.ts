@@ -46,7 +46,7 @@ class AuthHandler {
 	static async generateRefreshandAccessToken(userId: number) {
 		try {
 			const user = await db.userTable.findUnique({ where: { id: userId } });
-			if(!user) throw Error("user not found! Invalid user Id");
+			if (!user) throw Error("user not found! Invalid user Id");
 			const accessTokens = await this.generateAccessToken({
 				userId: user!.id,
 				name: user!.name,

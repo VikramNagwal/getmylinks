@@ -1,6 +1,6 @@
-import { HttpStatusCode } from "../types/Index";
+import { HttpStatusCode } from "../types/types";
 import * as logger from "../config/logger";
-import { UserProfile } from "../types/Index";
+import { UserProfile } from "../types/types";
 
 export function organizeData(data: UserProfile) {
 	const requiredFields = ["email", "userId", "name"] as const;

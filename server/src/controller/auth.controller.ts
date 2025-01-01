@@ -1,8 +1,9 @@
 import type { Context } from "hono";
 import { db } from "../config/db";
 import { AuthHandler } from "../utils/authHandler";
-import { HttpStatusCode } from "../types/Index";
+import { HttpStatusCode } from "../types/types";
 import { setCookie } from "hono/cookie";
+import { logger } from "../config/logger";
 
 export type OrganizationType = "INDIVIDUAL" | "BUISNESS";
 
@@ -69,6 +70,7 @@ const registerUser = async (c: Context) => {
 
 const loginUser = async (c: Context) => {
 	try {
+		logger.info("middlware data: login", c.get('jwtPayload'))
 		const body = (await c.req.parseBody()) as unknown as RequestData;
 		const { email, password } = body;
 
@@ -133,6 +135,26 @@ const loginUser = async (c: Context) => {
 	}
 };
 
-const logoutUser = async (c: Context) => {};
+const logoutUser = async (c: Context) => {
+	logger.info("Logging out user");
+	try {
+		const body = await c.get('jwtPayload');
+		console.log(body)
+		const { userId } = body;
+		// remove refresh token from database
+		const deleteTokens = await db.userTable.update({
+			where: { id: userId },
+			data: { refreshToken: null },
+		})
+	} catch (error) {
+		return c.json({
+			success: false,
+			isOperational: true,
+			message: "Unable to logout User, Internal server error",
+			errorMessage: (error as any)?.message,
+			error,
+		}, HttpStatusCode.InternalServerError)
+	}
+};
 
-export { registerUser, loginUser };
+export { registerUser, loginUser, logoutUser };

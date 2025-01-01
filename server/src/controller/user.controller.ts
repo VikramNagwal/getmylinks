@@ -1,7 +1,7 @@
 import type { Context } from "hono";
 import { db } from "../config/db";
 import { organizeData } from "../utils/dataHandler";
-import { HttpStatusCode } from "../types/Index";
+import { HttpStatusCode } from "../types/types";
 import { logger } from "../config/logger";
 
 const createUserProfile = async (c: Context) => {

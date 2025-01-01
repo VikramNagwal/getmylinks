@@ -105,3 +105,38 @@ Please make sure your database server is running at `localhost:5433`.
 2024-12-31T17:12:27.886Z [[31merror[39m]: undefined is not an object (evaluating 'c.req.header("Cookie")?.split(";")[1].split')
 2024-12-31T17:12:45.374Z [[31merror[39m]: undefined is not an object (evaluating 'c.req.header("Cookie")?.split(";")[1].split')
 2025-01-01T09:54:19.225Z [[32minfo[39m]: middlware data: login
+2025-01-01T10:13:12.474Z [[32minfo[39m]: middlware data: login
+2025-01-01T10:13:17.755Z [[32minfo[39m]: middlware data: login
+2025-01-01T14:27:52.210Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:28:37.331Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:28:37.334Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:30:12.655Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:31:31.861Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:31:51.832Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:31:51.836Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:32:17.440Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:32:17.442Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:32:40.382Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:32:40.384Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:33:21.377Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:33:21.379Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:33:57.307Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:33:57.312Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:35:33.078Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:35:33.094Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:35:54.001Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:35:54.009Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:37:13.325Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:37:13.328Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:38:05.381Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:38:05.387Z [[31merror[39m]: User profile creation error: TypeError: No default value
+2025-01-01T14:38:49.071Z [[32minfo[39m]: Verifying JWT
+2025-01-01T14:38:49.075Z [[32minfo[39m]: [object Object]
+2025-01-01T14:38:49.078Z [[31merror[39m]: Missing required fields: email, userId, name
+2025-01-01T14:38:49.078Z [[31merror[39m]: Cannot organize data! Check utility class
+2025-01-01T14:39:55.722Z [[32minfo[39m]: [object Object]
+2025-01-01T14:39:55.724Z [[31merror[39m]: Missing required fields: email, userId, name
+2025-01-01T14:39:55.725Z [[31merror[39m]: Cannot organize data! Check utility class
+2025-01-01T14:47:00.333Z [[32minfo[39m]: [object Object]
+2025-01-01T14:47:00.342Z [[31merror[39m]: Missing required fields: email, userId, name
+2025-01-01T14:47:00.343Z [[31merror[39m]: Cannot organize data! Check utility class

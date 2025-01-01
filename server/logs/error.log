@@ -50,3 +50,19 @@ Please make sure your database server is running at `localhost:5433`.
 2024-12-31T17:08:54.362Z [[31merror[39m]: token(eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImV4cCI6MTczNjI2ODcwN30.jI4HEGvvJIyaK5FYepG5XVeD2TuDWPADGAREotOHgOM) signature mismatched
 2024-12-31T17:12:27.886Z [[31merror[39m]: undefined is not an object (evaluating 'c.req.header("Cookie")?.split(";")[1].split')
 2024-12-31T17:12:45.374Z [[31merror[39m]: undefined is not an object (evaluating 'c.req.header("Cookie")?.split(";")[1].split')
+2025-01-01T14:28:37.334Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:31:51.836Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:32:17.442Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:32:40.384Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:33:21.379Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:33:57.312Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:35:33.094Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:35:54.009Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:37:13.328Z [[31merror[39m]: User profile creation error: SyntaxError: Failed to parse JSON
+2025-01-01T14:38:05.387Z [[31merror[39m]: User profile creation error: TypeError: No default value
+2025-01-01T14:38:49.078Z [[31merror[39m]: Missing required fields: email, userId, name
+2025-01-01T14:38:49.078Z [[31merror[39m]: Cannot organize data! Check utility class
+2025-01-01T14:39:55.724Z [[31merror[39m]: Missing required fields: email, userId, name
+2025-01-01T14:39:55.725Z [[31merror[39m]: Cannot organize data! Check utility class
+2025-01-01T14:47:00.342Z [[31merror[39m]: Missing required fields: email, userId, name
+2025-01-01T14:47:00.343Z [[31merror[39m]: Cannot organize data! Check utility class

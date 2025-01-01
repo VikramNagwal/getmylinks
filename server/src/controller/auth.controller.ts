@@ -2,7 +2,7 @@ import type { Context } from "hono";
 import { db } from "../config/db";
 import { AuthHandler } from "../utils/authHandler";
 import { HttpStatusCode } from "../types/types";
-import { setCookie } from "hono/cookie";
+import { setCookie, deleteCookie } from "hono/cookie";
 import { logger } from "../config/logger";
 
 export type OrganizationType = "INDIVIDUAL" | "BUISNESS";
@@ -70,7 +70,6 @@ const registerUser = async (c: Context) => {
 
 const loginUser = async (c: Context) => {
 	try {
-		logger.info("middlware data: login", c.get("jwtPayload"));
 		const body = (await c.req.parseBody()) as unknown as RequestData;
 		const { email, password } = body;
 
@@ -97,10 +96,12 @@ const loginUser = async (c: Context) => {
 		const { accessTokens, refreshTokens } =
 			await AuthHandler.generateRefreshandAccessToken(User.id);
 
+		const tokens = await AuthHandler.generateAccessToken(User);
+
 		const { password: _, refreshToken, ...userData } = User;
 
 		// setting cookies
-		setCookie(c, "accessTokens", accessTokens, {
+		setCookie(c, "accessTokens", tokens, {
 			httpOnly: true,
 			secure: true,
 			sameSite: "Lax",
@@ -113,7 +114,7 @@ const loginUser = async (c: Context) => {
 			sameSite: "Lax",
 			maxAge: 7 * 24 * 60 * 60,
 		});
-		// return response
+		//  returning response
 		return c.json({
 			success: true,
 			message: "User logged in successfully",
@@ -138,14 +139,20 @@ const loginUser = async (c: Context) => {
 const logoutUser = async (c: Context) => {
 	logger.info("Logging out user");
 	try {
-		const body = await c.get("jwtPayload");
-		console.log(body);
-		const { userId } = body;
+		deleteCookie(c, "accessTokens");
 		// remove refresh token from database
-		const deleteTokens = await db.userTable.update({
+		const userId = c.get("user")?.userId;
+		await db.userTable.update({
 			where: { id: userId },
 			data: { refreshToken: null },
 		});
+		return c.json(
+			{
+				success: true,
+				message: "User logged out successfully",
+			},
+			HttpStatusCode.Ok,
+		);
 	} catch (error) {
 		return c.json(
 			{

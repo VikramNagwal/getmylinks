@@ -1,26 +1,90 @@
 import { createMiddleware } from "hono/factory";
-import { verify, decode } from "hono/jwt";
+import { Context, Next } from "hono";
+import { verify } from "hono/jwt";
 import { logger } from "../config/logger";
+import { HttpStatusCode } from "../types/types";
+import { db } from "../config/db";
+import { AuthHandler } from "../utils/authHandler";
 
-const authMiddleware = createMiddleware(async (c, next) => {
+interface Tokens {
+	accessTokens: string;
+	refreshTokens: string;
+}
+
+interface DecodedRefresh {
+	userId: number;
+	exp: number;
+}
+
+const extractTokens = (cookieHeader?: string): Tokens | null => {
+	if (!cookieHeader) return null;
+
+	const tokens = {} as Partial<Tokens>;
+	const cookies = cookieHeader.split(";");
+
+	for (const cookie of cookies) {
+		const [name, value] = cookie.trim().split("=");
+		if (name === "accessTokens" || name === "refreshTokens") {
+			tokens[name] = value;
+		}
+	}
+
+	return tokens.accessTokens && tokens.refreshTokens
+		? (tokens as Tokens)
+		: null;
+};
+
+export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
 	try {
-		const token = c.req.header("Cookie")?.split(";")[1].split("=")[1];
-		console.log(token);
-		if (!token) {
-			return c.json({ message: "No token provided" }, 401);
+		const tokens = extractTokens(c.req.header("Cookie"));
+		if (!tokens) {
+			return c.json(
+				{ message: "Authentication required" },
+				HttpStatusCode.Unauthenticated,
+			);
 		}
-		const decoded = decode(token);
-		if (!decoded) {
-			return c.json({ message: "Invalid token" }, 401);
-		}
-		console.log(decoded);
 
-		c.set("user", decoded);
-		await next();
+		try {
+			const decodedToken = await verify(
+				tokens.accessTokens,
+				Bun.env.ACCESS_TOKEN_SECRET!,
+			);
+			c.set("user", decodedToken);
+			return next();
+		} catch {
+			const decodedRefresh = await verify(
+				tokens.refreshTokens,
+				Bun.env.REFRESH_TOKEN_SECRET!,
+			);
+
+			const user = await db.userTable.findUnique({
+				where: { id: Number(decodedRefresh.userId) },
+				select: { id: true, refreshToken: true },
+			});
+
+			if (!user || tokens.refreshTokens !== user.refreshToken) {
+				return c.json(
+					{ message: user ? "Token expired or used" : "Invalid user" },
+					HttpStatusCode.Unauthenticated,
+				);
+			}
+
+			const newTokens = await AuthHandler.generateRefreshandAccessToken(
+				user.id,
+			);
+			await db.userTable.update({
+				where: { id: user.id },
+				data: { refreshToken: newTokens.refreshTokens },
+			});
+
+			c.set("user", user);
+			return next();
+		}
 	} catch (error) {
-		console.error(error);
-		logger.error(error);
+		logger.error("JWT verification failed:", error);
+		return c.json(
+			{ message: "Authentication failed" },
+			HttpStatusCode.InternalServerError,
+		);
 	}
 });
-
-export { authMiddleware as jwt };

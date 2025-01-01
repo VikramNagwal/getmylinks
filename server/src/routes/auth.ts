@@ -9,6 +9,6 @@ const authRouter = new Hono();
 
 authRouter.post("/register", registerUser);
 authRouter.post("/login", loginUser);
-authRouter.get("/logout", logoutUser);
+authRouter.delete("//logout", logoutUser); // add feature to logout user with unique entity
 
 export { authRouter };

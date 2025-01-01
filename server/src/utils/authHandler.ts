@@ -27,7 +27,7 @@ class AuthHandler {
 		return isMatch;
 	}
 
-	static async generateAccessToken(payload: TokenPaylod): Promise<string> {
+	static async generateAccessToken(payload: any): Promise<string> {
 		const accessToken = await sign(
 			{ payload, exp: Math.floor(Date.now() / 1000) + 900 }, // 15 minutes
 			process.env.ACCESS_TOKEN_SECRET!,

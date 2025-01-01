@@ -6,7 +6,8 @@ import { logger } from "../config/logger";
 
 const createUserProfile = async (c: Context) => {
 	try {
-		const rawBody = await c.req.json();
+		console.log("initiated");
+		const rawBody = await c.get("user");
 		logger.info(rawBody);
 
 		const user = organizeData(rawBody);
@@ -16,7 +17,7 @@ const createUserProfile = async (c: Context) => {
 			return c.json({ message: user.error }, HttpStatusCode.BadRequest);
 		}
 
-		const existingUser = await db.userProfile.findUnique({
+		const existingUser = await db.userProfileTable.findUnique({
 			where: { email: user.email },
 		});
 
@@ -27,14 +28,14 @@ const createUserProfile = async (c: Context) => {
 			);
 		}
 
-		const result = await db.userProfile.create({ data: user });
+		const result = await db.userProfileTable.create({ data: user });
+		if (!result) throw new Error("Unable to create user profile");
+
 		return c.json(
 			{
-				message: result
-					? "User profile created successfully"
-					: "Unable to create user profile",
+				message: "User profile created successfully",
 			},
-			result ? HttpStatusCode.Created : HttpStatusCode.BadRequest,
+			HttpStatusCode.Created,
 		);
 	} catch (error: unknown) {
 		logger.error(`User profile creation error: ${error}`);
@@ -53,7 +54,9 @@ const getUserProfile = async (c: Context) => {
 			return c.json({ message: "Invalid user id" }, HttpStatusCode.BadRequest);
 		}
 
-		const userProfile = await db.userProfile.findUnique({ where: { userId } });
+		const userProfile = await db.userProfileTable.findUnique({
+			where: { userId },
+		});
 
 		if (!userProfile) {
 			return c.json({ message: "User not found" }, HttpStatusCode.NotFound);
@@ -76,7 +79,7 @@ const updateUserProfile = async (c: Context) => {
 		const userId = c.req.param("id");
 		const userData = await c.req.parseBody();
 
-		const user = await db.userProfile.findUnique({
+		const user = await db.userProfileTable.findUnique({
 			where: { userId },
 		});
 

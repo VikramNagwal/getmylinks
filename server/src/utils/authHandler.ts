@@ -1,6 +1,7 @@
 import { decode, sign, verify } from "hono/jwt";
 import { OrganizationType } from "../controller/auth.controller";
 import { db } from "../config/db";
+import { HttpStatusCode } from "../types/types";
 
 type TokenPaylod = {
 	userId: number;
@@ -27,16 +28,16 @@ class AuthHandler {
 	}
 
 	static async generateAccessToken(payload: TokenPaylod): Promise<string> {
-		const accessToken = sign(
-			{ payload, exp: Math.floor(Date.now() / 1000) + 900 },
+		const accessToken = await sign(
+			{ payload, exp: Math.floor(Date.now() / 1000) + 900 }, // 15 minutes
 			process.env.ACCESS_TOKEN_SECRET!,
 		);
 		return accessToken;
 	}
 
 	static async generateRefreshToken(userId: number): Promise<string> {
-		const refreshToken = sign(
-			{ userId, exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60 },
+		const refreshToken = await sign(
+			{ userId, exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60 }, // 7 days
 			process.env.REFRESH_TOKEN_SECRET!,
 		);
 		return refreshToken;
@@ -45,6 +46,7 @@ class AuthHandler {
 	static async generateRefreshandAccessToken(userId: number) {
 		try {
 			const user = await db.userTable.findUnique({ where: { id: userId } });
+			if (!user) throw Error("user not found! Invalid user Id");
 			const accessTokens = await this.generateAccessToken({
 				userId: user!.id,
 				name: user!.name,
@@ -52,6 +54,8 @@ class AuthHandler {
 				organization: user!.organization as OrganizationType,
 			});
 			const refreshTokens = await this.generateRefreshToken(user!.id);
+
+			// update refresh token in db
 			await db.userTable.update({
 				where: { id: user!.id },
 				data: { refreshToken: refreshTokens },
@@ -60,6 +64,14 @@ class AuthHandler {
 			return { accessTokens, refreshTokens };
 		} catch (error) {
 			throw new Error("Error generating tokens");
+		}
+	}
+
+	static async verifyTokens(token: string) {
+		try {
+			return await verify(token, process.env.ACCESS_TOKEN_SECRET!);
+		} catch (error) {
+			throw new Error("Error verifying tokens");
 		}
 	}
 }

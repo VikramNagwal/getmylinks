@@ -10,6 +10,7 @@ import { appRouter } from "./routes";
 
 // middlewares
 app.use(logger());
+
 app.use("/api/*", cors());
 app.use("/api/v1", etag({ weak: true }));
 

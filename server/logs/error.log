@@ -46,3 +46,7 @@ D:\ADMIN\Coding\auth-server\server\src\controller\userController.ts:20:45
 Can't reach database server at `localhost:5433`
 
 Please make sure your database server is running at `localhost:5433`.
+2024-12-31T17:07:47.828Z [[31merror[39m]: token(eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImV4cCI6MTczNjI2ODcwN30.jI4HEGvvJIyaK5FYepG5XVeD2TuDWPADGAREotOHgOM) signature mismatched
+2024-12-31T17:08:54.362Z [[31merror[39m]: token(eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImV4cCI6MTczNjI2ODcwN30.jI4HEGvvJIyaK5FYepG5XVeD2TuDWPADGAREotOHgOM) signature mismatched
+2024-12-31T17:12:27.886Z [[31merror[39m]: undefined is not an object (evaluating 'c.req.header("Cookie")?.split(";")[1].split')
+2024-12-31T17:12:45.374Z [[31merror[39m]: undefined is not an object (evaluating 'c.req.header("Cookie")?.split(";")[1].split')

@@ -87,3 +87,4 @@ Please make sure your database server is running at `localhost:5433`.
 2025-01-02T16:22:08.736Z [[31merror[39m]: Error in validating OTP: TypeError: No default value
 2025-01-02T16:32:30.822Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
 2025-01-02T16:33:12.445Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-02T16:34:24.113Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP

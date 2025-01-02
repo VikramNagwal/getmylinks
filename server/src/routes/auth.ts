@@ -19,18 +19,21 @@ authRouter.post("/email/verify", async (c: Context) => {
 	try {
 		const clientOtp = await c.req.parseBody();
 		const token = String(clientOtp["token"]);
-		const isValid = await validateOtpToken(token);		
-		
+		const isValid = await validateOtpToken(token);
+
 		return c.json({ clientOtp, isValid: isValid }, HttpStatusCode.Ok);
 	} catch (error) {
-		return c.json({
-			success: false,
-			isOperational: true,
-			message: "Unable to verify Email, Internal server error",
-			errorMessage: (error as any)?.message,
-			error,
-		}, HttpStatusCode.InternalServerError)
+		return c.json(
+			{
+				success: false,
+				isOperational: true,
+				message: "Unable to verify Email, Internal server error",
+				errorMessage: (error as any)?.message,
+				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
 	}
-})
+});
 
 export { authRouter };

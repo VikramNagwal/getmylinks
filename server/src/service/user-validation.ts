@@ -26,7 +26,7 @@ async function validateOtpToken(token: string) {
 	try {
 		const isValid = authenticator.verify({ token, secret });
 		if (!isValid) throw new Error("Invalid OTP");
-		return isValid
+		return isValid;
 	} catch (error) {
 		logger.error(`Error in validating OTP: ${error}`);
 		if (error instanceof Error) {

@@ -150,3 +150,11 @@ Please make sure your database server is running at `localhost:5433`.
 2025-01-01T15:51:02.305Z [[32minfo[39m]: Logging out user
 2025-01-01T15:52:03.078Z [[32minfo[39m]: Logging out user
 2025-01-01T15:52:58.403Z [[32minfo[39m]: Logging out user
+2025-01-02T09:09:52.068Z [[31merror[39m]: Unable to send email: [object Object]
+2025-01-02T09:09:52.100Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later
+2025-01-02T09:17:49.534Z [[31merror[39m]: Unable to send email: [object Object]
+2025-01-02T09:17:49.540Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later
+2025-01-02T09:20:49.953Z [[31merror[39m]: Unable to send email: [object Object]
+2025-01-02T09:20:49.968Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later
+2025-01-02T09:28:59.362Z [[31merror[39m]: Unable to send email: [object Object]
+2025-01-02T09:28:59.369Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later

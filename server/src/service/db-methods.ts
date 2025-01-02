@@ -1,0 +1,25 @@
+import { db } from "../config/db";
+import { logger } from "../config/logger";
+
+
+async function isUserExist(id: number): Promise<boolean> {
+    try {
+        const doesExist = await db.userTable.findUnique({ where: { id }});
+        return doesExist ? true : false;
+    } catch (error) {
+        logger.error(`Error in checking user existence: ${error}`);
+        throw new Error("Unable to check user existence! db operation failed");
+    }
+}
+
+async function getRecordById(id: number): Promise<any> {
+    try {
+        const record = await db.userTable.findUnique({ where: { id } });
+        return record;
+    } catch (error) {
+        logger.error(`Error in getting record by id: ${error}`);
+        throw new Error("Unable to get record by id! db operation failed");
+    }
+}
+
+export { isUserExist, getRecordById };

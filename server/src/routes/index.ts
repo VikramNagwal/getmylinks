@@ -3,7 +3,6 @@ import { userRouter } from "./users";
 import { authRouter } from "./auth";
 import { verifyJWT } from "../middlewares/auth.middleware";
 
-
 const appRouter = new Hono();
 
 appRouter.use("/user/*", verifyJWT);

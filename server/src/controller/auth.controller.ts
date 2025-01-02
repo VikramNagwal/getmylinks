@@ -45,7 +45,11 @@ const registerUser = async (c: Context) => {
 		}
 		// generate OTP'
 		const otp = await generateOTP();
-		const emailId = await sendEmailtoUser(registerdUser.email, "OTP validation email", otp);
+		const emailId = await sendEmailtoUser(
+			registerdUser.email,
+			"OTP validation email",
+			otp,
+		);
 
 		// remove password and refresh token from response
 		const { password: _, refreshToken, ...userData } = registerdUser;

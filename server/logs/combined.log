@@ -140,3 +140,13 @@ Please make sure your database server is running at `localhost:5433`.
 2025-01-01T14:47:00.333Z [[32minfo[39m]: [object Object]
 2025-01-01T14:47:00.342Z [[31merror[39m]: Missing required fields: email, userId, name
 2025-01-01T14:47:00.343Z [[31merror[39m]: Cannot organize data! Check utility class
+2025-01-01T15:08:46.311Z [[32minfo[39m]: [object Object]
+2025-01-01T15:08:46.326Z [[31merror[39m]: Missing required fields: email, userId, name
+2025-01-01T15:08:46.328Z [[31merror[39m]: Cannot organize data! Check utility class
+2025-01-01T15:12:24.315Z [[32minfo[39m]: [object Object]
+2025-01-01T15:12:24.317Z [[31merror[39m]: Missing required fields: email, userId, name
+2025-01-01T15:12:24.318Z [[31merror[39m]: Cannot organize data! Check utility class
+2025-01-01T15:49:17.219Z [[32minfo[39m]: Logging out user
+2025-01-01T15:51:02.305Z [[32minfo[39m]: Logging out user
+2025-01-01T15:52:03.078Z [[32minfo[39m]: Logging out user
+2025-01-01T15:52:58.403Z [[32minfo[39m]: Logging out user

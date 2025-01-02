@@ -25,10 +25,13 @@ async function generateOTP() {
 async function validateOtpToken(token: string) {
 	try {
 		const isValid = authenticator.verify({ token, secret });
-		if (!isValid) return new Error("Invalid OTP");
+		if (!isValid) throw new Error("Invalid OTP");
 		return isValid;
 	} catch (error) {
 		logger.error(`Error in validating OTP: ${error}`);
+		if (error instanceof Error) {
+			throw error;
+		}
 		throw new Error("Unable to validate OTP");
 	}
 }
@@ -40,6 +43,7 @@ async function sendEmailtoUser(
 	otp: string,
 ) {
 	try {
+		console.log(email, subject, otp);
 		const { data, error } = await resend.emails.send({
 			from: "Acme <onboarding@resend.dev>",
 			to: [email],

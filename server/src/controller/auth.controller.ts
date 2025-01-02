@@ -9,6 +9,7 @@ import { generateOTP, sendEmailtoUser } from "../service/user-validation";
 export type OrganizationType = "INDIVIDUAL" | "BUISNESS";
 
 interface RequestData {
+	username: string;
 	name: string;
 	email: string;
 	password: string;
@@ -18,7 +19,7 @@ interface RequestData {
 const registerUser = async (c: Context) => {
 	try {
 		const body = (await c.req.parseBody()) as unknown as RequestData;
-		const { name, email, password, organization } = body;
+		const { username, name, email, password, organization } = body;
 
 		// check if user already exists
 		const User = await db.userTable.findFirst({ where: { email } });
@@ -27,9 +28,11 @@ const registerUser = async (c: Context) => {
 		}
 
 		const hashedPassword = await AuthHandler.hashPassword(password);
+
 		// create user
 		const registerdUser = await db.userTable.create({
 			data: {
+				username: String(username.trim().toLowerCase()),
 				name: String(name.trim().toLowerCase()),
 				email: String(email.trim().toLowerCase()),
 				password: hashedPassword,
@@ -43,8 +46,10 @@ const registerUser = async (c: Context) => {
 				HttpStatusCode.InternalServerError,
 			);
 		}
-		// generate OTP'
+
+		// generate otp
 		const otp = await generateOTP();
+		logger.info(`OTP generated: ${otp}`);
 		const emailId = await sendEmailtoUser(
 			registerdUser.email,
 			"OTP validation email",

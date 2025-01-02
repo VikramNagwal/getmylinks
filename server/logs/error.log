@@ -78,3 +78,13 @@ Please make sure your database server is running at `localhost:5433`.
 2025-01-02T09:20:49.968Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later
 2025-01-02T09:28:59.362Z [[31merror[39m]: Unable to send email: [object Object]
 2025-01-02T09:28:59.369Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later
+2025-01-02T16:06:30.910Z [[31merror[39m]: Unable to send email: [object Object]
+2025-01-02T16:06:30.923Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later
+2025-01-02T16:14:23.560Z [[31merror[39m]: Unable to send email: [object Object]
+2025-01-02T16:14:23.567Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later
+2025-01-02T16:18:34.032Z [[31merror[39m]: Unable to send email: [object Object]
+2025-01-02T16:18:34.033Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later
+2025-01-02T16:22:08.736Z [[31merror[39m]: Error in validating OTP: TypeError: No default value
+2025-01-02T16:32:30.822Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-02T16:33:12.445Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-02T16:34:24.113Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP

@@ -32,7 +32,8 @@ const registerUser = async (c: Context) => {
 				name: String(name.trim().toLowerCase()),
 				email: String(email.trim().toLowerCase()),
 				password: hashedPassword,
-				organization: (organization?.toUpperCase() as OrganizationType) || "INDIVIDUAL",
+				organization:
+					(organization?.toUpperCase() as OrganizationType) || "INDIVIDUAL",
 			},
 		});
 		if (!registerdUser) {
@@ -141,7 +142,7 @@ const logoutUser = async (c: Context) => {
 	try {
 		deleteCookie(c, "accessTokens");
 		// remove refresh token from database
-		const userId = c.get("user")?.payload.id
+		const userId = c.get("user")?.payload.id;
 		console.log(userId);
 		await db.userTable.update({
 			where: { id: userId },

@@ -4,6 +4,7 @@ import { AuthHandler } from "../utils/authHandler";
 import { HttpStatusCode } from "../types/types";
 import { setCookie, deleteCookie } from "hono/cookie";
 import { logger } from "../config/logger";
+import { generateOTP, sendEmailtoUser } from "../service/user-validation";
 
 export type OrganizationType = "INDIVIDUAL" | "BUISNESS";
 
@@ -42,6 +43,9 @@ const registerUser = async (c: Context) => {
 				HttpStatusCode.InternalServerError,
 			);
 		}
+		// generate OTP'
+		const otp = await generateOTP();
+		const emailId = await sendEmailtoUser(registerdUser.email, "OTP validation email", otp);
 
 		// remove password and refresh token from response
 		const { password: _, refreshToken, ...userData } = registerdUser;
@@ -51,6 +55,8 @@ const registerUser = async (c: Context) => {
 			{
 				success: true,
 				message: "User registered successfully",
+				isEmailSent: true,
+				sentEmailId: emailId,
 				data: userData,
 			},
 			HttpStatusCode.Ok,

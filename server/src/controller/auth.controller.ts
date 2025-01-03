@@ -23,6 +23,7 @@ const registerUser = async (c: Context) => {
 
 		// check if user already exists
 		const User = await db.userTable.findFirst({ where: { email } });
+		console.log(User);
 
 		if (User) {
 			return c.json({ message: "User already exists" }, 400);
@@ -31,6 +32,7 @@ const registerUser = async (c: Context) => {
 		const otp = await generateOTP();
 		logger.info(`OTP generated: ${otp}`);
 		// send otp email to user
+		logger.input("sending email to user");
 		const emailId = await sendEmailtoUser(
 			email,
 			"Account Verification OTP",
@@ -66,7 +68,6 @@ const registerUser = async (c: Context) => {
 				success: true,
 				message: "User registered successfully",
 				isEmailSent: true,
-				sentEmailId: emailId,
 				data: userData,
 			},
 			HttpStatusCode.Ok,

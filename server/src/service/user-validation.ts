@@ -9,7 +9,7 @@ import React from "react";
 // }
 
 const secret = String(Bun.env.OTP_SECRET_KEY);
-const resend = new Resend(String(Bun.env.RESEND_API_KEY));
+const resend = new Resend("re_7rZTH3iA_ComVYPtgrfakS7SRbcYGSxhu");
 
 totp.options = {
 	step: 120,
@@ -48,6 +48,7 @@ async function sendEmailtoUser(
 	otp: string,
 ) {
 	try {
+		logger.info(email);
 		console.log(email, subject, otp);
 		const { data, error } = await resend.emails.send({
 			from: "Acme <onboarding@resend.dev>",

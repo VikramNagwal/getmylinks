@@ -21,7 +21,10 @@ authRouter.post("/email/verify", async (c: Context) => {
 		const token = String(clientOtp.otp);
 		const isValid = await validateOtpToken(token);
 
-		return c.json({ message: "otp verified ✅" ,clientOtp, isValid: isValid }, HttpStatusCode.Ok);
+		return c.json(
+			{ message: "otp verified ✅", clientOtp, isValid: isValid },
+			HttpStatusCode.Ok,
+		);
 	} catch (error) {
 		return c.json(
 			{

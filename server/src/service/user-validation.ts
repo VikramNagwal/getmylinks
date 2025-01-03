@@ -12,8 +12,8 @@ const secret = String(Bun.env.OTP_SECRET_KEY);
 const resend = new Resend(String(Bun.env.RESEND_API_KEY));
 
 totp.options = {
-	step: 120
-}
+	step: 120,
+};
 
 async function generateOTP() {
 	try {
@@ -28,7 +28,7 @@ async function generateOTP() {
 // Validate OTP Token
 async function validateOtpToken(token: string) {
 	try {
-		console.log(token , typeof token)
+		console.log(token, typeof token);
 		const isValid = totp.verify({ token, secret });
 		if (!isValid) throw new Error("Invalid OTP");
 		return isValid;

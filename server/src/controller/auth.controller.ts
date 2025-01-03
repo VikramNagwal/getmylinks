@@ -23,7 +23,7 @@ const registerUser = async (c: Context) => {
 
 		// check if user already exists
 		const User = await db.userTable.findFirst({ where: { email } });
-		
+
 		if (User) {
 			return c.json({ message: "User already exists" }, 400);
 		}

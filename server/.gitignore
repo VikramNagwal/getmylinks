@@ -2,5 +2,4 @@
 node_modules/
 
 # envs
-.env*
-!.env.local
+.env

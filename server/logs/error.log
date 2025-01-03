@@ -88,3 +88,16 @@ Please make sure your database server is running at `localhost:5433`.
 2025-01-02T16:32:30.822Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
 2025-01-02T16:33:12.445Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
 2025-01-02T16:34:24.113Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-03T07:30:15.429Z [[31merror[39m]: Unable to send email: [object Object]
+2025-01-03T07:30:15.430Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later
+2025-01-03T07:30:55.601Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-03T07:32:09.938Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-03T07:32:41.007Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-03T07:33:03.178Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-03T07:33:17.513Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-03T07:33:54.139Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-03T07:34:15.649Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-03T07:34:20.404Z [[31merror[39m]: Unable to send email: [object Object]
+2025-01-03T07:34:20.405Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later
+2025-01-03T07:36:34.486Z [[31merror[39m]: Unable to send email: [object Object]
+2025-01-03T07:36:34.487Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later

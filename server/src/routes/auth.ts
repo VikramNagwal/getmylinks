@@ -18,10 +18,10 @@ authRouter.delete("/logout", verifyJWT, logoutUser); // add feature to logout us
 authRouter.post("/email/verify", async (c: Context) => {
 	try {
 		const clientOtp = await c.req.parseBody();
-		const token = String(clientOtp["token"]);
+		const token = String(clientOtp.otp);
 		const isValid = await validateOtpToken(token);
 
-		return c.json({ clientOtp, isValid: isValid }, HttpStatusCode.Ok);
+		return c.json({ message: "otp verified ✅" ,clientOtp, isValid: isValid }, HttpStatusCode.Ok);
 	} catch (error) {
 		return c.json(
 			{

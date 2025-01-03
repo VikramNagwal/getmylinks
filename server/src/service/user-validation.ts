@@ -48,6 +48,7 @@ async function sendEmailtoUser(
 	otp: string,
 ) {
 	try {
+		logger.info(email)
 		console.log(email, subject, otp);
 		const { data, error } = await resend.emails.send({
 			from: "Acme <onboarding@resend.dev>",

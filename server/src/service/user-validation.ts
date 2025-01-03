@@ -9,7 +9,7 @@ import React from "react";
 // }
 
 const secret = String(Bun.env.OTP_SECRET_KEY);
-const resend = new Resend(String(Bun.env.RESEND_API_KEY));
+const resend = new Resend("re_7rZTH3iA_ComVYPtgrfakS7SRbcYGSxhu");
 
 totp.options = {
 	step: 120,

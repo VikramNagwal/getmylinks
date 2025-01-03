@@ -102,3 +102,4 @@ Please make sure your database server is running at `localhost:5433`.
 2025-01-03T07:36:34.486Z [[31merror[39m]: Unable to send email: [object Object]
 2025-01-03T07:36:34.487Z [[31merror[39m]: Error in sending email: Error: Got error while sending email, resend later
 2025-01-03T10:10:51.315Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-03T15:02:13.143Z [[31merror[39m]: Unable to send email: [object Object]

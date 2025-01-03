@@ -28,16 +28,16 @@ const registerUser = async (c: Context) => {
 		if (User) {
 			return c.json({ message: "User already exists" }, 400);
 		}
-		// generate otp
-		const otp = await generateOTP();
-		logger.info(`OTP generated: ${otp}`);
-		// send otp email to user
-		logger.input("sending email to user");
-		const emailId = await sendEmailtoUser(
-			email,
-			"Account Verification OTP",
-			otp,
-		);
+		// // generate otp
+		// const otp = await generateOTP();
+		// logger.info(`OTP generated: ${otp}`);
+		// // send otp email to user
+		// logger.input("sending email to user");
+		// const emailId = await sendEmailtoUser(
+		// 	email,
+		// 	"Account Verification OTP",
+		// 	otp,
+		// );
 
 		const hashedPassword = await AuthHandler.hashPassword(password);
 
@@ -68,7 +68,6 @@ const registerUser = async (c: Context) => {
 				success: true,
 				message: "User registered successfully",
 				isEmailSent: true,
-				sentEmailId: emailId,
 				data: userData,
 			},
 			HttpStatusCode.Ok,

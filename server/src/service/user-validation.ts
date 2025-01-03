@@ -1,4 +1,4 @@
-import { authenticator } from "otplib";
+import { authenticator, totp } from "otplib";
 import { logger } from "../config/logger";
 import { Resend } from "resend";
 import { EmailTemplate } from "../emails/email-template";
@@ -11,9 +11,13 @@ import React from "react";
 const secret = String(Bun.env.OTP_SECRET_KEY);
 const resend = new Resend(String(Bun.env.RESEND_API_KEY));
 
+totp.options = {
+	step: 120,
+};
+
 async function generateOTP() {
 	try {
-		const token = authenticator.generate(secret);
+		const token = totp.generate(secret);
 		return token;
 	} catch (error) {
 		logger.error(`Error in generating OTP: ${error}`);
@@ -24,7 +28,8 @@ async function generateOTP() {
 // Validate OTP Token
 async function validateOtpToken(token: string) {
 	try {
-		const isValid = authenticator.verify({ token, secret });
+		console.log(token, typeof token);
+		const isValid = totp.verify({ token, secret });
 		if (!isValid) throw new Error("Invalid OTP");
 		return isValid;
 	} catch (error) {

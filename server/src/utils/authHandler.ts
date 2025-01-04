@@ -1,14 +1,5 @@
-import { decode, sign, verify } from "hono/jwt";
-import { OrganizationType } from "../controller/auth.controller";
-import { db } from "../config/db";
-import { HttpStatusCode } from "../types/types";
-
-type TokenPaylod = {
-	userId: number;
-	name: string;
-	email: string;
-	organization?: OrganizationType;
-};
+import { sign, verify } from "hono/jwt";
+import db from "../config/db";
 
 class AuthHandler {
 	static async hashPassword(password: string): Promise<string> {
@@ -45,18 +36,17 @@ class AuthHandler {
 
 	static async generateRefreshandAccessToken(userId: number) {
 		try {
-			const user = await db.userTable.findUnique({ where: { id: userId } });
+			const user = await db.user.findUnique({ where: { id: userId } });
 			if (!user) throw Error("user not found! Invalid user Id");
 			const accessTokens = await this.generateAccessToken({
 				userId: user!.id,
 				name: user!.name,
 				email: user!.email,
-				organization: user!.organization as OrganizationType,
 			});
 			const refreshTokens = await this.generateRefreshToken(user!.id);
 
 			// update refresh token in db
-			await db.userTable.update({
+			await db.user.update({
 				where: { id: user!.id },
 				data: { refreshToken: refreshTokens },
 			});

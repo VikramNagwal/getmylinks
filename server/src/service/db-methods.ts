@@ -1,9 +1,19 @@
-import { db } from "../config/db";
+import db from "../config/db";
 import { logger } from "../config/logger";
 
-async function isUserExist(id: number): Promise<boolean> {
+async function isUserIdExist(id: number): Promise<boolean> {
 	try {
-		const doesExist = await db.userTable.findUnique({ where: { id } });
+		const doesExist = await db.user.findUnique({ where: { id } });
+		return doesExist ? true : false;
+	} catch (error) {
+		logger.error(`Error in checking user existence: ${error}`);
+		throw new Error("Unable to check user existence! db operation failed");
+	}
+}
+
+async function isUserEmailExist(email: string): Promise<boolean> {
+	try {
+		const doesExist = await db.user.findFirst({ where: { email } });
 		return doesExist ? true : false;
 	} catch (error) {
 		logger.error(`Error in checking user existence: ${error}`);
@@ -13,7 +23,7 @@ async function isUserExist(id: number): Promise<boolean> {
 
 async function getRecordById(id: number): Promise<any> {
 	try {
-		const record = await db.userTable.findUnique({ where: { id } });
+		const record = await db.user.findUnique({ where: { id } });
 		return record;
 	} catch (error) {
 		logger.error(`Error in getting record by id: ${error}`);
@@ -21,4 +31,4 @@ async function getRecordById(id: number): Promise<any> {
 	}
 }
 
-export { isUserExist, getRecordById };
+export { isUserIdExist, isUserEmailExist, getRecordById };

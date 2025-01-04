@@ -23,11 +23,14 @@ const registerUser = async (c: Context) => {
 		// check if user already exists
 		const User = await db.user.findFirst({ where: { email } });
 		if (User) {
-			return c.json({ 
-				success: false,
-				isOperational: true,
-				message: "User already exists" 
-			}, HttpStatusCode.Conflict);
+			return c.json(
+				{
+					success: false,
+					isOperational: true,
+					message: "User already exists",
+				},
+				HttpStatusCode.Conflict,
+			);
 		}
 		// generate otp
 		const otp = await generateOTP();
@@ -47,15 +50,15 @@ const registerUser = async (c: Context) => {
 				username: String(username.trim().toLowerCase()),
 				name: String(name.trim().toLowerCase()),
 				email: String(email.trim().toLowerCase()),
-				password: hashedPassword
+				password: hashedPassword,
 			},
 		});
 		if (!createdUser) {
 			return c.json(
-				{ 
+				{
 					success: false,
 					isOperational: true,
-					message: "Unable to register user in database" 
+					message: "Unable to register user in database",
 				},
 				HttpStatusCode.InternalServerError,
 			);
@@ -71,7 +74,7 @@ const registerUser = async (c: Context) => {
 				message: "User registered successfully",
 				isEmailSent: false,
 				data: userData,
-				OneTimePassword: otp
+				OneTimePassword: otp,
 			},
 			HttpStatusCode.Ok,
 		);
@@ -188,6 +191,5 @@ const logoutUser = async (c: Context) => {
 		);
 	}
 };
-
 
 export { registerUser, loginUser, logoutUser };

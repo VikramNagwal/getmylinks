@@ -1,7 +1,6 @@
 import { sign, verify } from "hono/jwt";
 import db from "../config/db";
 
-
 class AuthHandler {
 	static async hashPassword(password: string): Promise<string> {
 		const hashedPassword = await Bun.password.hash(password, {

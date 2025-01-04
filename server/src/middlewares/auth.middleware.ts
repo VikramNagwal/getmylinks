@@ -3,7 +3,7 @@ import { Context, Next } from "hono";
 import { verify } from "hono/jwt";
 import { logger } from "../config/logger";
 import { HttpStatusCode } from "../types/types";
-import { db } from "../config/db";
+import db from "../config/db";
 import { AuthHandler } from "../utils/authHandler";
 
 interface Tokens {
@@ -57,7 +57,7 @@ export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
 				Bun.env.REFRESH_TOKEN_SECRET!,
 			);
 
-			const user = await db.userTable.findUnique({
+			const user = await db.user.findUnique({
 				where: { id: Number(decodedRefresh.userId) },
 				select: { id: true, refreshToken: true },
 			});
@@ -72,7 +72,7 @@ export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
 			const newTokens = await AuthHandler.generateRefreshandAccessToken(
 				user.id,
 			);
-			await db.userTable.update({
+			await db.user.update({
 				where: { id: user.id },
 				data: { refreshToken: newTokens.refreshTokens },
 			});

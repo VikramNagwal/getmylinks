@@ -1,5 +1,5 @@
 import type { Context } from "hono";
-import { db } from "../config/db";
+import db from "../config/db";
 import { AuthHandler } from "../utils/authHandler";
 import { HttpStatusCode } from "../types/types";
 import { setCookie, deleteCookie } from "hono/cookie";
@@ -13,62 +13,65 @@ interface RequestData {
 	name: string;
 	email: string;
 	password: string;
-	organization?: OrganizationType;
 }
 
 const registerUser = async (c: Context) => {
 	try {
 		const body = (await c.req.parseBody()) as unknown as RequestData;
-		const { username, name, email, password, organization } = body;
+		const { username, name, email, password } = body;
 
 		// check if user already exists
-		const User = await db.userTable.findFirst({ where: { email } });
-		console.log(User);
-
+		const User = await db.user.findFirst({ where: { email } });
 		if (User) {
-			return c.json({ message: "User already exists" }, 400);
+			return c.json({ 
+				success: false,
+				isOperational: true,
+				message: "User already exists" 
+			}, HttpStatusCode.Conflict);
 		}
 		// generate otp
 		const otp = await generateOTP();
-		logger.info(`OTP generated: ${otp}`);
+
 		// send otp email to user
-		logger.input("sending email to user");
-		const emailId = await sendEmailtoUser(
-			email,
-			"Account Verification OTP",
-			otp,
-		);
+		// const emailId = await sendEmailtoUser(
+		// 	email,
+		// 	"Account Verification OTP",
+		// 	otp,
+		// );
 
 		const hashedPassword = await AuthHandler.hashPassword(password);
 
-		// create user
-		const registerdUser = await db.userTable.create({
+		// create new user
+		const createdUser = await db.user.create({
 			data: {
 				username: String(username.trim().toLowerCase()),
 				name: String(name.trim().toLowerCase()),
 				email: String(email.trim().toLowerCase()),
-				password: hashedPassword,
-				organization:
-					(organization?.toUpperCase() as OrganizationType) || "INDIVIDUAL",
+				password: hashedPassword
 			},
 		});
-		if (!registerdUser) {
+		if (!createdUser) {
 			return c.json(
-				{ message: "Unable to register user in database" },
+				{ 
+					success: false,
+					isOperational: true,
+					message: "Unable to register user in database" 
+				},
 				HttpStatusCode.InternalServerError,
 			);
 		}
 
 		// remove password and refresh token from response
-		const { password: _, refreshToken, ...userData } = registerdUser;
+		const { password: _, ...userData } = createdUser;
 
 		// return response
 		return c.json(
 			{
 				success: true,
 				message: "User registered successfully",
-				isEmailSent: true,
+				isEmailSent: false,
 				data: userData,
+				OneTimePassword: otp
 			},
 			HttpStatusCode.Ok,
 		);
@@ -92,7 +95,7 @@ const loginUser = async (c: Context) => {
 		const { email, password } = body;
 
 		// check if user exists
-		const User = await db.userTable.findUnique({ where: { email: email } });
+		const User = await db.user.findUnique({ where: { email: email } });
 		if (!User) {
 			return c.json(
 				{ message: "Invalid Credentials, User not found!!" },
@@ -161,7 +164,7 @@ const logoutUser = async (c: Context) => {
 		// remove refresh token from database
 		const userId = c.get("user")?.payload.id;
 		console.log(userId);
-		await db.userTable.update({
+		await db.user.update({
 			where: { id: userId },
 			data: { refreshToken: null },
 		});
@@ -185,5 +188,6 @@ const logoutUser = async (c: Context) => {
 		);
 	}
 };
+
 
 export { registerUser, loginUser, logoutUser };

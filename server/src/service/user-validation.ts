@@ -1,4 +1,4 @@
-import { authenticator, totp } from "otplib";
+import { totp } from "otplib";
 import { logger } from "../config/logger";
 import { Resend } from "resend";
 import { EmailTemplate } from "../emails/email-template";

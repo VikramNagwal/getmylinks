@@ -6,7 +6,6 @@ import {
 } from "../controller/auth.controller";
 import { verifyJWT } from "../middlewares/auth.middleware";
 import { HttpStatusCode } from "../types/types";
-import { getRecordById, isUserExist } from "../service/db-methods";
 import { validateOtpToken } from "../service/user-validation";
 
 const authRouter = new Hono();

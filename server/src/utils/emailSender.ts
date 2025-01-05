@@ -3,11 +3,12 @@ import nodemailer from "nodemailer";
 const transporter = nodemailer.createTransport({
 	host: Bun.env.SMTP_HOST,
 	port: Number(Bun.env.SMTP_PORT),
-	secure: Number(Bun.env.SMTP_PORT) === 465, // true for port 465, false for other ports
 	auth: {
-		user: Bun.env.SMTP_USER,
+		user: Bun.env.SMTP_EMAIL,
 		pass: Bun.env.SMTP_PASS,
 	},
+	// logger: true,
+	debug: true,
 });
 
 const otpTemplate = (otp: string) =>
@@ -16,8 +17,8 @@ const otpTemplate = (otp: string) =>
 async function sendMailtoUser(email: string, otp: string) {
 	try {
 		const sentMail = await transporter.sendMail({
-			from: `"OTP Verification" <${Bun.env.SMTP_USER}>`,
-			to: String(email),
+			from: `"OTP Verification" <${Bun.env.SMTP_EMAIL}>`,
+			to: email,
 			subject: "Email Verification",
 			text: "Please verify your email address",
 			html: otpTemplate(otp),

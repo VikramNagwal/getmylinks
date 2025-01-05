@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
 		user: Bun.env.SMTP_EMAIL,
 		pass: Bun.env.SMTP_PASS,
 	},
-	// logger: true,
+	logger: true,
 	debug: true,
 });
 
@@ -16,6 +16,7 @@ const otpTemplate = (otp: string) =>
 
 async function sendMailtoUser(email: string, otp: string) {
 	try {
+		console.log("Sending email to", email);
 		const sentMail = await transporter.sendMail({
 			from: `"OTP Verification" <${Bun.env.SMTP_EMAIL}>`,
 			to: email,

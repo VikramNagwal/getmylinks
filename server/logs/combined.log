@@ -1,0 +1,48 @@
+2025-01-05T15:12:46.871Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-05T15:12:47.887Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-05T15:12:48.896Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-05T15:12:49.914Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-05T15:12:50.926Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-05T15:12:51.932Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-05T15:12:52.947Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-05T15:12:54.066Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-05T15:12:57.057Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-05T15:13:05.182Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-05T15:14:15.945Z [[32minfo[39m]: Email job 1 added to queue
+2025-01-05T15:15:22.896Z [[32minfo[39m]: Email job 2 added to queue
+2025-01-05T15:17:22.826Z [[32minfo[39m]: Email job 3 added to queue
+2025-01-05T15:21:07.586Z [[32minfo[39m]: Email job 4 added to queue
+2025-01-05T16:10:11.510Z [[32minfo[39m]: Processing email job 1 for vikramnagwal@gmail.com
+2025-01-05T16:10:11.527Z [[32minfo[39m]: Processing email job 2 for ranjangogoi@myself.com
+2025-01-05T16:10:11.529Z [[32minfo[39m]: Processing email job 3 for ranjangogoi@myself.com
+2025-01-05T16:10:11.530Z [[32minfo[39m]: Processing email job 4 for hollymolly@myself.com
+2025-01-05T16:10:11.531Z [[32minfo[39m]: Processing email job 5 for test@example.com
+2025-01-05T16:14:44.272Z [[32minfo[39m]: Processing email job 6 for test@example.com
+2025-01-05T16:14:44.276Z [[32minfo[39m]: Processing email job 7 for test@example.com
+2025-01-05T16:28:23.216Z [[32minfo[39m]: Starting to process email job 7 for test@example.com
+2025-01-05T16:28:23.227Z [[32minfo[39m]: Starting to process email job 6 for test@example.com
+2025-01-05T16:28:23.229Z [[32minfo[39m]: Starting to process email job 5 for test@example.com
+2025-01-05T16:28:23.230Z [[32minfo[39m]: Starting to process email job 4 for hollymolly@myself.com
+2025-01-05T16:28:23.231Z [[32minfo[39m]: Starting to process email job 3 for ranjangogoi@myself.com
+2025-01-05T16:28:27.320Z [[32minfo[39m]: Email sent successfully for job 5
+2025-01-05T16:28:27.375Z [[32minfo[39m]: ✓ Email job 5 completed successfully
+2025-01-05T16:28:27.376Z [[32minfo[39m]: Starting to process email job 2 for ranjangogoi@myself.com
+2025-01-05T16:28:27.541Z [[32minfo[39m]: Email sent successfully for job 7
+2025-01-05T16:28:27.543Z [[32minfo[39m]: ✓ Email job 7 completed successfully
+2025-01-05T16:28:27.544Z [[32minfo[39m]: Starting to process email job 1 for vikramnagwal@gmail.com
+2025-01-05T16:28:27.555Z [[32minfo[39m]: Email sent successfully for job 4
+2025-01-05T16:28:27.558Z [[32minfo[39m]: ✓ Email job 4 completed successfully
+2025-01-05T16:28:27.559Z [[32minfo[39m]: Email sent successfully for job 3
+2025-01-05T16:28:27.561Z [[32minfo[39m]: ✓ Email job 3 completed successfully
+2025-01-05T16:28:27.626Z [[32minfo[39m]: Email sent successfully for job 6
+2025-01-05T16:28:27.627Z [[32minfo[39m]: ✓ Email job 6 completed successfully
+2025-01-05T16:28:31.233Z [[32minfo[39m]: Email sent successfully for job 2
+2025-01-05T16:28:31.236Z [[32minfo[39m]: ✓ Email job 2 completed successfully
+2025-01-05T16:28:31.448Z [[32minfo[39m]: Email sent successfully for job 1
+2025-01-05T16:28:31.450Z [[32minfo[39m]: ✓ Email job 1 completed successfully
+2025-01-05T16:32:47.828Z [[32minfo[39m]: Starting to process email job 8 for vinayak@example.com
+2025-01-05T16:32:51.328Z [[32minfo[39m]: Email sent successfully for job 8
+2025-01-05T16:32:51.374Z [[32minfo[39m]: ✓ Email job 8 completed successfully
+2025-01-05T16:34:56.185Z [[32minfo[39m]: Starting to process email job 9 for vasant@example.com
+2025-01-05T16:34:58.871Z [[32minfo[39m]: Email sent successfully for job 9
+2025-01-05T16:34:58.918Z [[32minfo[39m]: ✓ Email job 9 completed successfully

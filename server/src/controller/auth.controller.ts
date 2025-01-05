@@ -100,10 +100,10 @@ const loginUser = async (c: Context) => {
 		const User = await db.user.findUnique({ where: { email: email } });
 		if (!User) {
 			return c.json(
-				{ 
+				{
 					success: false,
 					isOperational: true,
-					message: "Invalid Credentials, User not found!!" 
+					message: "Invalid Credentials, User not found!!",
 				},
 				HttpStatusCode.NotFound,
 			);

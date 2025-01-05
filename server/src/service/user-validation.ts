@@ -1,7 +1,6 @@
 import { totp } from "otplib";
 import { logger } from "../config/logger";
 
-
 const secret = String(Bun.env.OTP_SECRET_KEY);
 
 totp.options = {
@@ -33,6 +32,5 @@ async function validateOtpToken(token: string) {
 		throw new Error("Unable to validate OTP");
 	}
 }
-
 
 export { generateOTP, validateOtpToken };

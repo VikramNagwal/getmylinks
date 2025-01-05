@@ -1,11 +1,10 @@
-import { generateOTP } from "../service/user-validation";
-import { sendMailtoUser } from "../utils/emailSender";
+import { emailQueue } from "../queues/email.queue";
 
-async function sendMail(email: string) {
-	const otp = await generateOTP();
-	console.log(otp);
-	const mailInfo = await sendMailtoUser(email, otp);
-	console.log(mailInfo);
-}
-
-sendMail("vikramnagwal@gmail.com");
+(async () => {
+	const data = await emailQueue.add("send-email", {
+		email: "vasant@example.com",
+		otp: "784595",
+	});
+	console.log("Email job added to the queue");
+	// console.log(data);
+})();

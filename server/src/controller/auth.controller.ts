@@ -4,7 +4,7 @@ import { AuthHandler } from "../utils/authHandler";
 import { HttpStatusCode } from "../types/types";
 import { setCookie, deleteCookie } from "hono/cookie";
 import { generateOTP } from "../service/user-validation";
-import { sendMailtoUser } from "../utils/emailSender";
+import { sendMailtoUser } from "../service/email-service";
 
 export type OrganizationType = "INDIVIDUAL" | "BUISNESS";
 
@@ -27,7 +27,8 @@ const registerUser = async (c: Context) => {
 				{
 					success: false,
 					isOperational: true,
-					message: "User already exists",
+					message: "User already exists! Please try to login",
+					existingUser,
 				},
 				HttpStatusCode.Conflict,
 			);
@@ -57,7 +58,7 @@ const registerUser = async (c: Context) => {
 		}
 
 		// send otp email to user
-		const emailId = await sendMailtoUser(email, otp);
+		const emailId = sendMailtoUser(email, otp);
 
 		// remove password and refresh token from response
 		const { password: _, ...userData } = createdUser;
@@ -69,8 +70,6 @@ const registerUser = async (c: Context) => {
 				message: "User registered successfully",
 				isEmailSent: true,
 				data: userData,
-				OneTimePassword: otp,
-				emailId: emailId,
 			},
 			HttpStatusCode.Ok,
 		);

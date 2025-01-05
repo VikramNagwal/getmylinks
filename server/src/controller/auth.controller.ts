@@ -21,8 +21,8 @@ const registerUser = async (c: Context) => {
 		const { username, name, email, password } = body;
 
 		// check if user already exists
-		const User = await db.user.findFirst({ where: { email } });
-		if (User) {
+		const existingUser = await db.user.findFirst({ where: { email } });
+		if (existingUser) {
 			return c.json(
 				{
 					success: false,
@@ -32,8 +32,9 @@ const registerUser = async (c: Context) => {
 				HttpStatusCode.Conflict,
 			);
 		}
-		// generate otp
+
 		const otp = await generateOTP();
+		const hashedPassword = await AuthHandler.hashPassword(password);
 
 		// send otp email to user
 		// const emailId = await sendEmailtoUser(
@@ -41,8 +42,6 @@ const registerUser = async (c: Context) => {
 		// 	"Account Verification OTP",
 		// 	otp,
 		// );
-
-		const hashedPassword = await AuthHandler.hashPassword(password);
 
 		// create new user
 		const createdUser = await db.user.create({
@@ -97,11 +96,15 @@ const loginUser = async (c: Context) => {
 		const body = (await c.req.parseBody()) as unknown as RequestData;
 		const { email, password } = body;
 
-		// check if user exists
+		// Match user credentials
 		const User = await db.user.findUnique({ where: { email: email } });
 		if (!User) {
 			return c.json(
-				{ message: "Invalid Credentials, User not found!!" },
+				{
+					success: false,
+					isOperational: true,
+					message: "Invalid Credentials, User not found!!",
+				},
 				HttpStatusCode.NotFound,
 			);
 		}
@@ -112,7 +115,7 @@ const loginUser = async (c: Context) => {
 		);
 		if (!isPasswordMatch) {
 			return c.json(
-				{ message: "Invalid credentials, Please check your Credentials" },
+				{ message: "Incorrect password, Please check your Credentials" },
 				HttpStatusCode.Unauthenticated,
 			);
 		}
@@ -161,12 +164,12 @@ const loginUser = async (c: Context) => {
 };
 
 const logoutUser = async (c: Context) => {
-	logger.info("Logging out user");
 	try {
-		deleteCookie(c, "accessTokens");
-		// remove refresh token from database
 		const userId = c.get("user")?.payload.id;
 		console.log(userId);
+
+		deleteCookie(c, "accessTokens");
+		deleteCookie(c, "refreshTokens");
 		await db.user.update({
 			where: { id: userId },
 			data: { refreshToken: null },

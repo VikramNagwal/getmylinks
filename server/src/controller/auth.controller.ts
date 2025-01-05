@@ -3,8 +3,8 @@ import db from "../config/db";
 import { AuthHandler } from "../utils/authHandler";
 import { HttpStatusCode } from "../types/types";
 import { setCookie, deleteCookie } from "hono/cookie";
-import { logger } from "../config/logger";
-import { generateOTP, sendEmailtoUser } from "../service/user-validation";
+import { generateOTP } from "../service/user-validation";
+import { sendMailtoUser } from "../utils/emailSender";
 
 export type OrganizationType = "INDIVIDUAL" | "BUISNESS";
 
@@ -36,13 +36,6 @@ const registerUser = async (c: Context) => {
 		const otp = await generateOTP();
 		const hashedPassword = await AuthHandler.hashPassword(password);
 
-		// send otp email to user
-		// const emailId = await sendEmailtoUser(
-		// 	email,
-		// 	"Account Verification OTP",
-		// 	otp,
-		// );
-
 		// create new user
 		const createdUser = await db.user.create({
 			data: {
@@ -63,6 +56,9 @@ const registerUser = async (c: Context) => {
 			);
 		}
 
+		// send otp email to user
+		const emailId = await sendMailtoUser(email, otp);
+
 		// remove password and refresh token from response
 		const { password: _, ...userData } = createdUser;
 
@@ -71,9 +67,10 @@ const registerUser = async (c: Context) => {
 			{
 				success: true,
 				message: "User registered successfully",
-				isEmailSent: false,
+				isEmailSent: true,
 				data: userData,
 				OneTimePassword: otp,
+				emailId: emailId,
 			},
 			HttpStatusCode.Ok,
 		);

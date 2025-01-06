@@ -46,3 +46,38 @@
 2025-01-05T16:34:56.185Z [[32minfo[39m]: Starting to process email job 9 for vasant@example.com
 2025-01-05T16:34:58.871Z [[32minfo[39m]: Email sent successfully for job 9
 2025-01-05T16:34:58.918Z [[32minfo[39m]: ✓ Email job 9 completed successfully
+2025-01-06T06:05:24.511Z [[32minfo[39m]: Starting to process email job 10 for ranjangogoi@example.com
+2025-01-06T06:05:32.220Z [[32minfo[39m]: Email sent successfully for job 10
+2025-01-06T06:05:32.280Z [[32minfo[39m]: ✓ Email job 10 completed successfully
+2025-01-06T06:07:01.322Z [[32minfo[39m]: Starting to process email job 11 for ramananna@example.com
+2025-01-06T06:07:07.135Z [[32minfo[39m]: Email sent successfully for job 11
+2025-01-06T06:07:07.137Z [[32minfo[39m]: ✓ Email job 11 completed successfully
+2025-01-06T06:26:41.398Z [[32minfo[39m]: Starting to process email job 12 for cunarilala@example.com
+2025-01-06T06:31:15.639Z [[32minfo[39m]: Starting to process email job 13 for cunarilala@example.com
+2025-01-06T06:31:15.649Z [[32minfo[39m]: Starting to process email job 14 for chamanbahadur@example.com
+2025-01-06T06:31:15.650Z [[32minfo[39m]: Starting to process email job 15 for chamanbahadur@example.com
+2025-01-06T06:31:18.569Z [[32minfo[39m]: Email sent successfully for job 15
+2025-01-06T06:31:18.623Z [[32minfo[39m]: ✓ Email job 15 completed successfully
+2025-01-06T06:31:20.752Z [[32minfo[39m]: Email sent successfully for job 14
+2025-01-06T06:31:20.755Z [[32minfo[39m]: ✓ Email job 14 completed successfully
+2025-01-06T06:31:20.934Z [[32minfo[39m]: Email sent successfully for job 13
+2025-01-06T06:31:20.937Z [[32minfo[39m]: ✓ Email job 13 completed successfully
+2025-01-06T06:31:45.647Z [[32minfo[39m]: Starting to process email job 12 for cunarilala@example.com
+2025-01-06T06:31:51.071Z [[32minfo[39m]: Email sent successfully for job 12
+2025-01-06T06:31:51.073Z [[32minfo[39m]: ✓ Email job 12 completed successfully
+2025-01-06T06:53:59.147Z [[32minfo[39m]: Starting to process email job 16 for dupaal@example.com
+2025-01-06T06:55:08.092Z [[32minfo[39m]: Starting to process email job 17 for dupaal@example.com
+2025-01-06T06:56:07.119Z [[32minfo[39m]: Starting to process email job 18 for dupaal@example.com
+2025-01-06T06:56:12.846Z [[32minfo[39m]: Email sent successfully for job 18
+2025-01-06T06:56:12.894Z [[32minfo[39m]: ✓ Email job 18 completed successfully
+2025-01-06T06:56:28.204Z [[32minfo[39m]: Starting to process email job 17 for dupaal@example.com
+2025-01-06T06:56:34.049Z [[32minfo[39m]: Email sent successfully for job 17
+2025-01-06T06:56:34.051Z [[32minfo[39m]: ✓ Email job 17 completed successfully
+2025-01-06T06:56:58.222Z [[32minfo[39m]: Starting to process email job 16 for dupaal@example.com
+2025-01-06T06:57:03.493Z [[32minfo[39m]: Email sent successfully for job 16
+2025-01-06T06:57:03.500Z [[32minfo[39m]: ✓ Email job 16 completed successfully
+2025-01-06T07:30:23.646Z [[32minfo[39m]: Starting to process email job 19 for kendriklamar@myself.me
+2025-01-06T07:30:31.009Z [[32minfo[39m]: Email sent successfully for job 19
+2025-01-06T07:30:31.063Z [[32minfo[39m]: ✓ Email job 19 completed successfully
+2025-01-06T07:32:45.206Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-06T07:34:57.042Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP

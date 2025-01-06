@@ -19,7 +19,7 @@ const emailWorker = new Worker(
 				response: result.response,
 			});
 
-			return result.messageId; // Return messageId for tracking
+			return result.messageId;
 		} catch (error) {
 			logger.error(`Failed to send email for job ${job.id}:`, {
 				error,

@@ -9,7 +9,6 @@ export const emailQueue = new Queue<EmailJobData>(QUEUE_NAME, {
 });
 
 export const addEmailtoQueue = async ({ email, otp }: EmailJobData) => {
-	console.log("picked by queue");
 	try {
 		const job = await emailQueue.add("send-verification-mail", {
 			email,

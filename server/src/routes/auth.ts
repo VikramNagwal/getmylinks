@@ -24,20 +24,21 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 
 		if (!clientOtp || !uid) {
 			return c.json(
-				ApiError.badRequest("Invalid otp token, please try again", {clientOtp, uid}),
+				ApiError.badRequest("Invalid otp token, please try again", {
+					clientOtp,
+					uid,
+				}),
 			);
 		}
 
 		const isValid = await validateOtpToken(token);
 		if (!isValid) {
-			return c.json(
-				ApiError.badRequest("Invalid otp token, please try again"),
-			);
+			return c.json(ApiError.badRequest("Invalid otp token, please try again"));
 		}
 
 		const user = await db.user.findUnique({ where: { verificationUid: uid } });
 		if (!user) {
-			return c.json( ApiError.notFound("User does not exist! cant verify otp"));
+			return c.json(ApiError.notFound("User does not exist! cant verify otp"));
 		}
 
 		await db.user.update({
@@ -54,7 +55,9 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 			HttpStatusCode.Ok,
 		);
 	} catch (error) {
-		return c.json(new ApiError("An error occurred while verifying otp", 500, true, error));
+		return c.json(
+			new ApiError("An error occurred while verifying otp", 500, true, error),
+		);
 	}
 });
 

@@ -32,7 +32,7 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 			);
 		}
 
-		const isValid = true;
+		const isValid = await validateOtpToken(token);
 		if (!isValid) {
 			return c.json(
 				{

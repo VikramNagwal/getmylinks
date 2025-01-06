@@ -58,7 +58,7 @@ const registerUser = async (c: Context) => {
 			);
 		}
 
-		await emailQueue.add("sendEmail", {email, otp});
+		await emailQueue.add("sendEmail", { email, otp });
 		const { password: _, verificationUid, ...userData } = createdUser;
 
 		return c.json(

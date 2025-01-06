@@ -1,4 +1,8 @@
-import { generateOTP, generateUID, validateOtpToken } from "../service/user-validation";
+import {
+	generateOTP,
+	generateUID,
+	validateOtpToken,
+} from "../service/user-validation";
 // (async () => {
 // 	const otp = await generateOTP();
 // 	console.log(otp);
@@ -6,4 +10,6 @@ import { generateOTP, generateUID, validateOtpToken } from "../service/user-vali
 // 	console.log(isValid);
 // })();
 
-generateUID().then((uid) => console.log(uid)).catch((error) => console.error(error));
+generateUID()
+	.then((uid) => console.log(uid))
+	.catch((error) => console.error(error));

@@ -23,25 +23,33 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 
 		if (!clientOtp || !uid) {
 			return c.json(
-				{ message: "please provide credentials to proceed", clientOtp, isValid: false },
-				HttpStatusCode.BadRequest,
-			);
-		}
-		
-		const isValid = true
-		if (!isValid) {
-			return c.json(
-				{ message: "otp verification failed! Invalid code", clientOtp, isValid: isValid },
+				{
+					message: "please provide credentials to proceed",
+					clientOtp,
+					isValid: false,
+				},
 				HttpStatusCode.BadRequest,
 			);
 		}
 
-		const user = await db.user.findUnique({ where: { verificationUid: uid}})
+		const isValid = true;
+		if (!isValid) {
+			return c.json(
+				{
+					message: "otp verification failed! Invalid code",
+					clientOtp,
+					isValid: isValid,
+				},
+				HttpStatusCode.BadRequest,
+			);
+		}
+
+		const user = await db.user.findUnique({ where: { verificationUid: uid } });
 		if (!user) {
 			return c.json(
-				{ 
+				{
 					success: false,
-					message: "User not found" 
+					message: "User not found",
 				},
 				HttpStatusCode.NotFound,
 			);
@@ -52,9 +60,11 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 			data: { isVerified: true },
 		});
 		return c.json(
-			{ 
+			{
 				success: true,
-				message: "otp verified", clientOtp, isValid: isValid 
+				message: "otp verified",
+				clientOtp,
+				isValid: isValid,
 			},
 			HttpStatusCode.Ok,
 		);

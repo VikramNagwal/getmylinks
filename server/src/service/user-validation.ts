@@ -35,7 +35,7 @@ async function validateOtpToken(token: string) {
 
 async function generateUID() {
 	try {
-		const uid = randomUUIDv7("hex")
+		const uid = randomUUIDv7("hex");
 		return uid;
 	} catch (error) {
 		throw new Error("Unable to generate UID");

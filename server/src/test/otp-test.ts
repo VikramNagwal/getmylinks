@@ -7,8 +7,8 @@ import {
 	const otp = await generateOTP();
 	console.log(otp);
 	setTimeout(async () => {
-	const isValid = await validateOtpToken(otp);
-	console.log(isValid);
+		const isValid = await validateOtpToken(otp);
+		console.log(isValid);
 	}, 15000);
 })();
 

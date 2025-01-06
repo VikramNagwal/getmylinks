@@ -3,8 +3,9 @@ import db from "../config/db";
 import { AuthHandler } from "../utils/authHandler";
 import { HttpStatusCode } from "../types/types";
 import { setCookie, deleteCookie } from "hono/cookie";
-import { generateOTP } from "../service/user-validation";
+import { generateOTP, generateUID } from "../service/user-validation";
 import { sendMailtoUser } from "../service/email-service";
+import { emailQueue } from "../queues/email.queue";
 
 export type OrganizationType = "INDIVIDUAL" | "BUISNESS";
 
@@ -20,7 +21,6 @@ const registerUser = async (c: Context) => {
 		const body = (await c.req.parseBody()) as unknown as RequestData;
 		const { username, name, email, password } = body;
 
-		// check if user already exists
 		const existingUser = await db.user.findFirst({ where: { email } });
 		if (existingUser) {
 			return c.json(
@@ -35,15 +35,16 @@ const registerUser = async (c: Context) => {
 		}
 
 		const otp = await generateOTP();
+		const uid = await generateUID();
 		const hashedPassword = await AuthHandler.hashPassword(password);
 
-		// create new user
 		const createdUser = await db.user.create({
 			data: {
 				username: String(username.trim().toLowerCase()),
 				name: String(name.trim().toLowerCase()),
 				email: String(email.trim().toLowerCase()),
 				password: hashedPassword,
+				verificationUid: uid,
 			},
 		});
 		if (!createdUser) {
@@ -57,19 +58,16 @@ const registerUser = async (c: Context) => {
 			);
 		}
 
-		// send otp email to user
-		const emailId = sendMailtoUser(email, otp);
+		await emailQueue.add("sendEmail", {email, otp});
+		const { password: _, verificationUid, ...userData } = createdUser;
 
-		// remove password and refresh token from response
-		const { password: _, ...userData } = createdUser;
-
-		// return response
 		return c.json(
 			{
 				success: true,
 				message: "User registered successfully",
 				isEmailSent: true,
 				data: userData,
+				otp,
 			},
 			HttpStatusCode.Ok,
 		);

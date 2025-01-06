@@ -1,10 +1,11 @@
 import { totp } from "otplib";
 import { logger } from "../config/logger";
+import { randomUUIDv7 } from "bun";
 
 const secret = String(Bun.env.OTP_SECRET_KEY);
 
 totp.options = {
-	step: 120,
+	step: 660,
 };
 
 async function generateOTP() {
@@ -20,7 +21,6 @@ async function generateOTP() {
 // Validate OTP Token
 async function validateOtpToken(token: string) {
 	try {
-		console.log(token, typeof token);
 		const isValid = totp.verify({ token, secret });
 		if (!isValid) throw new Error("Invalid OTP");
 		return isValid;
@@ -33,4 +33,12 @@ async function validateOtpToken(token: string) {
 	}
 }
 
-export { generateOTP, validateOtpToken };
+async function generateUID() {
+	try {
+		const uid = randomUUIDv7("hex")
+		return uid;
+	} catch (error) {
+		throw new Error("Unable to generate UID");
+	}
+}
+export { generateOTP, validateOtpToken, generateUID };

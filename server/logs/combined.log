@@ -81,3 +81,14 @@
 2025-01-06T07:30:31.063Z [[32minfo[39m]: ✓ Email job 19 completed successfully
 2025-01-06T07:32:45.206Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
 2025-01-06T07:34:57.042Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-06T14:45:41.002Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-06T14:45:49.522Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-06T14:46:00.109Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-06T14:49:41.073Z [[32minfo[39m]: Starting to process email job 20 for jacksparrow@myself.me
+2025-01-06T14:49:47.881Z [[32minfo[39m]: Email sent successfully for job 20
+2025-01-06T14:49:47.936Z [[32minfo[39m]: ✓ Email job 20 completed successfully
+2025-01-06T15:20:51.245Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-06T15:22:22.357Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-06T15:22:59.370Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-06T15:23:48.369Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-06T15:32:02.805Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP

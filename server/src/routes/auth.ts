@@ -8,6 +8,7 @@ import { verifyJWT } from "../middlewares/auth.middleware";
 import { HttpStatusCode } from "../types/types";
 import { validateOtpToken } from "../service/user-validation";
 import db from "../config/db";
+import { ApiError } from "../utils/error-handler";
 
 const authRouter = new Hono();
 
@@ -23,36 +24,21 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 
 		if (!clientOtp || !uid) {
 			return c.json(
-				{
-					message: "please provide credentials to proceed",
+				ApiError.badRequest("Invalid otp token, please try again", {
 					clientOtp,
-					isValid: false,
-				},
-				HttpStatusCode.BadRequest,
+					uid,
+				}),
 			);
 		}
 
-		const isValid = true;
+		const isValid = await validateOtpToken(token);
 		if (!isValid) {
-			return c.json(
-				{
-					message: "otp verification failed! Invalid code",
-					clientOtp,
-					isValid: isValid,
-				},
-				HttpStatusCode.BadRequest,
-			);
+			return c.json(ApiError.badRequest("Invalid otp token, please try again"));
 		}
 
 		const user = await db.user.findUnique({ where: { verificationUid: uid } });
 		if (!user) {
-			return c.json(
-				{
-					success: false,
-					message: "User not found",
-				},
-				HttpStatusCode.NotFound,
-			);
+			return c.json(ApiError.notFound("User does not exist! cant verify otp"));
 		}
 
 		await db.user.update({
@@ -70,14 +56,7 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 		);
 	} catch (error) {
 		return c.json(
-			{
-				success: false,
-				isOperational: true,
-				message: "Unable to verify Email, Internal server error",
-				errorMessage: (error as any)?.message,
-				error,
-			},
-			HttpStatusCode.InternalServerError,
+			new ApiError("An error occurred while verifying otp", 500, true, error),
 		);
 	}
 });

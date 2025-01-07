@@ -14,6 +14,7 @@
     "@types/react": "^19.0.2",
     "bullmq": "^5.34.6",
     "hono": "^4.6.13",
+    "ioredis": "^5.4.2",
     "nodemailer": "^6.9.16",
     "otplib": "^12.0.1",
     "prisma": "^6.1.0",

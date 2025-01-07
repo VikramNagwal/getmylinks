@@ -1,9 +1,8 @@
-import { totp } from "otplib";
+import { authenticator, totp } from "otplib";
 import { logger } from "../config/logger";
 import { randomUUIDv7 } from "bun";
 
-const secret = String(Bun.env.OTP_SECRET_KEY);
-
+const secret = authenticator.generateSecret(4);
 totp.options = {
 	step: 660,
 };

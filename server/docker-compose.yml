@@ -1,0 +1,23 @@
+services:
+  db:
+    image: paradedb/paradedb:latest
+    environment:
+      - POSTGRES_USER=oxer-analytics
+      - POSTGRES_PASSWORD=oxeranalyticsp@123
+      - POSTGRES_DB=oxer-analytics-db
+    ports:
+      - '5434:5432'   
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    command: 
+      - "postgres"
+      - "-c"
+      - "shared_preload_libraries=pg_arrow"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U linkuser -d linkshortener"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+volumes:
+  postgres_data:

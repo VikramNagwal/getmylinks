@@ -92,3 +92,9 @@
 2025-01-06T15:22:59.370Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
 2025-01-06T15:23:48.369Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
 2025-01-06T15:32:02.805Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-07T07:42:09.728Z [[32minfo[39m]: Starting to process email job 21 for shabnamsharma@myself.me
+2025-01-07T07:42:15.910Z [[32minfo[39m]: Email sent successfully for job 21
+2025-01-07T07:42:15.980Z [[32minfo[39m]: ✓ Email job 21 completed successfully
+2025-01-07T07:45:40.481Z [[32minfo[39m]: Starting to process email job 22 for ranaranjeet678@myself.me
+2025-01-07T07:45:46.576Z [[32minfo[39m]: Email sent successfully for job 22
+2025-01-07T07:45:46.579Z [[32minfo[39m]: ✓ Email job 22 completed successfully

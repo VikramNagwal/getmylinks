@@ -1,9 +1,9 @@
-import { totp } from "otplib";
+import { authenticator, totp } from "otplib";
 import { logger } from "../config/logger";
 import { randomUUIDv7 } from "bun";
 
-const secret = String(Bun.env.OTP_SECRET_KEY);
 
+const secret = authenticator.generateSecret(4);
 totp.options = {
 	step: 660,
 };
@@ -19,7 +19,7 @@ async function generateOTP() {
 }
 
 // Validate OTP Token
-async function validateOtpToken(token: string) {
+async function validateOtpToken(token: string) { 
 	try {
 		const isValid = totp.verify({ token, secret });
 		if (!isValid) throw new Error("Invalid OTP");

@@ -1,15 +1,18 @@
 import {
 	generateOTP,
-	generateUID,
 	validateOtpToken,
 } from "../service/user-validation";
+
+let val = 4;
+
+
 (async () => {
 	const otp = await generateOTP();
 	console.log(otp);
 	setTimeout(async () => {
 		const isValid = await validateOtpToken(otp);
 		console.log(isValid);
-	}, 15000);
+	}, 2000);
 })();
 
 // generateUID()

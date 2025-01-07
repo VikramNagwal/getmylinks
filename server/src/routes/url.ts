@@ -1,9 +1,9 @@
 import { Context, Hono } from "hono";
 
-const urlRouter = new Hono()
+const urlRouter = new Hono();
 
 urlRouter.get("/shorten", (c: Context) => {
-    return c.json({ message: "Shorten URL" })
-})
+	return c.json({ message: "Shorten URL" });
+});
 
-export { urlRouter }
+export { urlRouter };

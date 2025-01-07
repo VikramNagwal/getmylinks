@@ -14,14 +14,51 @@ datasource db {
 }
 
 model User {
-  id              Int      @id @default(autoincrement())
-  username        String   @unique
+  id              Int          @id @default(autoincrement())
+  username        String       @unique
   name            String?
-  email           String   @unique
+  email           String       @unique
   password        String
-  isVerified      Boolean  @default(false)
-  verificationUid String?  @unique
+  bio             String?
+  urls            UrlMapping[]
+  isVerified      Boolean      @default(false)
+  verificationUid String?      @unique
   refreshToken    String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@map("users")
+}
+
+model UrlMapping {
+  id          Int          @id @default(autoincrement())
+  shortUrl    String       @unique
+  longUrl     String
+  isActive    Boolean      @default(true)
+  createdById Int?
+  createdBy   User?        @relation(fields: [createdById], references: [id])
+  createdAt   DateTime     @default(now())
+  expiresAt   DateTime?
+  updatedAt   DateTime     @updatedAt
+  clickEvents ClickEvent[]
+
+  @@map("url_mappings")
+}
+
+model ClickEvent {
+  id          Int        @id @default(autoincrement())
+  shortUrl    String     @db.VarChar(10)
+  clickedAt   DateTime   @default(now())
+  userAgent   String?
+  ipAddress   String?
+  referer     String?
+  countryCode String?    @db.VarChar(2)
+  deviceType  String?    @db.VarChar(20)
+  browser     String?    @db.VarChar(50)
+  os          String?    @db.VarChar(50)
+  urlMapping  UrlMapping @relation(fields: [shortUrl], references: [shortUrl])
+
+  @@index([shortUrl])
+  @@index([clickedAt])
+  @@map("click_events")
 }

@@ -1,10 +1,6 @@
-import {
-	generateOTP,
-	validateOtpToken,
-} from "../service/user-validation";
+import { generateOTP, validateOtpToken } from "../service/user-validation";
 
 let val = 4;
-
 
 (async () => {
 	const otp = await generateOTP();

@@ -32,19 +32,12 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 		}
 
 		const isValid = await validateOtpToken(token);
-		if (!isValid) {
-			return c.json(ApiError.badRequest("Invalid otp token, please try again"));
-		}
-
-		const user = await db.user.findUnique({ where: { verificationUid: uid } });
-		if (!user) {
-			return c.json(ApiError.notFound("User does not exist! cant verify otp"));
-		}
-
+		await db.user.findUnique({ where: { verificationUid: uid } });
 		await db.user.update({
 			where: { verificationUid: uid },
 			data: { isVerified: true },
 		});
+
 		return c.json(
 			{
 				success: true,

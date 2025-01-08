@@ -6,7 +6,7 @@ async function createShortLink(url: string, custom?: string): Promise<string> {
 	try {
 		const shortCode = custom || nanoid(8);
 		const shortUrl = `${Bun.env.FRONTEND_URL}/${shortCode}`;
-		console.log('service')
+		console.log("service");
 
 		await db.urlMapping.create({
 			data: {

@@ -5,6 +5,6 @@ import { urlRouter } from "./url";
 const appRouter = new Hono();
 
 appRouter.route("/auth", authRouter);
-appRouter.route("/url",  urlRouter);
+appRouter.route("/url", urlRouter);
 
 export { appRouter };

@@ -13,27 +13,31 @@ urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
 	try {
 		const body = await c.req.parseBody();
 		const { url, title } = LinkSchema.parse(body);
-		console.log('url', url, title)
+		console.log("url", url, title);
 
 		const shortUrl = await createShortLink(url, title);
 
-		return c.json({
-			success: true,
-			message: "created shorted url",
-			data: {
-				shortUrl
-			}
-
-		}, HttpStatusCode.Created)
-		
+		return c.json(
+			{
+				success: true,
+				message: "created shorted url",
+				data: {
+					shortUrl,
+				},
+			},
+			HttpStatusCode.Created,
+		);
 	} catch (error) {
 		logger.error("Error while shortening url", error);
-		return c.json({
-			success: false,
-			isOperationl: true,
-			message: "Error while shortening url",
-			error,
-		}, HttpStatusCode.InternalServerError)
+		return c.json(
+			{
+				success: false,
+				isOperationl: true,
+				message: "Error while shortening url",
+				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
 	}
 });
 

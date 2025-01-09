@@ -49,6 +49,7 @@ model ClickEvent {
   id          Int        @id @default(autoincrement())
   shortUrl    String     @db.VarChar(10)
   clickedAt   DateTime   @default(now())
+  views       Int        @default(1)
   userAgent   String?
   ipAddress   String?
   referer     String?

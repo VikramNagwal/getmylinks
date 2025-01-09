@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import db from "../config/db";
-import { ApiError } from "../utils/error-handler";
+
 
 async function createShortLink(url: string, custom?: string): Promise<string> {
 	try {

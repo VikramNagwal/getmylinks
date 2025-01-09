@@ -9,7 +9,7 @@ import { verifyJWT } from "../middlewares/auth.middleware";
 
 const urlRouter = new Hono();
 
-urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
+urlRouter.post("/shorten", async (c: Context) => {
 	try {
 		const body = await c.req.parseBody();
 		const { url, title } = LinkSchema.parse(body);

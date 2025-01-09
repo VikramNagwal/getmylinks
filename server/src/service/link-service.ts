@@ -1,7 +1,6 @@
 import { nanoid } from "nanoid";
 import db from "../config/db";
 
-
 async function createShortLink(url: string, custom?: string): Promise<string> {
 	try {
 		const shortCode = custom || nanoid(8);

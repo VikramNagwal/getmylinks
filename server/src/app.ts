@@ -23,39 +23,41 @@ app.route("/api/v1/", appRouter);
 app.route("/admin/queues", dashboardApp);
 app.get("/", (c) => c.text("hey from the server!"));
 app.get("/:shorturl", async (c: Context) => {
-    try {
-        const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));
-        
-        const response = await db.urlMapping.findUnique({
-            where: {
-                shortUrl
-            },
-            select: {
-                longUrl: true,
-                isActive: true,
-                expiresAt: true,
-            }
-        })
+	try {
+		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));
 
-        if (!response) {
-            return c.json({
-                success: false,
-                message: "short url not found! Please check again",
+		const response = await db.urlMapping.findUnique({
+			where: {
+				shortUrl,
+			},
+			select: {
+				longUrl: true,
+				isActive: true,
+				expiresAt: true,
+			},
+		});
 
-            }, HttpStatusCode.NotFound)
-        }
-        return c.redirect(response?.longUrl)
-    } catch (error) {
-        return c.json(
-            {
-                success: false,
-                isOperationl: true,
-                message: "Error while redirecting to short url",
-                error,
-            },
-            HttpStatusCode.InternalServerError,
-        );
-    }
-})
+		if (!response) {
+			return c.json(
+				{
+					success: false,
+					message: "short url not found! Please check again",
+				},
+				HttpStatusCode.NotFound,
+			);
+		}
+		return c.redirect(response?.longUrl);
+	} catch (error) {
+		return c.json(
+			{
+				success: false,
+				isOperationl: true,
+				message: "Error while redirecting to short url",
+				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
+	}
+});
 
 export default app;

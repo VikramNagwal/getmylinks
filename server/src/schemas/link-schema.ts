@@ -5,4 +5,4 @@ export const LinkSchema = z.object({
 	url: z.string().url("required: please provide a valid url"),
 });
 
-export const ShortUrlSchema = z.string()
+export const ShortUrlSchema = z.string();

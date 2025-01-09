@@ -41,4 +41,6 @@ urlRouter.post("/shorten", async (c: Context) => {
 	}
 });
 
+urlRouter.get("/:shortUrl/analytics", async (c: Context) => {});
+
 export { urlRouter };

@@ -34,22 +34,22 @@ model UrlMapping {
   id          Int          @id @default(autoincrement())
   shortUrl    String       @unique
   longUrl     String
+  totalViews  Int          @default(0)
   isActive    Boolean      @default(true)
   createdById Int?
   createdBy   User?        @relation(fields: [createdById], references: [id])
   createdAt   DateTime     @default(now())
   expiresAt   DateTime?
   updatedAt   DateTime     @updatedAt
-  clickEvents ClickEvent[]
+  clickEvents Analytics[]
 
   @@map("url_mappings")
 }
 
-model ClickEvent {
+model Analytics {
   id          Int        @id @default(autoincrement())
-  shortUrl    String     @db.VarChar(10)
+  urlId       Int
   clickedAt   DateTime   @default(now())
-  views       Int        @default(1)
   userAgent   String?
   ipAddress   String?
   referer     String?
@@ -57,9 +57,9 @@ model ClickEvent {
   deviceType  String?    @db.VarChar(20)
   browser     String?    @db.VarChar(50)
   os          String?    @db.VarChar(50)
-  urlMapping  UrlMapping @relation(fields: [shortUrl], references: [shortUrl])
+  urlMapping  UrlMapping @relation(fields: [urlId], references: [id])
 
-  @@index([shortUrl])
+  @@index([urlId])
   @@index([clickedAt])
   @@map("click_events")
 }

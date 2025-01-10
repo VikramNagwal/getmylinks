@@ -8,7 +8,8 @@ async function main() {
       username: 'thegreatkhali',
       name: 'milkha singh',
       email: 'singhmilkha@prisma.io',
-      password: 'yetibiggint'
+      password: 'yetibiggint',
+      bio: "this is test user data"
     },
   })
 

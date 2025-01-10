@@ -14,12 +14,13 @@ interface RequestData {
 	name: string;
 	email: string;
 	password: string;
+	bio?: string;
 }
 
 const registerUser = async (c: Context) => {
 	try {
 		const body = (await c.req.parseBody()) as unknown as RequestData;
-		const { username, name, email, password } = body;
+		const { username, name, email, password, bio } = body;
 
 		const existingUser = await db.user.findFirst({ where: { email } });
 		if (existingUser) {
@@ -44,6 +45,7 @@ const registerUser = async (c: Context) => {
 				name: String(name.trim().toLowerCase()),
 				email: String(email.trim().toLowerCase()),
 				password: hashedPassword,
+				bio,
 				verificationUid: uid,
 			},
 		});

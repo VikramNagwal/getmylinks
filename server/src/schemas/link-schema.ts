@@ -6,5 +6,5 @@ export const LinkSchema = z.object({
 });
 
 export const ShortUrlSchema = z.string().regex(/^\S+$/, {
-  message: "The string must not contain spaces.",
+	message: "The string must not contain spaces.",
 });

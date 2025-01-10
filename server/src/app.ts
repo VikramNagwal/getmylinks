@@ -14,16 +14,18 @@ import { HttpStatusCode } from "./types/types";
 import { ShortUrlSchema } from "./schemas/link-schema";
 import { verifyJWT } from "./middlewares/auth.middleware";
 import { getUserDetails } from "./service/link-service";
+import { security } from "./middlewares/security.middleware";
 
 // middlewares
 app.use(logger());
+app.use("*", security);
 app.use("/api/*", cors());
 app.use("/api/v1", etag({ weak: true }));
 
 // routes
 app.route("/api/v1/", appRouter);
 app.route("/admin/queues", dashboardApp);
-app.get("/", (c) => c.text("hey from the server!"));
+app.get("/", (c: Context) => c.text("Welcome to the URL shortener service"));
 
 app.get("/:shorturl", verifyJWT, async (c: Context) => {
 	try {

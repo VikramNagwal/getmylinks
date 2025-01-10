@@ -1339,3 +1339,14 @@
 2025-01-10T10:25:35.221Z [[32minfo[39m]: Starting to process email job 27 for vishalsharma78@gmail.com,
 2025-01-10T10:27:00.460Z [[32minfo[39m]: Starting to process email job 28 for arihantmishra238@gmail.com,
 2025-01-10T10:29:08.186Z [[31merror[39m]: Error while shortening url Error while creating short link
+2025-01-10T13:43:03.547Z [[32minfo[39m]: Starting to process email job 28 for arihantmishra238@gmail.com,
+2025-01-10T13:43:03.554Z [[32minfo[39m]: Starting to process email job 27 for vishalsharma78@gmail.com,
+2025-01-10T13:43:08.938Z [[32minfo[39m]: Email sent successfully for job 27
+2025-01-10T13:43:08.991Z [[32minfo[39m]: ✓ Email job 27 completed successfully
+2025-01-10T13:43:09.168Z [[32minfo[39m]: Email sent successfully for job 28
+2025-01-10T13:43:09.170Z [[32minfo[39m]: ✓ Email job 28 completed successfully
+2025-01-10T13:52:46.687Z [[32minfo[39m]: ERROR
+2025-01-10T13:54:24.633Z [[32minfo[39m]: ERROR
+2025-01-10T13:54:49.893Z [[32minfo[39m]: ALLOW
+2025-01-10T13:55:10.284Z [[32minfo[39m]: ALLOW
+2025-01-10T13:55:35.011Z [[32minfo[39m]: ALLOW

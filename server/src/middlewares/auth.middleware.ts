@@ -11,11 +11,6 @@ interface Tokens {
 	refreshTokens: string;
 }
 
-interface DecodedRefresh {
-	userId: number;
-	exp: number;
-}
-
 const extractTokens = (cookieHeader?: string): Tokens | null => {
 	if (!cookieHeader) return null;
 

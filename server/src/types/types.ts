@@ -25,6 +25,7 @@ export enum HttpStatusCode {
 	Forbidden = 403,
 	NotFound = 404,
 	Conflict = 409,
+	TooManyRequests = 429,
 	InternalServerError = 500,
 }
 

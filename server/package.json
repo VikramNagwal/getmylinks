@@ -7,6 +7,7 @@
     "format": "biome format --write src/**/*.ts"
   },
   "dependencies": {
+    "@arcjet/bun": "^1.0.0-alpha.34",
     "@bull-board/api": "^6.6.1",
     "@bull-board/hono": "^6.6.1",
     "@prisma/client": "^6.1.0",

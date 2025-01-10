@@ -16,10 +16,9 @@ import { verifyJWT } from "./middlewares/auth.middleware";
 import { getUserDetails } from "./service/link-service";
 import { security } from "./middlewares/security.middleware";
 
-
 // middlewares
 app.use(logger());
-app.use('*', security);
+app.use("*", security);
 app.use("/api/*", cors());
 app.use("/api/v1", etag({ weak: true }));
 

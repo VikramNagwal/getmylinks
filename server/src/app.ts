@@ -15,7 +15,6 @@ import { ShortUrlSchema } from "./schemas/link-schema";
 import { verifyJWT } from "./middlewares/auth.middleware";
 import { getUserDetails } from "./service/link-service";
 
-
 // middlewares
 app.use(logger());
 app.use("/api/*", cors());
@@ -28,8 +27,8 @@ app.get("/", (c) => c.text("hey from the server!"));
 
 app.get("/:shorturl", verifyJWT, async (c: Context) => {
 	try {
-		const shortUrl = ShortUrlSchema.parse(c.req.param('shorturl'));
-		const userAgentInfo = getUserDetails(c.req)
+		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));
+		const userAgentInfo = getUserDetails(c.req);
 
 		const response = await db.urlMapping.findUnique({
 			where: { shortUrl },
@@ -42,31 +41,40 @@ app.get("/:shorturl", verifyJWT, async (c: Context) => {
 		});
 
 		if (!response) {
-			return c.json({message: "Short url not found"}, HttpStatusCode.NotFound);
+			return c.json(
+				{ message: "Short url not found" },
+				HttpStatusCode.NotFound,
+			);
 		}
 
 		if (!response.isActive) {
-			return c.json({message: "Short url is not active"}, HttpStatusCode.NoContent);
+			return c.json(
+				{ message: "Short url is not active" },
+				HttpStatusCode.NoContent,
+			);
 		}
 
 		if (response.expiresAt && new Date(response.expiresAt) < new Date()) {
-			return c.json({message: "Short url has expired"}, HttpStatusCode.NoContent);
+			return c.json(
+				{ message: "Short url has expired" },
+				HttpStatusCode.NoContent,
+			);
 		}
 
 		await db.$transaction(async (tx) => {
 			await tx.urlMapping.update({
 				where: {
-					id: response.id
+					id: response.id,
 				},
-				data: { totalViews: { increment: 1 } }
+				data: { totalViews: { increment: 1 } },
 			}),
-			await tx.analytics.create({
-				data: {
-					urlId: response.id,
-					...userAgentInfo
-				}
-			})
-		})
+				await tx.analytics.create({
+					data: {
+						urlId: response.id,
+						...userAgentInfo,
+					},
+				});
+		});
 
 		return c.redirect(response.longUrl);
 	} catch (error) {

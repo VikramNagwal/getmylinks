@@ -5,7 +5,6 @@ import { LinkSchema } from "../schemas/link-schema";
 import { HttpStatusCode } from "../types/types";
 import { verifyJWT } from "../middlewares/auth.middleware";
 
-
 const urlRouter = new Hono();
 
 urlRouter.post("/shorten", verifyJWT, async (c: Context) => {

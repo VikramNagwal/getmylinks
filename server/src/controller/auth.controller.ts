@@ -4,22 +4,12 @@ import { AuthHandler } from "../utils/auth-utils";
 import { HttpStatusCode } from "../types/types";
 import { setCookie, deleteCookie } from "hono/cookie";
 import { generateOTP, generateUID } from "../service/user-validation";
-import { sendMailtoUser } from "../service/email-service";
 import { emailQueue } from "../queues/email.queue";
-
-export type OrganizationType = "INDIVIDUAL" | "BUISNESS";
-
-interface RequestData {
-	username: string;
-	name: string;
-	email: string;
-	password: string;
-	bio?: string;
-}
+import { UserLoginSchema, UserRegisterSchema } from "../schemas/userSchema";
 
 const registerUser = async (c: Context) => {
 	try {
-		const body = (await c.req.parseBody()) as unknown as RequestData;
+		const body = UserRegisterSchema.parse(await c.req.parseBody());
 		const { username, name, email, password, bio } = body;
 
 		const existingUser = await db.user.findFirst({ where: { email } });
@@ -60,7 +50,7 @@ const registerUser = async (c: Context) => {
 			);
 		}
 
-		await emailQueue.add("sendEmail", { email, otp });
+		await emailQueue.add("sendEmail", { email, otp, uid });
 		const { password: _, verificationUid, ...userData } = createdUser;
 
 		return c.json(
@@ -89,7 +79,7 @@ const registerUser = async (c: Context) => {
 
 const loginUser = async (c: Context) => {
 	try {
-		const body = (await c.req.parseBody()) as unknown as RequestData;
+		const body = UserLoginSchema.parse(await c.req.parseBody());
 		const { email, password } = body;
 
 		// Match user credentials

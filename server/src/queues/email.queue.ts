@@ -8,11 +8,12 @@ export const emailQueue = new Queue<EmailJobData>(QUEUE_NAME, {
 	defaultJobOptions: QUEUE_CONFIG.defaultJobOptions,
 });
 
-export const addEmailtoQueue = async ({ email, otp }: EmailJobData) => {
+export const addEmailtoQueue = async ({ email, otp, uid }: EmailJobData) => {
 	try {
 		const job = await emailQueue.add("send-verification-mail", {
 			email,
 			otp,
+			uid,
 		});
 		logger.info(`Email job ${job.id} added to queue`);
 		return job;

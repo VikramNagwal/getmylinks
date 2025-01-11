@@ -4,7 +4,6 @@ import db from "./config/db";
 import { logger } from "hono/logger";
 import { cors } from "hono/cors";
 
-
 const app = new Hono();
 
 // router imports
@@ -18,15 +17,12 @@ import { security } from "./middlewares/security-middleware";
 import "./queues/worker/email.worker";
 import { sentryMiddleware } from "./middlewares/sentry-middleware";
 
-
-
 // middlewares
 // app.use("*", security);  turn on security middleware
-app.use('*', sentryMiddleware);
+app.use("*", sentryMiddleware);
 app.use(logger());
 app.use("/api/*", cors());
 app.use("/api/v1", etag({ weak: true }));
-
 
 // routes
 app.route("/api/v1/", appRouter);

@@ -8,7 +8,6 @@ import {
 import { HttpStatusCode } from "../types/types";
 import { EmailBody, UserUpdateSchema } from "../schemas/userSchema";
 
-
 const userRouter = new Hono();
 
 userRouter.get("/profile", async (c: Context) => {
@@ -35,19 +34,23 @@ userRouter.get("/profile", async (c: Context) => {
 });
 userRouter.put("/email/update", async (c: Context) => {
 	try {
-        const userId = await getIdFromMiddleware(c);
-        const { email } = EmailBody.parse(await c.req.parseBody());
+		const userId = await getIdFromMiddleware(c);
+		const { email } = EmailBody.parse(await c.req.parseBody());
 		const updateEmail = await updateUserEmail(userId, email);
-        if (!updateEmail) {
-            return c.json({
-                success: false,
-                message: "An error occurred while updating user email",
-            });
-        }
-        return c.json({
-            success: updateEmail === 'true',
-            message: "user email updated successfully! A verififcation email has been sent to your new email address",
-        }, HttpStatusCode.Ok);
+		if (!updateEmail) {
+			return c.json({
+				success: false,
+				message: "An error occurred while updating user email",
+			});
+		}
+		return c.json(
+			{
+				success: updateEmail === "true",
+				message:
+					"user email updated successfully! A verififcation email has been sent to your new email address",
+			},
+			HttpStatusCode.Ok,
+		);
 	} catch (error) {
 		return c.json(
 			{

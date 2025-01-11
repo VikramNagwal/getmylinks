@@ -20,8 +20,10 @@ const UserUpdateSchema = z
 	})
 	.strict();
 
-const EmailBody = z.object({
-	email: z.string().email("please provide a valid email address")
-}).strict();
+const EmailBody = z
+	.object({
+		email: z.string().email("please provide a valid email address"),
+	})
+	.strict();
 
 export { UserRegisterSchema, UserLoginSchema, UserUpdateSchema, EmailBody };

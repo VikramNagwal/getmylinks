@@ -4,7 +4,7 @@ import {
 	logoutUser,
 	registerUser,
 } from "../controller/auth.controller";
-import { verifyJWT } from "../middlewares/auth.middleware";
+import { verifyJWT } from "../middlewares/auth-middleware";
 import { HttpStatusCode } from "../types/types";
 import { validateOtpToken } from "../service/user-validation";
 import db from "../config/db";

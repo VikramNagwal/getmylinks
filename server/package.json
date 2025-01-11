@@ -11,6 +11,7 @@
     "@bull-board/api": "^6.6.1",
     "@bull-board/hono": "^6.6.1",
     "@prisma/client": "^6.1.0",
+    "@sentry/node": "^8.48.0",
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19.0.2",
     "bullmq": "^5.34.6",
@@ -20,7 +21,6 @@
     "nodemailer": "^6.9.16",
     "otplib": "^12.0.1",
     "prisma": "^6.1.0",
-    "resend": "^4.0.1",
     "ua-parser-js": "^2.0.0",
     "winston": "^3.17.0",
     "zod": "^3.24.1"

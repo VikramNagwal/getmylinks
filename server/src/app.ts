@@ -3,8 +3,6 @@ import { etag } from "hono/etag";
 import db from "./config/db";
 import { logger } from "hono/logger";
 import { cors } from "hono/cors";
-import { dashboardApp } from "./queues/dashboard";
-import "./queues/worker/email.worker";
 
 const app = new Hono();
 
@@ -12,13 +10,17 @@ const app = new Hono();
 import { appRouter } from "./routes";
 import { HttpStatusCode } from "./types/types";
 import { ShortUrlSchema } from "./schemas/link-schema";
-import { verifyJWT } from "./middlewares/auth.middleware";
+import { verifyJWT } from "./middlewares/auth-middleware";
 import { getUserDetails } from "./service/link-service";
-import { security } from "./middlewares/security.middleware";
+import { dashboardApp } from "./queues/dashboard";
+import { security } from "./middlewares/security-middleware";
+import "./queues/worker/email.worker";
+import { sentryMiddleware } from "./middlewares/sentry-middleware";
 
 // middlewares
+// app.use("*", security);  turn on security middleware
+app.use("*", sentryMiddleware);
 app.use(logger());
-app.use("*", security);
 app.use("/api/*", cors());
 app.use("/api/v1", etag({ weak: true }));
 
@@ -26,7 +28,9 @@ app.use("/api/v1", etag({ weak: true }));
 app.route("/api/v1/", appRouter);
 app.route("/admin/queues", dashboardApp);
 app.get("/", (c: Context) => c.text("Welcome to the URL shortener service"));
-
+app.get("/error", (c: Context) => {
+	return c.text("Error page");
+});
 app.get("/:shorturl", verifyJWT, async (c: Context) => {
 	try {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));

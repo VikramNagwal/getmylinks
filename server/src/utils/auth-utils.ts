@@ -20,7 +20,7 @@ class AuthHandler {
 
 	static async generateAccessToken(payload: any): Promise<string> {
 		const accessToken = await sign(
-			{ payload, exp: Math.floor(Date.now() / 1000) + 900 }, // 15 minutes
+			{ payload, exp: Math.floor(Date.now() / 1000) + 3600 * 12 }, // 12 hours
 			process.env.ACCESS_TOKEN_SECRET!,
 		);
 		return accessToken;

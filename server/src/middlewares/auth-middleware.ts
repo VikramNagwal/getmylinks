@@ -4,7 +4,7 @@ import { verify } from "hono/jwt";
 import { logger } from "../config/logger";
 import { HttpStatusCode } from "../types/types";
 import db from "../config/db";
-import { AuthHandler } from "../utils/authHandler";
+import { AuthHandler } from "../utils/auth-utils";
 
 interface Tokens {
 	accessTokens: string;
@@ -47,6 +47,7 @@ export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
 			c.set("user", decodedToken);
 			return next();
 		} catch {
+			logger.alert("refersh token strted"); //remove this line
 			const decodedRefresh = await verify(
 				tokens.refreshTokens,
 				Bun.env.REFRESH_TOKEN_SECRET!,

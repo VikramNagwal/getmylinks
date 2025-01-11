@@ -34,4 +34,21 @@ function getUserDetails(req: any) {
 	};
 }
 
-export { createShortLink, getUserDetails };
+async function checkUrlExists(url: string) {
+	try {
+		const response = await db.urlMapping.findUnique({
+			where: { shortUrl: url },
+			select: {
+				isActive: true,
+			},
+		});
+		if (!response) {
+			return false;
+		}
+		return response.isActive ? true : false;
+	} catch (error) {
+		throw new Error("Error while fetching short link");
+	}
+}
+
+export { createShortLink, getUserDetails, checkUrlExists };

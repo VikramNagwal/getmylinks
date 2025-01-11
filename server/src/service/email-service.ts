@@ -11,10 +11,10 @@ const transporter = nodemailer.createTransport({
 	debug: true,
 });
 
-const otpTemplate = (otp: string) =>
-	`<b>Please verify your email address</b><br><br><h1>${otp}</h1>`;
+const otpTemplate = (uid: string, otp: string) =>
+	`<b>Please verify your email address</b><br><h1>this is your uid</h1><br>${uid}<br><h1>${otp}</h1>`;
 
-async function sendMailtoUser(email: string, otp: string) {
+async function sendMailtoUser(email: string, otp: string, uid: string) {
 	try {
 		console.log("Sending email to", email);
 		const sentMail = await transporter.sendMail({
@@ -22,7 +22,7 @@ async function sendMailtoUser(email: string, otp: string) {
 			to: email,
 			subject: "Email Verification",
 			text: "Please verify your email address",
-			html: otpTemplate(otp),
+			html: otpTemplate(uid, otp),
 		});
 
 		return sentMail;

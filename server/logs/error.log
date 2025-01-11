@@ -1244,3 +1244,32 @@
 2025-01-10T09:39:21.108Z [[31merror[39m]: ✗ Email job 26 failed:
 2025-01-10T10:29:08.186Z [[31merror[39m]: Error while shortening url Error while creating short link
 2025-01-11T08:38:29.918Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP
+2025-01-11T16:06:51.164Z [[31merror[39m]: Error in updating user profile: PrismaClientValidationError: 
+Invalid `db.user.update()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\service\user-methods.ts:46:37
+
+  43 
+  44 async function updateUserProfile(userId: number, body: any): Promise<any> {
+  45 	try {
+→ 46 		const updatedUser = await db.user.update({
+       where: {
+         id: 4
+       },
+       data: {
+         age: "26",
+         ~~~
+     ?   username?: String | StringFieldUpdateOperationsInput,
+     ?   name?: String | NullableStringFieldUpdateOperationsInput | Null,
+     ?   email?: String | StringFieldUpdateOperationsInput,
+     ?   password?: String | StringFieldUpdateOperationsInput,
+     ?   bio?: String | NullableStringFieldUpdateOperationsInput | Null,
+     ?   isVerified?: Boolean | BoolFieldUpdateOperationsInput,
+     ?   verificationUid?: String | NullableStringFieldUpdateOperationsInput | Null,
+     ?   refreshToken?: String | NullableStringFieldUpdateOperationsInput | Null,
+     ?   createdAt?: DateTime | DateTimeFieldUpdateOperationsInput,
+     ?   updatedAt?: DateTime | DateTimeFieldUpdateOperationsInput,
+     ?   urls?: UrlMappingUpdateManyWithoutCreatedByNestedInput
+       }
+     })
+
+Unknown argument `age`. Did you mean `name`? Available options are marked with ?.

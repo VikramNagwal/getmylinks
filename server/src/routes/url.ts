@@ -4,7 +4,7 @@ import { logger } from "../config/logger";
 import { createShortLink } from "../service/link-service";
 import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
 import { HttpStatusCode } from "../types/types";
-import { verifyJWT } from "../middlewares/auth.middleware";
+import { verifyJWT } from "../middlewares/auth-middleware";
 
 const urlRouter = new Hono();
 

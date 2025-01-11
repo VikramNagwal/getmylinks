@@ -31,4 +31,13 @@ async function getRecordById(id: number): Promise<any> {
 	}
 }
 
-export { isUserIdExist, isUserEmailExist, getRecordById };
+async function deleteUserById(id: number): Promise<void> {
+	try {
+		const deletedUser = await db.user.delete({ where: { id } });
+	} catch (error) {
+		logger.error(`Error in deleting user by id: ${error}`);
+		throw new Error("Unable to delete user by id! db operation");
+	}
+}
+
+export { isUserIdExist, isUserEmailExist, getRecordById, deleteUserById };

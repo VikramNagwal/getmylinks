@@ -1,6 +1,6 @@
 import type { Context } from "hono";
 import db from "../config/db";
-import { AuthHandler } from "../utils/authHandler";
+import { AuthHandler } from "../utils/auth-utils";
 import { HttpStatusCode } from "../types/types";
 import { setCookie, deleteCookie } from "hono/cookie";
 import { generateOTP, generateUID } from "../service/user-validation";

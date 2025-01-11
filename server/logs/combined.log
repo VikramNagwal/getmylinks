@@ -1352,3 +1352,7 @@
 2025-01-10T13:55:35.011Z [[32minfo[39m]: ALLOW
 2025-01-10T13:56:23.869Z [[32minfo[39m]: ALLOW
 2025-01-10T13:58:54.011Z [[32minfo[39m]: ALLOW
+2025-01-11T08:13:21.439Z [[32minfo[39m]: Starting to process email job 29 for snehachaturvedi@gmail.com
+2025-01-11T08:13:28.191Z [[32minfo[39m]: Email sent successfully for job 29
+2025-01-11T08:13:28.246Z [[32minfo[39m]: ✓ Email job 29 completed successfully
+2025-01-11T08:38:29.918Z [[31merror[39m]: Error in validating OTP: Error: Invalid OTP

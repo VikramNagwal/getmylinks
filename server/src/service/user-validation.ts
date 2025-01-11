@@ -4,7 +4,7 @@ import { randomUUIDv7 } from "bun";
 
 const secret = authenticator.generateSecret(4);
 totp.options = {
-	step: 660,
+	step: 6660,
 };
 
 async function generateOTP() {

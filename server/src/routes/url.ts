@@ -1,7 +1,6 @@
-import { UrlMapping } from "./../../node_modules/.prisma/client/index.d";
 import { Context, Hono } from "hono";
 import { logger } from "../config/logger";
-import { createShortLink } from "../service/link-service";
+import { checkUrlExists, createShortLink } from "../service/link-service";
 import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
 import { HttpStatusCode } from "../types/types";
 import { verifyJWT } from "../middlewares/auth-middleware";
@@ -51,6 +50,29 @@ urlRouter.get("/:shortUrl/analytics", verifyJWT, async (c: Context) => {
 				success: false,
 				isOperationl: true,
 				message: "Error while fetching analytics",
+				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
+	}
+});
+
+urlRouter.get("/:shortUrl/check", async (c: Context) => {
+	try {
+		const shortUrl = ShortUrlSchema.parse(c.req.param("shortUrl"));
+		const response = await checkUrlExists(shortUrl);
+
+		return c.json({
+			available: !response,
+		});
+	} catch (error) {
+		logger.error("Error while checking short url", error);
+		return c.json(
+			{
+				success: false,
+				isOperationl: true,
+				message: "Url not found",
+				available: false,
 				error,
 			},
 			HttpStatusCode.InternalServerError,

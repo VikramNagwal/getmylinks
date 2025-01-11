@@ -8,12 +8,35 @@ import { verifyJWT } from "../middlewares/auth-middleware";
 import { HttpStatusCode } from "../types/types";
 import { validateOtpToken } from "../service/user-validation";
 import db from "../config/db";
-import { ApiError } from "../utils/error-handler";
+import { ApiError } from "../utils/error-utils";
+import { deleteUserById } from "../service/db-methods";
 
 const authRouter = new Hono();
 
 authRouter.post("/register", registerUser);
 authRouter.post("/login", loginUser);
+authRouter.delete("/user/delete", verifyJWT, async (c: Context) => {
+	try {
+		const user = await c.get("user");
+		const userId = user.payload.id;
+
+		await deleteUserById(userId);
+
+		return c.json({
+			success: true,
+			message: "user deleted successfully",
+		});
+	} catch (error) {
+		return c.json(
+			{
+				success: false,
+				message: "An error occurred while deleting user! please try again",
+				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
+	}
+});
 authRouter.delete("/logout", verifyJWT, logoutUser); // add feature to logout user with unique entity
 
 authRouter.post("/:uid/verify", async (c: Context) => {
@@ -50,6 +73,7 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 	} catch (error) {
 		return c.json(
 			new ApiError("An error occurred while verifying otp", 500, true, error),
+			500,
 		);
 	}
 });

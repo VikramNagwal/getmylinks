@@ -1,4 +1,4 @@
-import { generateOTP, validateOtpToken } from "../service/user-validation";
+import { generateOTP, validateOtpToken } from "../service/otp-service";
 
 let val = 4;
 

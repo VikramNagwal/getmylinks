@@ -1,7 +1,7 @@
 import { Context, Next } from "hono";
 import { arcjetSecurity } from "../utils/arcjet-utils";
 import { HttpStatusCode } from "../types/types";
-import { logger } from "../config/logger";
+import { logger } from "../config/logger-config";
 
 export const security = async (c: Context, next: Next) => {
 	try {

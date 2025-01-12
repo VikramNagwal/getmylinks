@@ -6,8 +6,8 @@ import {
 } from "../controller/auth.controller";
 import { verifyJWT } from "../middlewares/auth-middleware";
 import { HttpStatusCode } from "../types/types";
-import { validateOtpToken } from "../service/user-validation";
-import db from "../config/db";
+import { validateOtpToken } from "../service/otp-service";
+import db from "../config/db-config";
 import { ApiError } from "../utils/error-utils";
 
 const authRouter = new Hono();

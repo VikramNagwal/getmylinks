@@ -1,8 +1,9 @@
 import { Context, Hono } from "hono";
 import { etag } from "hono/etag";
-import db from "./config/db";
+import db from "./config/db-config";
 import { logger } from "hono/logger";
 import { cors } from "hono/cors";
+import { secureHeaders } from "hono/secure-headers";
 
 const app = new Hono();
 
@@ -21,6 +22,7 @@ import { sentryMiddleware } from "./middlewares/sentry-middleware";
 // app.use("*", security);  turn on security middleware
 app.use("*", sentryMiddleware);
 app.use(logger());
+app.use(secureHeaders());
 app.use("/api/*", cors());
 app.use("/api/v1", etag({ weak: true }));
 

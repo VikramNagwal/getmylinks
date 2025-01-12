@@ -1,6 +1,6 @@
 import { Worker } from "bullmq";
-import { QUEUE_NAME, REDIS_CONFIG } from "../../config/queue.config";
-import { logger } from "../../config/logger";
+import { QUEUE_NAME, REDIS_CONFIG } from "../../config/queue-config";
+import { logger } from "../../config/logger-config";
 import { sendMailtoUser } from "../../service/email-service";
 
 const emailWorker = new Worker(

@@ -1,9 +1,9 @@
 import type { Context } from "hono";
-import db from "../config/db";
+import db from "../config/db-config";
 import { AuthHandler } from "../utils/auth-utils";
 import { HttpStatusCode } from "../types/types";
 import { setCookie, deleteCookie } from "hono/cookie";
-import { generateOTP, generateUID } from "../service/user-validation";
+import { generateOTP, generateUID } from "../service/otp-service";
 import { emailQueue } from "../queues/email.queue";
 import { UserLoginSchema, UserRegisterSchema } from "../schemas/userSchema";
 
@@ -118,7 +118,7 @@ const loginUser = async (c: Context) => {
 			httpOnly: true,
 			secure: true,
 			sameSite: "Lax",
-			maxAge: 15 * 60,
+			maxAge: 60 * 60 * 12,
 		});
 
 		setCookie(c, "refreshTokens", refreshTokens, {

@@ -1,6 +1,6 @@
-import db from "../config/db";
-import { logger } from "../config/logger";
-import { isUserEmailExist } from "../service/user-methods";
+import db from "../config/db-config";
+import { logger } from "../config/logger-config";
+import { isUserEmailExist } from "../service/user-service";
 
 const key = String(Bun.env.DATABASE_URL);
 logger.info(key);

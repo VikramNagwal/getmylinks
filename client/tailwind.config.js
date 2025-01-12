@@ -50,7 +50,12 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
-  		}
+  		},
+		fontFamily: {
+			heading: ['Kanit', 'sans-serif'],
+			Gloock: ['Gloock', 'sans-serif'],
+			passage: ['Tauri', 'sans-serif'],
+		},
   	}
   },
   plugins: [require("tailwindcss-animate")],

@@ -1,18 +1,16 @@
-import MainLayout from "./layouts/MainLayout";
-import HomePage from "./pages/HomePage";
-import ProfilePage from "./pages/ProfilePage";
-import { Routes, Route } from "react-router-dom";
+import { Button } from "./components/ui/button";
 
-export default function App() {
-
-  return (
-    <>
-      <MainLayout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-        </Routes>
-      </MainLayout>
-    </>
-  );
+function App() {
+	return (
+		<>
+			<div>
+				<h1 className="text-lg text-center underline font-bold p-3">
+					hello world!!
+				</h1>
+				<Button className="m-8">click here</Button>
+			</div>
+		</>
+	);
 }
+
+export default App;

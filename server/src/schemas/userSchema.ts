@@ -15,8 +15,8 @@ const UserLoginSchema = z.object({
 
 const UserUpdateSchema = z
 	.object({
-		name: z.string().optional(),
-		bio: z.string().max(999).optional(),
+		name: z.string().min(3).optional(),
+		bio: z.string().min(2).max(999).optional(),
 	})
 	.strict();
 
@@ -26,4 +26,18 @@ const EmailBody = z
 	})
 	.strict();
 
-export { UserRegisterSchema, UserLoginSchema, UserUpdateSchema, EmailBody };
+const UsernameBody = z
+	.object({
+		username: z.string().regex(/^\S+$/, {
+			message: "The string must not contain spaces.",
+		}),
+	})
+	.strict();
+
+export {
+	UserRegisterSchema,
+	UserLoginSchema,
+	UserUpdateSchema,
+	EmailBody,
+	UsernameBody,
+};

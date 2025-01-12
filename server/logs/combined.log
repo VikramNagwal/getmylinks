@@ -1385,3 +1385,111 @@ D:\ADMIN\Coding\auth-server\server\src\service\user-methods.ts:46:37
      })
 
 Unknown argument `age`. Did you mean `name`? Available options are marked with ?.
+2025-01-12T06:13:38.995Z [[32minfo[39m]: Starting to process email job 30 for rawatdinesh@gmail.com
+2025-01-12T06:13:46.657Z [[32minfo[39m]: Email sent successfully for job 30
+2025-01-12T06:13:46.722Z [[32minfo[39m]: ✓ Email job 30 completed successfully
+2025-01-12T06:18:04.035Z [[32minfo[39m]: Starting to process email job 31 for vandanarana@edu.me
+2025-01-12T06:18:14.470Z [[32minfo[39m]: Email sent successfully for job 31
+2025-01-12T06:18:14.475Z [[32minfo[39m]: ✓ Email job 31 completed successfully
+2025-01-12T06:18:58.736Z [[31merror[39m]: Error in getting user id from middleware: TypeError: undefined is not an object (evaluating '(await c.get("user")).payload')
+2025-01-12T06:20:10.241Z [[31merror[39m]: Error in getting user id from middleware: TypeError: undefined is not an object (evaluating '(await c.get("user")).payload')
+2025-01-12T07:02:02.373Z [[31merror[39m]: Error in getting user id from middleware: TypeError: undefined is not an object (evaluating '(await c.get("user")).payload')
+2025-01-12T07:02:40.821Z [[31merror[39m]: Error in getting user id from middleware: TypeError: undefined is not an object (evaluating '(await c.get("user")).payload')
+2025-01-12T07:02:46.664Z [[31merror[39m]: Error in getting user id from middleware: TypeError: undefined is not an object (evaluating '(await c.get("user")).payload')
+2025-01-12T07:03:33.215Z [[31merror[39m]: Error in getting user id from middleware: TypeError: undefined is not an object (evaluating '(await c.get("user")).payload')
+2025-01-12T07:04:27.337Z [[31merror[39m]: Error in getting user id from middleware: TypeError: undefined is not an object (evaluating '(await c.get("user")).payload')
+2025-01-12T07:05:08.350Z [[31merror[39m]: Error in getting user id from middleware: TypeError: undefined is not an object (evaluating '(await c.get("user")).payload')
+2025-01-12T07:05:26.991Z [[31merror[39m]: Error in getting user id from middleware: TypeError: undefined is not an object (evaluating 'user.payload')
+2025-01-12T08:04:08.699Z [[32minfo[39m]: Starting to process email job 32 for vandanarana07@myself.me
+2025-01-12T08:04:15.226Z [[32minfo[39m]: Email sent successfully for job 32
+2025-01-12T08:04:15.275Z [[32minfo[39m]: ✓ Email job 32 completed successfully
+2025-01-12T08:04:58.206Z [[31merror[39m]: Error in updating user username: PrismaClientValidationError: 
+Invalid `db.user.update()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\service\user-service.ts:94:37
+
+  91 
+  92 async function updateUsername(userId: number, username: string): Promise<boolean> {
+  93 	try {
+→ 94 		const updatedUser = await db.user.update({
+       where: {
+         id: {
+           id: 6,
+           username: "heyyy_vandu",
+           name: "vandana rana",
+           email: "vandanarana@edu.me",
+           password: "$2b$04$a3PwOiJ/IRtrGsvRbhAoBOz77LvuIrMvVHxjo0/RdiBS4V/G2Vx4a",
+           bio: "selenophile 🌿",
+           isVerified: false,
+           verificationUid: "01945929-9118-7000-9261-bad53fda3710",
+           refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImV4cCI6MTczNzI3MzMyN30.NbDStdpo53Do4h8IhbBujwbP3ZLmlX1ApkHf2dbmy8U",
+           createdAt: "2025-01-12T06:18:03.943Z",
+           updatedAt: "2025-01-12T07:55:27.014Z"
+         }
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       },
+       data: {
+         username: "dr~vandu"
+       }
+     })
+
+Argument `id`: Invalid value provided. Expected Int, provided Object.
+2025-01-12T08:09:25.268Z [[31merror[39m]: Error in updating user username: PrismaClientValidationError: 
+Invalid `db.user.update()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\service\user-service.ts:94:37
+
+  91 
+  92 async function updateUsername(userId: number, username: string): Promise<boolean> {
+  93 	try {
+→ 94 		const updatedUser = await db.user.update({
+       where: {
+         id: {
+           id: 6,
+           username: "heyyy_vandu",
+           name: "vandana rana",
+           email: "vandanarana@edu.me",
+           password: "$2b$04$a3PwOiJ/IRtrGsvRbhAoBOz77LvuIrMvVHxjo0/RdiBS4V/G2Vx4a",
+           bio: "selenophile 🌿",
+           isVerified: false,
+           verificationUid: "01945929-9118-7000-9261-bad53fda3710",
+           refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImV4cCI6MTczNzI3MzMyN30.NbDStdpo53Do4h8IhbBujwbP3ZLmlX1ApkHf2dbmy8U",
+           createdAt: "2025-01-12T06:18:03.943Z",
+           updatedAt: "2025-01-12T07:55:27.014Z"
+         }
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       },
+       data: {
+         username: "dr~vandu"
+       }
+     })
+
+Argument `id`: Invalid value provided. Expected Int, provided Object.
+2025-01-12T08:11:23.205Z [[31merror[39m]: Error in updating user username: PrismaClientValidationError: 
+Invalid `db.user.update()` invocation in
+D:\ADMIN\Coding\auth-server\server\src\service\user-service.ts:94:37
+
+  91 
+  92 async function updateUsername(userId: number, username: string): Promise<boolean> {
+  93 	try {
+→ 94 		const updatedUser = await db.user.update({
+       where: {
+         id: {
+           id: 6,
+           username: "heyyy_vandu",
+           name: "vandana rana",
+           email: "vandanarana@edu.me",
+           password: "$2b$04$a3PwOiJ/IRtrGsvRbhAoBOz77LvuIrMvVHxjo0/RdiBS4V/G2Vx4a",
+           bio: "selenophile 🌿",
+           isVerified: false,
+           verificationUid: "01945929-9118-7000-9261-bad53fda3710",
+           refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImV4cCI6MTczNzI3MzMyN30.NbDStdpo53Do4h8IhbBujwbP3ZLmlX1ApkHf2dbmy8U",
+           createdAt: "2025-01-12T06:18:03.943Z",
+           updatedAt: "2025-01-12T07:55:27.014Z"
+         }
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       },
+       data: {
+         username: "dr~vandu"
+       }
+     })
+
+Argument `id`: Invalid value provided. Expected Int, provided Object.

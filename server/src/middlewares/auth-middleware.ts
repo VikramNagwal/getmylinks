@@ -1,9 +1,9 @@
 import { createMiddleware } from "hono/factory";
 import { Context, Next } from "hono";
 import { verify } from "hono/jwt";
-import { logger } from "../config/logger";
+import { logger } from "../config/logger-config";
 import { HttpStatusCode } from "../types/types";
-import db from "../config/db";
+import db from "../config/db-config";
 import { AuthHandler } from "../utils/auth-utils";
 
 interface Tokens {
@@ -47,7 +47,6 @@ export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
 			c.set("user", decodedToken);
 			return next();
 		} catch {
-			logger.alert("refersh token strted"); //remove this line
 			const decodedRefresh = await verify(
 				tokens.refreshTokens,
 				Bun.env.REFRESH_TOKEN_SECRET!,
@@ -68,11 +67,12 @@ export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
 			const newTokens = await AuthHandler.generateRefreshandAccessToken(
 				user.id,
 			);
-			await db.user.update({
-				where: { id: user.id },
-				data: { refreshToken: newTokens.refreshTokens },
+			await db.$transaction(async (tx) => {
+				await tx.user.update({
+					where: { id: user.id },
+					data: { refreshToken: newTokens.refreshTokens },
+				});
 			});
-
 			c.set("user", user);
 			return next();
 		}

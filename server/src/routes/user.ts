@@ -1,21 +1,32 @@
 import { Context, Hono } from "hono";
 import {
+	checkUserByUsername,
 	deleteUserById,
 	getIdFromMiddleware,
 	updateUserEmail,
+	updateUsername,
 	updateUserProfile,
-} from "../service/user-methods";
+} from "../service/user-service";
 import { HttpStatusCode } from "../types/types";
-import { EmailBody, UserUpdateSchema } from "../schemas/userSchema";
+import {
+	EmailBody,
+	UsernameBody,
+	UserUpdateSchema,
+} from "../schemas/userSchema";
+import { verifyJWT } from "../middlewares/auth-middleware";
 
 const userRouter = new Hono();
+
+userRouter.use("*", verifyJWT);
 
 userRouter.get("/profile", async (c: Context) => {
 	try {
 		const user = await c.get("user");
 		const userData = user.payload;
+
 		const { password, refreshToken, id, verificationUid, ...profile } =
 			userData;
+
 		return c.json({
 			success: true,
 			profile,
@@ -34,8 +45,12 @@ userRouter.get("/profile", async (c: Context) => {
 });
 userRouter.put("/email/update", async (c: Context) => {
 	try {
-		const userId = await getIdFromMiddleware(c);
-		const { email } = EmailBody.parse(await c.req.parseBody());
+		const userId = await c.get("user").payload.id;
+		console.log(c.get("user"));
+		console.log(userId);
+		const body = await c.req.parseBody();
+		const { email } = EmailBody.parse(body);
+
 		const updateEmail = await updateUserEmail(userId, email);
 		if (!updateEmail) {
 			return c.json({
@@ -45,7 +60,7 @@ userRouter.put("/email/update", async (c: Context) => {
 		}
 		return c.json(
 			{
-				success: updateEmail === "true",
+				success: updateEmail,
 				message:
 					"user email updated successfully! A verififcation email has been sent to your new email address",
 			},
@@ -58,6 +73,44 @@ userRouter.put("/email/update", async (c: Context) => {
 				isOperational: true,
 				message: "An error occurred while updating user email",
 				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
+	}
+});
+userRouter.put("/username/update", async (c: Context) => {
+	try {
+		const userId = await c.get("user").payload.id;
+		const { username } = UsernameBody.parse(await c.req.parseBody());
+
+		const existUser = await checkUserByUsername(username);
+		if (existUser) {
+			return c.json({
+				success: false,
+				message: "Username already exists",
+			});
+		}
+		const updatedUser = await updateUsername(userId, username);
+		if (!updatedUser) {
+			return c.json({
+				success: false,
+				message: "An error occurred while updating username",
+			});
+		}
+
+		return c.json(
+			{
+				success: true,
+				message: "username updated successfully",
+			},
+			HttpStatusCode.Ok,
+		);
+	} catch (error) {
+		return c.json(
+			{
+				success: false,
+				isOperational: true,
+				message: "Unable to update username! Please try again later",
 			},
 			HttpStatusCode.InternalServerError,
 		);

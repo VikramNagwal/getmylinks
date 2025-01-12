@@ -31,16 +31,31 @@ const RegisterPage = () => {
 							<div className="flex gap-x-4">
 								<div>
 									<Label htmlFor="name">Name</Label>
-									<Input type="text" name="name" id="name" placeholder="Jane Doe"/>
+									<Input
+										type="text"
+										name="name"
+										id="name"
+										placeholder="Jane Doe"
+									/>
 								</div>
 								<div>
 									<Label htmlFor="username">Username</Label>
-									<Input type="text" id="username" name="username" placeholder="hey_janedoe"/>
+									<Input
+										type="text"
+										id="username"
+										name="username"
+										placeholder="hey_janedoe"
+									/>
 								</div>
 							</div>
 							<div>
 								<Label htmlFor="email">Email</Label>
-								<Input type="email" id="email" name="email" placeholder="janedoe@myself.co"/>
+								<Input
+									type="email"
+									id="email"
+									name="email"
+									placeholder="janedoe@myself.co"
+								/>
 							</div>
 							<div>
 								<Label htmlFor="password">Password</Label>
@@ -50,7 +65,10 @@ const RegisterPage = () => {
 						</form>
 
 						<p className="capitalize my-2 p-2">
-							Already have an account? <a href="/login" className="text-blue-700">Log in</a>
+							Already have an account?{" "}
+							<a href="/login" className="text-blue-700">
+								Log in
+							</a>
 						</p>
 
 						<div className="mt-2 flex items-start">

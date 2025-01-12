@@ -4,12 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 const RegisterPage = () => {
-
 	return (
 		<main>
 			<div className="flex justify-between relative h-screen">
 				<div className="flex-1">
-					<a href="/" className="font-Gloock text-xl md:text-4xl absolute top-3 left-6 text-white shadow-black cursor-pointer">
+					<a
+						href="/"
+						className="font-Gloock text-xl md:text-4xl absolute top-3 left-6 text-white shadow-black cursor-pointer"
+					>
 						getmylinks
 					</a>
 					<img
@@ -46,7 +48,9 @@ const RegisterPage = () => {
 							<Button type="submit">Sign Up</Button>
 						</form>
 
-            <p className="capitalize text-blue-700 my-2">already have an account ??</p>
+						<p className="capitalize text-blue-700 my-2">
+							already have an account ??
+						</p>
 
 						<div className="mt-2 flex items-start">
 							<Checkbox id="update" className="mr-2 mt-1" />

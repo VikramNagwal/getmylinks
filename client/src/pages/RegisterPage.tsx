@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 const RegisterPage = () => {
+	document.title = "Create account - GetMyLinks";
 	return (
 		<main className="h-screen overflow-hidden">
 			<div className="flex justify-between relative h-screen">

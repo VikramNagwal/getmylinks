@@ -6,11 +6,11 @@ import "./index.css";
 import App from "./App.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
-    <StrictMode>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <App />
-      </ThemeProvider>
-    </StrictMode>
-  </BrowserRouter>
+	<BrowserRouter>
+		<StrictMode>
+			<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+				<App />
+			</ThemeProvider>
+		</StrictMode>
+	</BrowserRouter>,
 );

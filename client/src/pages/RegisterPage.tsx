@@ -1,9 +1,9 @@
-import RegisterForm from "@/components/auth-ui/RegisterForm";
+import RegisterForm from "@/components/forms/RegisterForm";
 
 const RegisterPage = () => {
 	document.title = "Create account - GetMyLinks";
 	return (
-		<main className="h-screen overflow-hidden">
+		<main>
 			<div className="flex justify-between relative h-screen">
 				<div className="flex-1 hidden md:flex">
 					<a

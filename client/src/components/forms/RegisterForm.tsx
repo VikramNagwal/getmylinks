@@ -5,11 +5,19 @@ import { Label } from "../ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Checkbox } from "@radix-ui/react-checkbox";
+import { Checkbox } from "../ui/checkbox";
+import { useState } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 type signUpForm = z.infer<typeof SignUpSchema>;
 
 const RegisterForm = () => {
+	const [showPassword, setShowPassword] = useState(false);
+
+	const passwordToggle = () => {
+		setShowPassword((showPassword) => !showPassword);
+	};
+
 	const {
 		register,
 		reset,
@@ -42,9 +50,9 @@ const RegisterForm = () => {
 
 	return (
 		<div className="flex-1 flex justify-center items-center">
-			<div className="w-full h-full max-w-sm py-4">
+			<div className="max-w-sm py-4">
 				<div>
-					<h2 className="text-4xl font-passage font-semibold mt-[80px] text-center">
+					<h2 className="text-2xl md:text-4xl font-passage font-semibold mt-[40px] text-center">
 						Just Few Steps Away
 					</h2>
 					<p className="text-center mt-3 md:text-xl">Sign up for free!!</p>
@@ -52,7 +60,7 @@ const RegisterForm = () => {
 
 				<form
 					onSubmit={handleSubmit(onSubmit)}
-					className="flex flex-col gap-y-4 mt-[120px]"
+					className="flex flex-col gap-y-4 mt-[80px]"
 				>
 					<div className="flex gap-x-4">
 						<div>
@@ -103,14 +111,25 @@ const RegisterForm = () => {
 						)}
 					</div>
 
-					<div>
+					<div className="relative">
 						<Label htmlFor="password">Password</Label>
 						<Input
-							type="password"
+							type={showPassword ? "text" : "password"}
 							id="password"
 							{...register("password")}
-							className={`input-base ${getInputValidationClass("password")}`}
+							className={`pr-10 input-base ${getInputValidationClass(
+								"password",
+							)}`}
 						/>
+
+						<button
+							type="button"
+							onClick={passwordToggle}
+							className="absolute inset-y-0 top-6 right-4 flex items-center text-gray-600"
+						>
+							{showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
+						</button>
+
 						{touchedFields.password && errors.password && (
 							<span className="text-red-500 text-sm mt-2">
 								{errors.password.message}
@@ -118,16 +137,25 @@ const RegisterForm = () => {
 						)}
 					</div>
 
-					<div>
+					<div className="relative">
 						<Label htmlFor="confirmPassword">Confirm Password</Label>
 						<Input
-							type="password"
+							type={showPassword ? "text" : "password"}
 							id="confirmPassword"
 							{...register("confirmPassword")}
-							className={`input-base ${getInputValidationClass(
+							className={`pr-10 input-base ${getInputValidationClass(
 								"confirmPassword",
 							)}`}
 						/>
+
+						<button
+							type="button"
+							onClick={passwordToggle}
+							className="absolute inset-y-0 top-6 right-4 flex items-center text-gray-600"
+						>
+							{showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
+						</button>
+
 						{touchedFields.confirmPassword && errors.confirmPassword && (
 							<span className="text-red-500 text-sm mt-2">
 								{errors.confirmPassword?.message}

@@ -27,8 +27,5 @@ export const SignUpSchema = z
 
 export const LoginSchema = z.object({
 	email: z.string().email("Invalid email address"),
-	password: z
-		.string()
-		.min(8)
-		.max(255),
+	password: z.string().min(8).max(255),
 });

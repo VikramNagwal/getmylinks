@@ -33,7 +33,10 @@ const LoginForm = () => {
 
 	const onSubmit = async (data: LogInForm) => {
 		try {
-			const response = await axios.post("http://localhost:8080/api/v1/auth/login", data);
+			const response = await axios.post(
+				"http://localhost:8080/api/v1/auth/login",
+				data,
+			);
 			console.log(response);
 			reset();
 			toast({

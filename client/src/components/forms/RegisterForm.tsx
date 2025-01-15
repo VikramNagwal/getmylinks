@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { signUpSchema } from "@/schemas/authentication-schema";
-import { usePasswordStreanth } from "@/hooks/use-passwordStreanth";
+import { usePasswordStreanth } from "@/hooks/use-password";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 

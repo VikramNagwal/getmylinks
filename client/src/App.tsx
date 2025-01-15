@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/Profile/LoginPage.tsx";
 import HomePage from "./pages/HomePage";
 import Terms from "./Agreement/TermsConditions.mdx";
 import { Toaster } from "./components/ui/toaster.tsx";
-import RegisterPage from "./pages/RegisterPage";
+import RegisterPage from "./pages/Profile/RegisterPage.tsx";
 
 function App() {
 	return (

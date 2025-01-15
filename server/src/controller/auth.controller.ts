@@ -9,7 +9,7 @@ import { UserLoginSchema, UserRegisterSchema } from "../schemas/userSchema";
 
 const registerUser = async (c: Context) => {
 	try {
-		const body = UserRegisterSchema.parse(await c.req.parseBody());
+		const body = UserRegisterSchema.parse(await c.req.json());
 		const { username, name, email, password, bio } = body;
 
 		const existingUser = await db.user.findFirst({ where: { email } });
@@ -79,8 +79,8 @@ const registerUser = async (c: Context) => {
 
 const loginUser = async (c: Context) => {
 	try {
-		const body = UserLoginSchema.parse(await c.req.parseBody());
-		const { email, password } = body;
+		const body = await c.req.json();
+		const { email, password } = UserLoginSchema.parse(body);
 
 		// Match user credentials
 		const User = await db.user.findUnique({ where: { email: email } });
@@ -94,6 +94,7 @@ const loginUser = async (c: Context) => {
 				HttpStatusCode.NotFound,
 			);
 		}
+
 		// compare password
 		const isPasswordMatch = await AuthHandler.comparePassword(
 			password,
@@ -105,6 +106,7 @@ const loginUser = async (c: Context) => {
 				HttpStatusCode.Unauthenticated,
 			);
 		}
+
 		// generate access and refresh tokens
 		const { accessTokens, refreshTokens } =
 			await AuthHandler.generateRefreshandAccessToken(User.id);

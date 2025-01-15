@@ -1,194 +1,321 @@
-import { z } from "zod";
-import { SignUpSchema } from "@/schemas/authentication-schema";
-import { useForm } from "react-hook-form";
-import { Label } from "../ui/label";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Checkbox } from "../ui/checkbox";
 import { useState } from "react";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Eye, EyeOff, CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
+import { signUpSchema } from "@/schemas/authentication-schema";
+import { usePasswordStreanth } from "@/hooks/use-passwordStreanth";
+import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 
-type signUpForm = z.infer<typeof SignUpSchema>;
-
-const RegisterForm = () => {
-	const [showPassword, setShowPassword] = useState(false);
-
-	const passwordToggle = () => {
-		setShowPassword((showPassword) => !showPassword);
-	};
-
-	const {
-		register,
-		reset,
-		handleSubmit,
-		formState: { errors, dirtyFields, touchedFields },
-	} = useForm<signUpForm>({
-		resolver: zodResolver(SignUpSchema),
-		mode: "onBlur",
+const useSignUpMutation = () => {
+	const { toast } = useToast();
+	return useMutation({
+		mutationFn: (data: Omit<SignUpForm, "confirmPassword">) => {
+			return axios.post("http://localhost:8080/api/v1/auth/register", data);
+		},
+		onSuccess: () => {
+			toast({
+				title: "Success",
+				description: "Account created successfully!",
+			});
+		},
+		onError: () => {
+			toast({
+				title: "Registeration Failed",
+				description: "Something went wrong on our side. Please try later",
+				variant: "destructive",
+			});
+		},
 	});
+};
 
-	const onSubmit = (data: signUpForm) => {
-		console.log("Submitted");
-		console.log(data);
-		reset();
-	};
+type SignUpForm = z.infer<typeof signUpSchema>;
 
-	// Helper function to determine input validation state
-	const getInputValidationClass = (fieldName: keyof signUpForm) => {
-		const baseClass = "transition-all duration-200";
+const SignUpForm = () => {
+	const { toast } = useToast();
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
-		if (dirtyFields[fieldName] && touchedFields[fieldName]) {
-			if (errors[fieldName]) {
-				return `${baseClass} focus-visible:ring-red-500`;
-			}
-			return `${baseClass} focus-visible:ring-green-500`;
+	const { mutate } = useSignUpMutation();
+	const navigate = useNavigate();
+
+	const form = useForm<SignUpForm>({
+		resolver: zodResolver(signUpSchema),
+		mode: "onChange",
+		defaultValues: {
+			name: "",
+			username: "",
+			email: "",
+			password: "",
+			confirmPassword: "",
+		},
+	});
+	const { watch } = form;
+	const password = watch("password");
+
+	//   password strength check
+	const { strengthColor, strengthText, strengthChecks, strengthScore } =
+		usePasswordStreanth(password);
+
+	const onSubmit = async (data: SignUpForm) => {
+		if (isSubmitting) return;
+		setIsSubmitting(true);
+		try {
+			mutate(data);
+			form.reset();
+			navigate("/", {
+				replace: true,
+			});
+		} catch (error) {
+			toast({
+				title: "Registeration Failed",
+				description: "Something went wrong on our side. Please try later",
+			});
+		} finally {
+			setIsSubmitting(false);
 		}
-
-		return baseClass;
 	};
 
 	return (
-		<div className="flex-1 flex justify-center items-center">
-			<div className="max-w-sm py-4">
-				<div>
-					<h2 className="text-2xl md:text-4xl font-passage font-semibold mt-[40px] text-center">
-						Just Few Steps Away
-					</h2>
-					<p className="text-center mt-3 md:text-xl">Sign up for free!!</p>
-				</div>
-
-				<form
-					onSubmit={handleSubmit(onSubmit)}
-					className="flex flex-col gap-y-4 mt-[80px]"
-				>
-					<div className="flex gap-x-4">
-						<div>
-							<Label htmlFor="name">Name</Label>
-							<Input
-								type="text"
-								id="name"
-								{...register("name")}
-								className={`input-base ${getInputValidationClass("name")}`}
-								placeholder="Jane Doe"
+		<Card className="w-full border-0 shadow-none max-w-md mx-auto">
+			<CardHeader className="space-y-1 md:pb-6">
+				<CardTitle className="font-heading md:text-4xl">
+					Just Few Steps Away.
+				</CardTitle>
+				<CardDescription>
+					Sign up to get started with getmylinks
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+						<div className="flex justify-between space-x-4">
+							{/* Name field */}
+							<FormField
+								control={form.control}
+								name="name"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Name</FormLabel>
+										<FormControl>
+											<Input
+												type="text"
+												placeholder="Jane Doe"
+												{...field}
+												disabled={isSubmitting}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
 							/>
-							{touchedFields.name && errors.name && (
-								<span className="text-red-500 text-sm mt-2">
-									{errors.name.message}
-								</span>
-							)}
-						</div>
-						<div>
-							<Label htmlFor="username">Username</Label>
-							<Input
-								type="text"
-								id="username"
-								{...register("username")}
-								className={`input-base ${getInputValidationClass("username")}`}
-								placeholder="hey_janedoe"
+
+							{/* Username field */}
+							<FormField
+								control={form.control}
+								name="username"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Username</FormLabel>
+										<FormControl>
+											<Input
+												type="text"
+												placeholder="hey_jane"
+												{...field}
+												onChange={(e) =>
+													field.onChange(e.target.value.toLowerCase())
+												}
+												disabled={isSubmitting}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
 							/>
-							{touchedFields.username && errors.username && (
-								<span className="text-red-500 text-sm mt-2">
-									{errors.username.message}
-								</span>
-							)}
 						</div>
-					</div>
-
-					<div>
-						<Label htmlFor="email">Email</Label>
-						<Input
-							type="email"
-							id="email"
-							{...register("email")}
-							className={`input-base ${getInputValidationClass("email")}`}
-							placeholder="janedoe@myself.co"
-						/>
-						{touchedFields.email && errors.email && (
-							<span className="text-red-500 text-sm mt-2">
-								{errors.email.message}
-							</span>
-						)}
-					</div>
-
-					<div className="relative">
-						<Label htmlFor="password">Password</Label>
-						<Input
-							type={showPassword ? "text" : "password"}
-							id="password"
-							{...register("password")}
-							className={`pr-10 input-base ${getInputValidationClass(
-								"password",
-							)}`}
+						{/* Email Field */}
+						<FormField
+							control={form.control}
+							name="email"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="janedoe@example.com"
+											type="email"
+											{...field}
+											onChange={(e) =>
+												field.onChange(e.target.value.toLowerCase())
+											}
+											disabled={isSubmitting}
+											autoComplete="email"
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
 						/>
 
-						<button
-							type="button"
-							onClick={passwordToggle}
-							className="absolute inset-y-0 top-6 right-4 flex items-center text-gray-600"
-						>
-							{showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
-						</button>
+						{/* Password Field */}
+						<FormField
+							control={form.control}
+							name="password"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Password</FormLabel>
+									<FormControl>
+										<div className="relative">
+											<Input
+												placeholder="Enter your password"
+												type={showPassword ? "text" : "password"}
+												{...field}
+												disabled={isSubmitting}
+												autoComplete="new-password"
+											/>
+											<Button
+												type="button"
+												variant="ghost"
+												size="icon"
+												className="absolute right-2 top-1/2 -translate-y-1/2"
+												onClick={() => setShowPassword(!showPassword)}
+												disabled={isSubmitting}
+											>
+												{showPassword ? (
+													<EyeOff size={16} />
+												) : (
+													<Eye size={16} />
+												)}
+											</Button>
+										</div>
+									</FormControl>
+									<FormMessage />
 
-						{touchedFields.password && errors.password && (
-							<span className="text-red-500 text-sm mt-2">
-								{errors.password.message}
-							</span>
-						)}
-					</div>
+									{field.value && (
+										<div className="space-y-2 mt-2">
+											<div className="flex gap-2">
+												{[0, 1, 2, 3, 4].map((index) => (
+													<div
+														key={index}
+														className={`h-2 w-full rounded ${
+															index < strengthScore
+																? strengthColor
+																: "bg-gray-200"
+														}`}
+													/>
+												))}
+											</div>
+											<p className="text-sm text-gray-500">
+												Password Strength: {strengthText}
+											</p>
 
-					<div className="relative">
-						<Label htmlFor="confirmPassword">Confirm Password</Label>
-						<Input
-							type={showPassword ? "text" : "password"}
-							id="confirmPassword"
-							{...register("confirmPassword")}
-							className={`pr-10 input-base ${getInputValidationClass(
-								"confirmPassword",
-							)}`}
+											<div className="space-y-1">
+												{Object.entries(strengthChecks).map(([key, valid]) => (
+													<div
+														key={key}
+														className="flex items-center text-sm gap-2"
+													>
+														{valid ? (
+															<CheckCircle2
+																className="text-green-500"
+																size={16}
+															/>
+														) : (
+															<XCircle className="text-red-500" size={16} />
+														)}
+														{key === "length"
+															? "At least 8 characters"
+															: key === "uppercase"
+																? "Contains uppercase letter"
+																: key === "lowercase"
+																	? "Contains lowercase letter"
+																	: key === "number"
+																		? "Contains number"
+																		: "Contains special character"}
+													</div>
+												))}
+											</div>
+										</div>
+									)}
+								</FormItem>
+							)}
 						/>
 
-						<button
-							type="button"
-							onClick={passwordToggle}
-							className="absolute inset-y-0 top-6 right-4 flex items-center text-gray-600"
-						>
-							{showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
-						</button>
+						{/* Confirm Password Field */}
+						<FormField
+							control={form.control}
+							name="confirmPassword"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Confirm Password</FormLabel>
+									<FormControl>
+										<div className="relative">
+											<Input
+												placeholder="Confirm your password"
+												type={showConfirmPassword ? "text" : "password"}
+												{...field}
+												disabled={isSubmitting}
+												autoComplete="new-password"
+											/>
+											<Button
+												type="button"
+												variant="ghost"
+												size="icon"
+												className="absolute right-2 top-1/2 -translate-y-1/2"
+												onClick={() =>
+													setShowConfirmPassword(!showConfirmPassword)
+												}
+												disabled={isSubmitting}
+											>
+												{showConfirmPassword ? (
+													<EyeOff size={16} />
+												) : (
+													<Eye size={16} />
+												)}
+											</Button>
+										</div>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-						{touchedFields.confirmPassword && errors.confirmPassword && (
-							<span className="text-red-500 text-sm mt-2">
-								{errors.confirmPassword?.message}
-							</span>
-						)}
-					</div>
-
-					<Button type="submit">Create account</Button>
-				</form>
-
-				<p className="capitalize my-2 p-2">
-					Already have an account?{" "}
-					<a href="/login" className="text-blue-700 link">
-						Log in
-					</a>
-				</p>
-
-				<div className="mt-2 flex items-start">
-					<Checkbox id="update" defaultChecked className="mr-2 mt-1" />
-					<Label
-						htmlFor="update"
-						className="capitalize leading-5 font-thin peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-					>
-						By clicking <b>Create Account</b>, you agree to GetMyLink's{" "}
-						<a href="/terms" className="link">
-							Terms & Conditions
-						</a>{" "}
-						and to accept offers, news, and updates.
-					</Label>
-				</div>
-			</div>
-		</div>
+						<Button type="submit" className="w-full" disabled={isSubmitting}>
+							{isSubmitting ? (
+								<>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Creating Account...
+								</>
+							) : (
+								"Sign Up"
+							)}
+						</Button>
+					</form>
+				</Form>
+			</CardContent>
+		</Card>
 	);
 };
 
-export default RegisterForm;
+export default SignUpForm;

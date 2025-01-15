@@ -9,7 +9,6 @@ import { z } from "zod";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useQuery } from "react-query";
 import axios from "axios";
 
 type LogInForm = z.infer<typeof LoginSchema>;

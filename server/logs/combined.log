@@ -1493,3 +1493,9 @@ D:\ADMIN\Coding\auth-server\server\src\service\user-service.ts:94:37
      })
 
 Argument `id`: Invalid value provided. Expected Int, provided Object.
+2025-01-15T13:39:04.496Z [[32minfo[39m]: Starting to process email job 33 for tammanasharma452@gmail.com
+2025-01-15T13:39:09.688Z [[32minfo[39m]: Email sent successfully for job 33
+2025-01-15T13:39:09.755Z [[32minfo[39m]: ✓ Email job 33 completed successfully
+2025-01-15T14:48:52.573Z [[32minfo[39m]: Starting to process email job 35 for brijeshrana8967@yahoo.com
+2025-01-15T14:48:59.770Z [[32minfo[39m]: Email sent successfully for job 35
+2025-01-15T14:48:59.823Z [[32minfo[39m]: ✓ Email job 35 completed successfully

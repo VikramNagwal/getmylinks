@@ -23,7 +23,14 @@ import { sentryMiddleware } from "./middlewares/sentry-middleware";
 app.use("*", sentryMiddleware);
 app.use(logger());
 app.use(secureHeaders());
-app.use("/api/*", cors());
+app.use(
+	"/*",
+	cors({
+		origin: "http://localhost:5173",
+		credentials: true,
+		maxAge: 600,
+	}),
+);
 app.use("/api/v1", etag({ weak: true }));
 
 // routes

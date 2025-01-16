@@ -1,11 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Provider } from "react-redux";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { PostHogProvider } from "posthog-js/react";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App.tsx";
+import { store } from "./app/store.ts";
 
 const queryClient = new QueryClient();
 const options = {
@@ -18,13 +20,15 @@ createRoot(document.getElementById("root")!).render(
 		options={options}
 	>
 		<QueryClientProvider client={queryClient}>
-			<BrowserRouter>
-				<StrictMode>
-					<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-						<App />
-					</ThemeProvider>
-				</StrictMode>
-			</BrowserRouter>
+			<Provider store={store}>
+				<BrowserRouter>
+					<StrictMode>
+						<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+							<App />
+						</ThemeProvider>
+					</StrictMode>
+				</BrowserRouter>
+			</Provider>
 		</QueryClientProvider>
 	</PostHogProvider>,
 );

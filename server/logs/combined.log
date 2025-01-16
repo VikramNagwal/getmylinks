@@ -1499,3 +1499,12 @@ Argument `id`: Invalid value provided. Expected Int, provided Object.
 2025-01-15T14:48:52.573Z [[32minfo[39m]: Starting to process email job 35 for brijeshrana8967@yahoo.com
 2025-01-15T14:48:59.770Z [[32minfo[39m]: Email sent successfully for job 35
 2025-01-15T14:48:59.823Z [[32minfo[39m]: ✓ Email job 35 completed successfully
+2025-01-16T15:31:51.893Z [[32minfo[39m]: Starting to process email job 36 for deepakumar4512@gmail.com
+2025-01-16T15:32:25.742Z [[31merror[39m]: Failed to send email for job 36:
+2025-01-16T15:32:25.750Z [[31merror[39m]: ✗ Email job 36 failed:
+2025-01-16T15:32:26.813Z [[32minfo[39m]: Starting to process email job 36 for deepakumar4512@gmail.com
+2025-01-16T15:33:00.324Z [[31merror[39m]: Failed to send email for job 36:
+2025-01-16T15:33:00.330Z [[31merror[39m]: ✗ Email job 36 failed:
+2025-01-16T15:33:02.385Z [[32minfo[39m]: Starting to process email job 36 for deepakumar4512@gmail.com
+2025-01-16T15:33:34.525Z [[31merror[39m]: Failed to send email for job 36:
+2025-01-16T15:33:34.578Z [[31merror[39m]: ✗ Email job 36 failed:

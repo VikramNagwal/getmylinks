@@ -1372,3 +1372,9 @@ D:\ADMIN\Coding\auth-server\server\src\service\user-service.ts:94:37
      })
 
 Argument `id`: Invalid value provided. Expected Int, provided Object.
+2025-01-16T15:32:25.742Z [[31merror[39m]: Failed to send email for job 36:
+2025-01-16T15:32:25.750Z [[31merror[39m]: ✗ Email job 36 failed:
+2025-01-16T15:33:00.324Z [[31merror[39m]: Failed to send email for job 36:
+2025-01-16T15:33:00.330Z [[31merror[39m]: ✗ Email job 36 failed:
+2025-01-16T15:33:34.525Z [[31merror[39m]: Failed to send email for job 36:
+2025-01-16T15:33:34.578Z [[31merror[39m]: ✗ Email job 36 failed:

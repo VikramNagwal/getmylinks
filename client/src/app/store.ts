@@ -1,9 +1,8 @@
-import { AuthSlicer } from '@/features/AuthSlicer'
-import { configureStore } from '@reduxjs/toolkit'
-
+import { AuthSlicer } from "@/features/AuthSlicer";
+import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
-    reducer: {
-        AuthSlicer: AuthSlicer.reducer
-    }
-})
+	reducer: {
+		AuthSlicer: AuthSlicer.reducer,
+	},
+});

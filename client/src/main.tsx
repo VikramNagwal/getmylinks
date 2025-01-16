@@ -15,20 +15,20 @@ const options = {
 };
 
 createRoot(document.getElementById("root")!).render(
-  <PostHogProvider
-    apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_API_KEY}
-    options={options}
-  >
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <StrictMode>
-            <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-              <App />
-            </ThemeProvider>
-          </StrictMode>
-        </BrowserRouter>
-      </Provider>
-    </QueryClientProvider>
-  </PostHogProvider>
+	<PostHogProvider
+		apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_API_KEY}
+		options={options}
+	>
+		<QueryClientProvider client={queryClient}>
+			<Provider store={store}>
+				<BrowserRouter>
+					<StrictMode>
+						<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+							<App />
+						</ThemeProvider>
+					</StrictMode>
+				</BrowserRouter>
+			</Provider>
+		</QueryClientProvider>
+	</PostHogProvider>,
 );

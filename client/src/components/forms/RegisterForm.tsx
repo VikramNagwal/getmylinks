@@ -35,8 +35,13 @@ const useSignUpMutation = () => {
 		},
 		onSuccess: () => {
 			toast({
-				title: "Success",
+				title: "Welcome Senior🎉",
 				description: "Account created successfully!",
+				className: "bg-green-500 hover:bg-green-600",
+			});
+			toast({
+				title: "please verify your Email",
+				description: "we've sent you a verification link",
 			});
 		},
 		onError: () => {
@@ -52,7 +57,6 @@ const useSignUpMutation = () => {
 type SignUpForm = z.infer<typeof signUpSchema>;
 
 const SignUpForm = () => {
-	const { toast } = useToast();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -81,20 +85,10 @@ const SignUpForm = () => {
 	const onSubmit = async (data: SignUpForm) => {
 		if (isSubmitting) return;
 		setIsSubmitting(true);
-		try {
-			mutate(data);
-			form.reset();
-			navigate("/", {
-				replace: true,
-			});
-		} catch (error) {
-			toast({
-				title: "Registeration Failed",
-				description: "Something went wrong on our side. Please try later",
-			});
-		} finally {
-			setIsSubmitting(false);
-		}
+		mutate(data);
+		form.reset();
+		setIsSubmitting(false);
+		return navigate("/");
 	};
 
 	return (

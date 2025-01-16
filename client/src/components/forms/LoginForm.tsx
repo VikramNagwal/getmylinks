@@ -10,14 +10,36 @@ import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
+import { useMutation } from "react-query";
 
 type LogInForm = z.infer<typeof LoginSchema>;
 
+const useLoginMutation = () => {
+	const { toast } = useToast();
+	return useMutation({
+		mutationFn: (data: LogInForm) => {
+			return axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, data);
+		},
+
+		onSuccess: () => {
+			toast({
+				title: "Welcome Back🥳",
+				description: "good to see you again",
+			});
+		},
+
+		onError: () => {
+			toast({
+				title: "Login failed!!!",
+				description: "Please check your credentials",
+			});
+		},
+	});
+};
+
 const LoginForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
-	const { toast } = useToast();
-
-	// const { isLoading, error, data} = useQuery('login',)
+	const { mutate } = useLoginMutation();
 
 	const {
 		register,
@@ -27,28 +49,16 @@ const LoginForm = () => {
 		formState: { errors, touchedFields, dirtyFields },
 	} = useForm<LogInForm>({
 		resolver: zodResolver(LoginSchema),
-		mode: "onBlur",
+		mode: "onChange",
+		defaultValues: {
+			email: "",
+			password: "",
+		},
 	});
 
 	const onSubmit = async (data: LogInForm) => {
-		try {
-			const response = await axios.post(
-				"http://localhost:8080/api/v1/auth/login",
-				data,
-			);
-			console.log(response);
-			reset();
-			toast({
-				title: "Login Successful",
-				description: "You have successfully logged in",
-			});
-		} catch (error) {
-			toast({
-				title: "Login Failed",
-				description: "Please check your credentials and try again",
-				variant: "destructive",
-			});
-		}
+		mutate(data);
+		reset();
 	};
 
 	const TogglePassword = () => {

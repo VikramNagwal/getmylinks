@@ -144,7 +144,6 @@ async function checkUserByUsername(username: string): Promise<boolean> {
 	}
 }
 
-
 export {
 	isUserIdExist,
 	isUserEmailExist,

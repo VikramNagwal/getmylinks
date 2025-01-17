@@ -67,9 +67,9 @@ class AuthHandler {
 
 	static async verifyRefershTokens(token: string) {
 		try {
-			return await verify(token, Bun.env.REFRESH_TOKEN_SECRET!)
+			return await verify(token, Bun.env.REFRESH_TOKEN_SECRET!);
 		} catch (error) {
-			throw new Error("Invlid tokens")
+			throw new Error("Invlid tokens");
 		}
 	}
 }

@@ -168,24 +168,32 @@ userRouter.delete("/delete", async (c: Context) => {
 });
 userRouter.get("/refresh-tokens", async (c: Context) => {
 	try {
-		const refershToken = getCookie(c, 'refershTokens')
+		const refershToken = getCookie(c, "refershTokens");
 		if (!refershToken) {
-			return c.json({
-				success: false,
-				message: "cookies not found"
-			}, HttpStatusCode.NotFound)
+			return c.json(
+				{
+					success: false,
+					message: "cookies not found",
+				},
+				HttpStatusCode.NotFound,
+			);
 		}
 
-		const userExists = await db.user.findFirst({ where: { refreshToken: refershToken } })
-		const newTokens = await AuthHandler.generateAccessToken(userExists)
+		const userExists = await db.user.findFirst({
+			where: { refreshToken: refershToken },
+		});
+		const newTokens = await AuthHandler.generateAccessToken(userExists);
 	} catch (error) {
-		return c.json({
-			success: false,
-			isOperational: true,
-			message: "An error occurred while refreshing tokens",
-			error,
-		}, HttpStatusCode.BadRequest)
+		return c.json(
+			{
+				success: false,
+				isOperational: true,
+				message: "An error occurred while refreshing tokens",
+				error,
+			},
+			HttpStatusCode.BadRequest,
+		);
 	}
-})
+});
 
 export { userRouter };

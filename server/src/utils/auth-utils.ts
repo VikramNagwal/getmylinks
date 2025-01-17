@@ -57,11 +57,19 @@ class AuthHandler {
 		}
 	}
 
-	static async verifyTokens(token: string) {
+	static async verifyAccessTokens(token: string) {
 		try {
-			return await verify(token, process.env.ACCESS_TOKEN_SECRET!);
+			return await verify(token, Bun.env.ACCESS_TOKEN_SECRET!);
 		} catch (error) {
-			throw new Error("Error verifying tokens");
+			throw new Error("Invalid tokens");
+		}
+	}
+
+	static async verifyRefershTokens(token: string) {
+		try {
+			return await verify(token, Bun.env.REFRESH_TOKEN_SECRET!);
+		} catch (error) {
+			throw new Error("Invlid tokens");
 		}
 	}
 }

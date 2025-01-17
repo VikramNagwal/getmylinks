@@ -3,6 +3,7 @@ import {
 	checkUserByUsername,
 	deleteUserById,
 	getIdFromMiddleware,
+	getRecordById,
 	updateUserEmail,
 	updateUsername,
 	updateUserProfile,
@@ -14,6 +15,10 @@ import {
 	UserUpdateSchema,
 } from "../schemas/userSchema";
 import { verifyJWT } from "../middlewares/auth-middleware";
+import { getUserDetails } from "../service/link-service";
+import { getCookie } from "hono/cookie";
+import db from "../config/db-config";
+import { AuthHandler } from "../utils/auth-utils";
 
 const userRouter = new Hono();
 
@@ -161,5 +166,26 @@ userRouter.delete("/delete", async (c: Context) => {
 		);
 	}
 });
+userRouter.get("/refresh-tokens", async (c: Context) => {
+	try {
+		const refershToken = getCookie(c, 'refershTokens')
+		if (!refershToken) {
+			return c.json({
+				success: false,
+				message: "cookies not found"
+			}, HttpStatusCode.NotFound)
+		}
+
+		const userExists = await db.user.findFirst({ where: { refreshToken: refershToken } })
+		const newTokens = await AuthHandler.generateAccessToken(userExists)
+	} catch (error) {
+		return c.json({
+			success: false,
+			isOperational: true,
+			message: "An error occurred while refreshing tokens",
+			error,
+		}, HttpStatusCode.BadRequest)
+	}
+})
 
 export { userRouter };

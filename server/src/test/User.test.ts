@@ -7,3 +7,11 @@ describe("refersh tokens", () => {
 		expect(token.length).toBeGreaterThan(10);
 	});
 });
+
+describe("validate token", () => {
+	it("it should validate token", async () => {
+		const token = await AuthHandler.generateRefreshToken(9);
+		const isValid = await AuthHandler.verifyRefershTokens(token);
+		expect(isValid).toBeObject();
+	});
+});

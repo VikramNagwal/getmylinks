@@ -15,8 +15,7 @@ import {
 	UserUpdateSchema,
 } from "../schemas/userSchema";
 import { verifyJWT } from "../middlewares/auth-middleware";
-import { getUserDetails } from "../service/link-service";
-import { getCookie } from "hono/cookie";
+import { getCookie, setCookie } from "hono/cookie";
 import db from "../config/db-config";
 import { AuthHandler } from "../utils/auth-utils";
 
@@ -166,10 +165,10 @@ userRouter.delete("/delete", async (c: Context) => {
 		);
 	}
 });
-userRouter.get("/refresh-tokens", async (c: Context) => {
+userRouter.post("/refresh-tokens", async (c: Context) => {
 	try {
-		const refershToken = getCookie(c, "refershTokens");
-		if (!refershToken) {
+		const refreshToken = getCookie(c, "refershTokens");
+		if (!refreshToken) {
 			return c.json(
 				{
 					success: false,
@@ -179,10 +178,26 @@ userRouter.get("/refresh-tokens", async (c: Context) => {
 			);
 		}
 
-		const userExists = await db.user.findFirst({
-			where: { refreshToken: refershToken },
+		const user = await db.user.findFirst({
+			where: { refreshToken: refreshToken },
+			select: {
+				id: true,
+				email: true,
+			},
 		});
-		const newTokens = await AuthHandler.generateAccessToken(userExists);
+		if (user) {
+			throw new Error("Invalid tokens");
+		}
+		const newTokens = await AuthHandler.generateAccessToken(user);
+
+		setCookie(c, "accessToken", newTokens);
+		return c.json(
+			{
+				success: true,
+				message: "tokens refreshed successfully",
+			},
+			HttpStatusCode.Ok,
+		);
 	} catch (error) {
 		return c.json(
 			{

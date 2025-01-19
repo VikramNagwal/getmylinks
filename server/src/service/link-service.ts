@@ -7,7 +7,7 @@ async function createShortLink(url: string, custom?: string): Promise<string> {
 		const shortCode = custom || nanoid(8);
 		console.log("service");
 
-		await db.urlMapping.create({
+		await db.url.create({
 			data: {
 				longUrl: url,
 				shortUrl: shortCode,
@@ -36,7 +36,7 @@ function getUserDetails(req: any) {
 
 async function checkUrlExists(url: string) {
 	try {
-		const response = await db.urlMapping.findUnique({
+		const response = await db.url.findUnique({
 			where: { shortUrl: url },
 			select: {
 				isActive: true,

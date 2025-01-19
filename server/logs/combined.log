@@ -1508,3 +1508,26 @@ Argument `id`: Invalid value provided. Expected Int, provided Object.
 2025-01-16T15:33:02.385Z [[32minfo[39m]: Starting to process email job 36 for deepakumar4512@gmail.com
 2025-01-16T15:33:34.525Z [[31merror[39m]: Failed to send email for job 36:
 2025-01-16T15:33:34.578Z [[31merror[39m]: ✗ Email job 36 failed:
+2025-01-17T10:57:28.194Z [[32minfo[39m]: postgresql://oxer:oxerp123@localhost:5433/oxerDb?schema=public
+2025-01-17T16:19:15.015Z [[32minfo[39m]: Starting to process email job 37 for sneha895kumari@gmail.com
+2025-01-17T16:19:18.677Z [[32minfo[39m]: Email sent successfully for job 37
+2025-01-17T16:19:18.733Z [[32minfo[39m]: ✓ Email job 37 completed successfully
+2025-01-17T16:53:34.222Z [[31merror[39m]: Error while shortening url Error while creating short link
+2025-01-18T06:29:50.736Z [[32minfo[39m]: Starting to process email job 38 for shagunmoudgil@gmail.com
+2025-01-18T06:29:56.058Z [[32minfo[39m]: Email sent successfully for job 38
+2025-01-18T06:29:56.104Z [[32minfo[39m]: ✓ Email job 38 completed successfully
+2025-01-18T08:06:08.326Z [[31merror[39m]: Error while shortening url [
+  {
+    "code": "invalid_type",
+    "expected": "object",
+    "received": "string",
+    "path": [],
+    "message": "Expected object, received string"
+  }
+]
+2025-01-18T15:59:22.529Z [[31merror[39m]: Error while shortening url Error while creating short link
+2025-01-18T16:01:28.190Z [[31merror[39m]: Error while shortening url Error while creating short link
+2025-01-18T16:02:27.933Z [[31merror[39m]: Error while shortening url Error while creating short link
+2025-01-18T16:11:03.429Z [[32minfo[39m]: Starting to process email job 39 for ritikarana2002@gmail.com
+2025-01-18T16:11:09.747Z [[32minfo[39m]: Email sent successfully for job 39
+2025-01-18T16:11:09.808Z [[32minfo[39m]: ✓ Email job 39 completed successfully

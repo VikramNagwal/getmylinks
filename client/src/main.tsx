@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/Theme-provider.tsx";
 import { Provider } from "react-redux";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { PostHogProvider } from "posthog-js/react";

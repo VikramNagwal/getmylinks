@@ -112,31 +112,31 @@ const loginUser = async (c: Context) => {
 			await AuthHandler.generateRefreshandAccessToken(User.id);
 
 		const tokens = await AuthHandler.generateAccessToken(User);
-
 		const { password: _, refreshToken, ...userData } = User;
 
 		// setting cookies
 		setCookie(c, "accessTokens", tokens, {
 			httpOnly: true,
-			secure: true,
+			secure: Bun.env.NODE_ENV === "production",
 			sameSite: "Lax",
 			maxAge: 60 * 60 * 12,
 		});
 
 		setCookie(c, "refreshTokens", refreshTokens, {
 			httpOnly: true,
-			secure: true,
+			secure: Bun.env.NODE_ENV === "production",
 			sameSite: "Lax",
 			maxAge: 7 * 24 * 60 * 60,
 		});
-		//  returning response
-		return c.json({
-			success: true,
-			message: "User logged in successfully",
-			data: userData,
-			accessTokens, //remove them in production
-			refreshTokens, //remove them in production
-		});
+
+		return c.json(
+			{
+				success: true,
+				message: "User logged in successfully",
+				data: userData,
+			},
+			HttpStatusCode.Created,
+		);
 	} catch (error) {
 		return c.json(
 			{
@@ -154,7 +154,6 @@ const loginUser = async (c: Context) => {
 const logoutUser = async (c: Context) => {
 	try {
 		const userId = c.get("user")?.payload.id;
-		console.log(userId);
 
 		deleteCookie(c, "accessTokens");
 		deleteCookie(c, "refreshTokens");

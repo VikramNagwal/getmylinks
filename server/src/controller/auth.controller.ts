@@ -1,5 +1,5 @@
 import type { Context } from "hono";
-import db from "../config/db-config";
+import db from "../config/dbConfig";
 import { AuthHandler } from "../utils/auth-utils";
 import { HttpStatusCode } from "../types/types";
 import { setCookie, deleteCookie } from "hono/cookie";

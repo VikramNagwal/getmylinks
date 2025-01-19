@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { logger } from "../config/logger-config";
+import { logger } from "../config/loggerConfig";
 
 const redis = new Redis({
 	host: Bun.env.REDIS_HOST,

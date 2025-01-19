@@ -1,6 +1,6 @@
 import { Context, Hono } from "hono";
 import { etag } from "hono/etag";
-import db from "./config/db-config";
+import db from "./config/dbConfig";
 import { logger } from "hono/logger";
 import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";

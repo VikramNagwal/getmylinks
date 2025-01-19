@@ -1,6 +1,6 @@
 import { Context } from "hono";
-import db from "../config/db-config";
-import { logger } from "../config/logger-config";
+import db from "../config/dbConfig";
+import { logger } from "../config/loggerConfig";
 import { emailQueue } from "../queues/email.queue";
 import { generateOTP, generateUID } from "./otp-service";
 import redis from "../lib/redis";

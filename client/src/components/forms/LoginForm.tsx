@@ -19,10 +19,7 @@ const useLoginMutation = () => {
 	const { toast } = useToast();
 	return useMutation({
 		mutationFn: (data: LogInForm) => {
-	    return axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
-        data,
-      );
+			return axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, data);
 		},
 
 		onSuccess: () => {
@@ -63,7 +60,7 @@ const LoginForm = () => {
 
 	const onSubmit = async (data: LogInForm) => {
 		const res = mutate(data);
-		console.log(res)
+		console.log(res);
 		reset();
 		navigate("/modu/dashboard");
 	};

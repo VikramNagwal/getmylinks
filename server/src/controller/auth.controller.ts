@@ -117,24 +117,26 @@ const loginUser = async (c: Context) => {
 		// setting cookies
 		setCookie(c, "accessTokens", tokens, {
 			httpOnly: true,
-			secure: Bun.env.NODE_ENV === 'production',
+			secure: Bun.env.NODE_ENV === "production",
 			sameSite: "Lax",
 			maxAge: 60 * 60 * 12,
 		});
 
 		setCookie(c, "refreshTokens", refreshTokens, {
 			httpOnly: true,
-			secure: Bun.env.NODE_ENV === 'production',
+			secure: Bun.env.NODE_ENV === "production",
 			sameSite: "Lax",
 			maxAge: 7 * 24 * 60 * 60,
 		});
 
-		return c.json({
-			success: true,
-			message: "User logged in successfully",
-			data: userData,
-		}, HttpStatusCode.Created);
-		
+		return c.json(
+			{
+				success: true,
+				message: "User logged in successfully",
+				data: userData,
+			},
+			HttpStatusCode.Created,
+		);
 	} catch (error) {
 		return c.json(
 			{

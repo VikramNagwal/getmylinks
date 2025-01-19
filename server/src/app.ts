@@ -26,11 +26,11 @@ app.use(secureHeaders());
 app.use(
 	"/*",
 	cors({
-	origin: 'http://localhost:5173',
-    credentials: true,
-    allowMethods: ['POST', 'GET', 'DELETE', 'PUT'],
-    allowHeaders: ['Content-Type'], 
-    exposeHeaders: ['Set-Cookie'],
+		origin: "http://localhost:5173",
+		credentials: true,
+		allowMethods: ["POST", "GET", "DELETE", "PUT"],
+		allowHeaders: ["Content-Type"],
+		exposeHeaders: ["Set-Cookie"],
 	}),
 );
 app.use("/api/v1", etag({ weak: true }));

@@ -19,7 +19,6 @@ import { getCookie, setCookie } from "hono/cookie";
 import db from "../config/db-config";
 import { AuthHandler } from "../utils/auth-utils";
 
-
 const userRouter = new Hono();
 
 userRouter.use("*", verifyJWT);
@@ -184,19 +183,21 @@ userRouter.post("/refresh-tokens", async (c: Context) => {
 			select: {
 				id: true,
 				email: true,
-			}
+			},
 		});
 		if (user) {
 			throw new Error("Invalid tokens");
 		}
 		const newTokens = await AuthHandler.generateAccessToken(user);
 
-		setCookie(c, "accessToken", newTokens)
-		return c.json({
-			success: true,
-			message: "tokens refreshed successfully",
-		}, HttpStatusCode.Ok);
-
+		setCookie(c, "accessToken", newTokens);
+		return c.json(
+			{
+				success: true,
+				message: "tokens refreshed successfully",
+			},
+			HttpStatusCode.Ok,
+		);
 	} catch (error) {
 		return c.json(
 			{

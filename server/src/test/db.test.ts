@@ -21,12 +21,12 @@ async function createUser() {
 }
 describe("create user", () => {
 	it("it should create user", async () => {
-		const user = await createUser()
+		const user = await createUser();
 		expect(user).toHaveProperty("id");
 		expect(user).toBeObject();
 		expect(user).toHaveReturned();
-	})
-})
+	});
+});
 
 // async function getUser(email: string) {
 // 	const doesExist = await isUserEmailExist(email);

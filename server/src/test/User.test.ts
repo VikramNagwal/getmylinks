@@ -14,4 +14,4 @@ describe("validate token", () => {
 		const isValid = await AuthHandler.verifyRefershTokens(token);
 		expect(isValid).toBeObject();
 	});
-})
+});

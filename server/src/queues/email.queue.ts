@@ -1,7 +1,7 @@
 import { Queue } from "bullmq";
-import { QUEUE_NAME, REDIS_CONFIG, QUEUE_CONFIG } from "../config/queue-config";
+import { QUEUE_NAME, REDIS_CONFIG, QUEUE_CONFIG } from "../config/queueConfig";
 import { EmailJobData } from "../types/email.types";
-import { logger } from "../config/logger-config";
+import { logger } from "../config/loggerConfig";
 
 export const emailQueue = new Queue<EmailJobData>(QUEUE_NAME, {
 	connection: REDIS_CONFIG,

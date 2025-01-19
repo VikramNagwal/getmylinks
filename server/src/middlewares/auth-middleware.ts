@@ -1,9 +1,9 @@
 import { createMiddleware } from "hono/factory";
 import { Context, Next } from "hono";
 import { verify } from "hono/jwt";
-import { logger } from "../config/logger-config";
+import { logger } from "../config/loggerConfig";
 import { HttpStatusCode } from "../types/types";
-import db from "../config/db-config";
+import db from "../config/dbConfig";
 import { AuthHandler } from "../utils/auth-utils";
 
 interface Tokens {

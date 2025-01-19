@@ -1,5 +1,5 @@
 import { Context, Hono } from "hono";
-import { logger } from "../config/logger-config";
+import { logger } from "../config/loggerConfig";
 import { checkUrlExists, createShortLink } from "../service/link-service";
 import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
 import { HttpStatusCode } from "../types/types";

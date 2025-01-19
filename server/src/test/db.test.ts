@@ -1,5 +1,5 @@
-import db from "../config/db-config";
-import { logger } from "../config/logger-config";
+import db from "../config/dbConfig";
+import { logger } from "../config/loggerConfig";
 import { isUserEmailExist } from "../service/user-service";
 import { describe, it, expect } from "bun:test";
 

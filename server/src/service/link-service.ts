@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import db from "../config/db-config";
+import db from "../config/dbConfig";
 import { UAParser } from "ua-parser-js";
 
 async function createShortLink(url: string, custom?: string): Promise<string> {

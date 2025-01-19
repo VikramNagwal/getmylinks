@@ -16,7 +16,7 @@ import {
 } from "../schemas/userSchema";
 import { verifyJWT } from "../middlewares/auth-middleware";
 import { getCookie, setCookie } from "hono/cookie";
-import db from "../config/db-config";
+import db from "../config/dbConfig";
 import { AuthHandler } from "../utils/auth-utils";
 
 const userRouter = new Hono();

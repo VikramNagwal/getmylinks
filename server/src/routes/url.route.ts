@@ -9,7 +9,8 @@ const urlRouter = new Hono();
 
 urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
 	try {
-		const body = await c.req.parseBody();
+		const body = await c.req.json();
+		// console.log(body);
 		const { url, title } = LinkSchema.parse(body);
 
 		const shortUrl = await createShortLink(url, title);
@@ -19,7 +20,7 @@ urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
 				success: true,
 				message: "created shorted url",
 				data: {
-					shortUrl: `${Bun.env.FRONTEND_URL}/${shortUrl}`, // frontend url
+					shortUrl: shortUrl,
 				},
 			},
 			HttpStatusCode.Created,

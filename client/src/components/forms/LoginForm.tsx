@@ -11,6 +11,7 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 type LogInForm = z.infer<typeof LoginSchema>;
 
@@ -18,7 +19,10 @@ const useLoginMutation = () => {
 	const { toast } = useToast();
 	return useMutation({
 		mutationFn: (data: LogInForm) => {
-			return axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, data);
+	    return axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
+        data,
+      );
 		},
 
 		onSuccess: () => {
@@ -40,6 +44,7 @@ const useLoginMutation = () => {
 const LoginForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const { mutate } = useLoginMutation();
+	const navigate = useNavigate();
 
 	const {
 		register,
@@ -57,8 +62,10 @@ const LoginForm = () => {
 	});
 
 	const onSubmit = async (data: LogInForm) => {
-		mutate(data);
+		const res = mutate(data);
+		console.log(res)
 		reset();
+		navigate("/modu/dashboard");
 	};
 
 	const TogglePassword = () => {

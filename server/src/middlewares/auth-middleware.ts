@@ -24,7 +24,7 @@ const extractTokens = (cookieHeader?: string): Tokens | null => {
 		}
 	}
 
-	return tokens.accessTokens && tokens.refreshTokens
+	return tokens.accessTokens || tokens.refreshTokens
 		? (tokens as Tokens)
 		: null;
 };
@@ -45,7 +45,7 @@ export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
 				Bun.env.ACCESS_TOKEN_SECRET!,
 			);
 			c.set("user", decodedToken);
-			return next();
+			return await next();
 		} catch {
 			const decodedRefresh = await verify(
 				tokens.refreshTokens,
@@ -74,7 +74,7 @@ export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
 				});
 			});
 			c.set("user", user);
-			return next();
+			return await next();
 		}
 	} catch (error) {
 		logger.error("JWT verification failed:", error);

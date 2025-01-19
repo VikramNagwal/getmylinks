@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { authRouter } from "./auth";
-import { urlRouter } from "./url";
-import { userRouter } from "./user";
+import { authRouter } from "./auth.route";
+import { urlRouter } from "./url.route";
+import { userRouter } from "./user.route";
 import { verifyJWT } from "../middlewares/auth-middleware";
 
 const appRouter = new Hono();

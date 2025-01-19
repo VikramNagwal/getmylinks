@@ -88,7 +88,7 @@ const SignUpForm = () => {
 		mutate(data);
 		form.reset();
 		setIsSubmitting(false);
-		return navigate("/");
+		return navigate(`/${data.username}/dashboard`);
 	};
 
 	return (

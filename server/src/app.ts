@@ -8,7 +8,7 @@ import { secureHeaders } from "hono/secure-headers";
 const app = new Hono();
 
 // router imports
-import { appRouter } from "./routes";
+import { appRouter } from "./routes/index.route";
 import { HttpStatusCode } from "./types/types";
 import { ShortUrlSchema } from "./schemas/link-schema";
 import { verifyJWT } from "./middlewares/auth-middleware";
@@ -26,9 +26,11 @@ app.use(secureHeaders());
 app.use(
 	"/*",
 	cors({
-		origin: "http://localhost:5173",
-		credentials: true,
-		maxAge: 600,
+	origin: 'http://localhost:5173',
+    credentials: true,
+    allowMethods: ['POST', 'GET', 'DELETE', 'PUT'],
+    allowHeaders: ['Content-Type'], 
+    exposeHeaders: ['Set-Cookie'],
 	}),
 );
 app.use("/api/v1", etag({ weak: true }));
@@ -43,7 +45,7 @@ app.get("/:shorturl", verifyJWT, async (c: Context) => {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));
 		const userAgentInfo = getUserDetails(c.req);
 
-		const response = await db.urlMapping.findUnique({
+		const response = await db.url.findUnique({
 			where: { shortUrl },
 			select: {
 				id: true,
@@ -75,7 +77,7 @@ app.get("/:shorturl", verifyJWT, async (c: Context) => {
 		}
 
 		await db.$transaction(async (tx) => {
-			await tx.urlMapping.update({
+			await tx.url.update({
 				where: {
 					id: response.id,
 				},

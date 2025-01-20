@@ -1,3 +1,5 @@
+import { z } from "zod";
+import db from "../config/dbConfig";
 import { Context, Hono } from "hono";
 import { verifyJWT } from "../middlewares/auth-middleware";
 import { HttpStatusCode } from "../types/types";
@@ -6,13 +8,12 @@ import {
 	generateUID,
 	validateOtpToken,
 } from "../service/otp-service";
-import db from "../config/dbConfig";
 import { UserLoginSchema, UserRegisterSchema } from "../schemas/userSchema";
 import { getIdFromMiddleware, isUserEmailExist } from "../service/user-service";
 import { AuthHandler } from "../utils/auth-utils";
 import { emailQueue } from "../queues/email.queue";
 import { deleteCookie, setCookie } from "hono/cookie";
-import { z } from "zod";
+
 
 const authRouter = new Hono();
 
@@ -101,7 +102,6 @@ authRouter.post("/login", async (c: Context) => {
 				HttpStatusCode.NotFound,
 			);
 		}
-
 		const isPasswordMatch = await AuthHandler.comparePassword(
 			password,
 			user.password,
@@ -117,18 +117,17 @@ authRouter.post("/login", async (c: Context) => {
 			await AuthHandler.generateRefreshandAccessToken(user.id);
 
 		setCookie(c, "accessTokens", accessTokens, {
+			path: "/",
 			httpOnly: true,
-			secure: Bun.env.NODE_ENV === "production",
-			sameSite: "Lax",
-			maxAge: 60 * 60 * 12,
-		});
-
+			sameSite: "lax",
+			expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 days
+		})
 		setCookie(c, "refreshTokens", refreshTokens, {
+			path: "/",
 			httpOnly: true,
-			secure: Bun.env.NODE_ENV === "production",
-			sameSite: "Lax",
-			maxAge: 7 * 24 * 60 * 60,
-		});
+			sameSite: "lax",
+			expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 1 days
+		})
 
 		const { password: _, ...userData } = user;
 
@@ -150,6 +149,7 @@ authRouter.post("/login", async (c: Context) => {
 		);
 	}
 });
+
 authRouter.post("/:uid/verify", async (c: Context) => {
 	try {
 		const uid = c.req.param("uid");

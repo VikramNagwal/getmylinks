@@ -30,18 +30,13 @@ import { useNavigate } from "react-router-dom";
 const useSignUpMutation = () => {
 	const { toast } = useToast();
 	return useMutation({
-		mutationFn: (data: Omit<SignUpForm, "confirmPassword">) => {
-			return axios.post("http://localhost:8080/api/v1/auth/register", data);
+		mutationFn: async (data: Omit<SignUpForm, "confirmPassword">) => {
+			return await axios.post("http://localhost:8080/api/v1/auth/register", data);
 		},
 		onSuccess: () => {
 			toast({
 				title: "Welcome Senior🎉",
-				description: "Account created successfully!",
-				className: "bg-green-500 hover:bg-green-600",
-			});
-			toast({
-				title: "please verify your Email",
-				description: "we've sent you a verification link",
+				description: "we've sent you a verification link!",
 			});
 		},
 		onError: () => {

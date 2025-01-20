@@ -6,13 +6,12 @@ import { HttpStatusCode } from "../types/types";
 import { verifyJWT } from "../middlewares/auth-middleware";
 import { getCookie } from "hono/cookie";
 
-
 const urlRouter = new Hono();
 
 urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
 	try {
-		const { accessTokens, refreshTokens} = getCookie(c)
-		console.log(accessTokens, refreshTokens)
+		const { accessTokens, refreshTokens } = getCookie(c);
+		console.log(accessTokens, refreshTokens);
 		const { url, title } = LinkSchema.parse(await c.req.json());
 		const shortUrl = await createShortLink(url, title);
 		return c.json(

@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import axios from "axios";
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast";
 
 const ShortnForm = () => {
 	const [link, setLink] = useState<string>("");
-	const { toast } = useToast()
+	const { toast } = useToast();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -24,7 +24,7 @@ const ShortnForm = () => {
 		if (res.status === 200) {
 			toast({
 				title: "URL shortened successfully",
-			})
+			});
 			setLink(res.data.shortUrl);
 		}
 	};

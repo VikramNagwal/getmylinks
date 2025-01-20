@@ -14,7 +14,6 @@ import { AuthHandler } from "../utils/auth-utils";
 import { emailQueue } from "../queues/email.queue";
 import { deleteCookie, setCookie } from "hono/cookie";
 
-
 const authRouter = new Hono();
 
 const otpSchema = z.object({
@@ -121,13 +120,13 @@ authRouter.post("/login", async (c: Context) => {
 			httpOnly: true,
 			sameSite: "lax",
 			expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 days
-		})
+		});
 		setCookie(c, "refreshTokens", refreshTokens, {
 			path: "/",
 			httpOnly: true,
 			sameSite: "lax",
 			expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 1 days
-		})
+		});
 
 		const { password: _, ...userData } = user;
 

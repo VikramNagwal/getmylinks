@@ -18,7 +18,7 @@ type LogInForm = z.infer<typeof LoginSchema>;
 const useLoginMutation = () => {
 	const { toast } = useToast();
 	const navigate = useNavigate();
-	
+
 	return useMutation({
 		mutationFn: async (data: LogInForm) => {
 			return await axios.post(`http://localhost:8080/api/v1/auth/login`, data);
@@ -36,7 +36,6 @@ const useLoginMutation = () => {
 				title: "Login failed!!!",
 				description: "Please check your credentials",
 				variant: "destructive",
-
 			});
 		},
 	});
@@ -45,7 +44,6 @@ const useLoginMutation = () => {
 const LoginForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const { mutate } = useLoginMutation();
-
 
 	const {
 		register,
@@ -63,7 +61,7 @@ const LoginForm = () => {
 
 	const onSubmit = async (data: LogInForm) => {
 		const res = await mutate(data);
-		console.log(res)
+		console.log(res);
 	};
 
 	const TogglePassword = () => {

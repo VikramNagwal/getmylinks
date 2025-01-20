@@ -1391,3 +1391,107 @@ Argument `id`: Invalid value provided. Expected Int, provided Object.
 2025-01-18T15:59:22.529Z [[31merror[39m]: Error while shortening url Error while creating short link
 2025-01-18T16:01:28.190Z [[31merror[39m]: Error while shortening url Error while creating short link
 2025-01-18T16:02:27.933Z [[31merror[39m]: Error while shortening url Error while creating short link
+2025-01-20T17:59:32.779Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:32.986Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:33.329Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:33.403Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:33.432Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:33.503Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:33.588Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:33.649Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:33.556Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:33.855Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:33.866Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:33.872Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:33.884Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:33.900Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:33.925Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:33.961Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:33.904Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:33.978Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:34.009Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.011Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.018Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.036Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.099Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.192Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.383Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:34.385Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.386Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.536Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.537Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.540Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.541Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.597Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.707Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.905Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:34.907Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:34.910Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:34.914Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:34.938Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:34.951Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.951Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:34.986Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:34.989Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:35.091Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.092Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.105Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.106Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.154Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.263Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.390Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:35.575Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.577Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.711Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.713Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.718Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.719Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.784Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.887Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:35.940Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:35.944Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:35.949Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:35.950Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:35.952Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:35.991Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:35.994Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:36.239Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:36.239Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:36.362Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:36.378Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:36.380Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:36.382Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:36.412Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:36.441Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:36.549Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:36.980Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:36.981Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:36.982Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:36.983Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:36.985Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:36.986Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:36.986Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:36.987Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:37.018Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:37.074Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.075Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.076Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.078Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.153Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.245Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.515Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:37.760Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.769Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.838Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.839Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.842Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.843Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:37.916Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:38.008Z [[31merror[39m]: Redis connection error: ECONNREFUSED: Failed to connect
+2025-01-20T17:59:38.100Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:38.105Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:38.106Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:38.108Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:38.111Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:38.124Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-20T17:59:38.127Z [[31merror[39m]: Email queue error: Failed to connect

@@ -4,33 +4,28 @@ import { checkUrlExists, createShortLink } from "../service/link-service";
 import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
 import { HttpStatusCode } from "../types/types";
 import { verifyJWT } from "../middlewares/auth-middleware";
+import { getCookie } from "hono/cookie";
 
 const urlRouter = new Hono();
 
 urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
 	try {
-		const body = await c.req.json();
-		// console.log(body);
-		const { url, title } = LinkSchema.parse(body);
-
+		const { accessTokens, refreshTokens } = getCookie(c);
+		console.log(accessTokens, refreshTokens);
+		const { url, title } = LinkSchema.parse(await c.req.json());
 		const shortUrl = await createShortLink(url, title);
-
 		return c.json(
 			{
 				success: true,
 				message: "created shorted url",
-				data: {
-					shortUrl: shortUrl,
-				},
+				url: shortUrl,
 			},
 			HttpStatusCode.Created,
 		);
 	} catch (error) {
-		logger.error("Error while shortening url", error);
 		return c.json(
 			{
 				success: false,
-				isOperationl: true,
 				message: "Error while shortening url",
 				error,
 			},

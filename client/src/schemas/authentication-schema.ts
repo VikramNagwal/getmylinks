@@ -20,7 +20,7 @@ export const signUpSchema = z
 			.min(3, "Username must be at least 3 characters")
 			.max(30, "Username cannot exceed 30 characters")
 			.regex(
-				/^[a-zA-Z0-9_-]*$/,
+				/^[a-zA-Z0-9_-~^]*$/,
 				"Username can only contain letters, numbers, underscores, and hyphens",
 			)
 			.toLowerCase(), // Convert to lowercase for consistency

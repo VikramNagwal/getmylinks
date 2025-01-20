@@ -5,8 +5,6 @@ import { UAParser } from "ua-parser-js";
 async function createShortLink(url: string, custom?: string): Promise<string> {
 	try {
 		const shortCode = custom || nanoid(8);
-		console.log("service");
-
 		await db.url.create({
 			data: {
 				longUrl: url,

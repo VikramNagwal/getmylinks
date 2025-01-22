@@ -112,8 +112,7 @@ async function updateUsername(
 
 async function getIdFromMiddleware(c: Context): Promise<number> {
 	try {
-		const user = await c.get("user").payload;
-		const userId = Object.values(user)[0] as number;
+		const userId = await c.get("user").payload.userId;
 
 		return userId;
 	} catch (error) {

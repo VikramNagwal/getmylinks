@@ -24,17 +24,17 @@ model User {
 
   @@map("users")
   @@index([isVerified])
-  @@index([id])
+  @@index([email])
 }
 
 model Url {
   id          Int         @id @default(autoincrement())
   shortUrl    String      @unique
   longUrl     String
-  totalViews  Int         @default(0)
+  totalViews  Int         @default(1)
   isActive    Boolean     @default(true)
   createdById Int
-  createdBy   User?       @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdBy   User        @relation(fields: [createdById], references: [id], onDelete: Cascade)
   createdAt   DateTime    @default(now())
   expiresAt   DateTime?
   updatedAt   DateTime    @updatedAt

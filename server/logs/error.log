@@ -1495,3 +1495,5 @@ Argument `id`: Invalid value provided. Expected Int, provided Object.
 2025-01-20T17:59:38.111Z [[31merror[39m]: Email queue error: Failed to connect
 2025-01-20T17:59:38.124Z [[31merror[39m]: Email queue error: Failed to connect
 2025-01-20T17:59:38.127Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-21T07:42:53.117Z [[31merror[39m]: ✗ Email job 45 failed:
+2025-01-21T13:45:32.948Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.

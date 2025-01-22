@@ -1644,3 +1644,23 @@ Argument `id`: Invalid value provided. Expected Int, provided Object.
 2025-01-20T17:59:38.111Z [[31merror[39m]: Email queue error: Failed to connect
 2025-01-20T17:59:38.124Z [[31merror[39m]: Email queue error: Failed to connect
 2025-01-20T17:59:38.127Z [[31merror[39m]: Email queue error: Failed to connect
+2025-01-21T06:17:39.138Z [[32minfo[39m]: Starting to process email job 43 for sunandarathi89@gmail.com
+2025-01-21T06:17:44.449Z [[32minfo[39m]: Email sent successfully for job 43
+2025-01-21T06:17:44.498Z [[32minfo[39m]: ✓ Email job 43 completed successfully
+2025-01-21T07:06:59.919Z [[32minfo[39m]: Starting to process email job 44 for rachitkumar@gmail.com
+2025-01-21T07:07:05.266Z [[32minfo[39m]: Email sent successfully for job 44
+2025-01-21T07:07:05.318Z [[32minfo[39m]: ✓ Email job 44 completed successfully
+2025-01-21T07:18:08.806Z [[32minfo[39m]: Starting to process email job 45 for dilipsoni897@gmail.com
+2025-01-21T07:38:44.287Z [[32minfo[39m]: Starting to process email job 45 for dilipsoni897@gmail.com
+2025-01-21T07:42:53.117Z [[31merror[39m]: ✗ Email job 45 failed:
+2025-01-21T13:11:15.948Z [[32minfo[39m]: Starting to process email job 46 for tushalkalpade256@gmail.com
+2025-01-21T13:45:32.948Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-21T14:50:15.501Z [[32minfo[39m]: Starting to process email job 46 for tushalkalpade256@gmail.com
+2025-01-21T14:50:22.436Z [[32minfo[39m]: Email sent successfully for job 46
+2025-01-21T14:50:22.486Z [[32minfo[39m]: ✓ Email job 46 completed successfully
+2025-01-21T14:50:27.929Z [[32minfo[39m]: Starting to process email job 47 for ojasjaswal5432@gmail.com
+2025-01-21T14:50:33.266Z [[32minfo[39m]: Email sent successfully for job 47
+2025-01-21T14:50:33.267Z [[32minfo[39m]: ✓ Email job 47 completed successfully
+2025-01-22T15:58:47.423Z [[32minfo[39m]: Starting to process email job 48 for aayushkumar564@gmail.com
+2025-01-22T15:58:53.159Z [[32minfo[39m]: Email sent successfully for job 48
+2025-01-22T15:58:53.212Z [[32minfo[39m]: ✓ Email job 48 completed successfully

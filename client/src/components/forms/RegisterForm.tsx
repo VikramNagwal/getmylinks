@@ -29,6 +29,8 @@ import { useNavigate } from "react-router-dom";
 
 const useSignUpMutation = () => {
 	const { toast } = useToast();
+	const navigate = useNavigate();
+
 	return useMutation({
 		mutationFn: async (data: Omit<SignUpForm, "confirmPassword">) => {
 			return await axios.post(
@@ -36,7 +38,8 @@ const useSignUpMutation = () => {
 				data,
 			);
 		},
-		onSuccess: () => {
+		onSuccess: (res) => {
+			navigate(`/${res.data.username}/dashboard`);
 			toast({
 				title: "Welcome Senior🎉",
 				description: "we've sent you a verification link!",
@@ -60,7 +63,6 @@ const SignUpForm = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const { mutate } = useSignUpMutation();
-	const navigate = useNavigate();
 
 	const form = useForm<SignUpForm>({
 		resolver: zodResolver(signUpSchema),
@@ -86,7 +88,6 @@ const SignUpForm = () => {
 		mutate(data);
 		form.reset();
 		setIsSubmitting(false);
-		return navigate(`/${data.username}/dashboard`);
 	};
 
 	return (

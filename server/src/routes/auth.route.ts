@@ -79,6 +79,7 @@ authRouter.post("/register", async (c: Context) => {
 		);
 	}
 });
+
 authRouter.post("/login", async (c: Context) => {
 	try {
 		const { email, password } = UserLoginSchema.parse(await c.req.json());
@@ -95,7 +96,6 @@ authRouter.post("/login", async (c: Context) => {
 			return c.json(
 				{
 					success: false,
-					isOperational: true,
 					message: "Invalid Credentials, User not found!!",
 				},
 				HttpStatusCode.NotFound,
@@ -116,16 +116,10 @@ authRouter.post("/login", async (c: Context) => {
 			await AuthHandler.generateRefreshandAccessToken(user.id);
 
 		setCookie(c, "accessTokens", accessTokens, {
-			path: "/",
-			httpOnly: true,
-			sameSite: "lax",
-			expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 days
+			expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
 		});
 		setCookie(c, "refreshTokens", refreshTokens, {
-			path: "/",
-			httpOnly: true,
-			sameSite: "lax",
-			expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 1 days
+			expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
 		});
 
 		const { password: _, ...userData } = user;
@@ -139,6 +133,16 @@ authRouter.post("/login", async (c: Context) => {
 			HttpStatusCode.Ok,
 		);
 	} catch (error) {
+		if (error instanceof z.ZodError) {
+			return c.json(
+				{
+					success: false,
+					message: "Invalid data",
+					errors: error.errors,
+				},
+				HttpStatusCode.BadRequest,
+			);
+		}
 		return c.json(
 			{
 				success: false,
@@ -169,11 +173,20 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 		if (!isValid) {
 			throw new Error("Invalid OTP token");
 		}
-		await db.user.findUnique({ where: { verificationUid: uid } });
-		await db.user.update({
+		// const user = await db.user.findUnique({ where: { verificationUid: uid } });
+		const authenticUser = await db.user.update({
 			where: { verificationUid: uid },
 			data: { isVerified: true, verificationUid: null },
 		});
+		if (!authenticUser) {
+			return c.json(
+				{
+					success: false,
+					message: "Invalid user",
+				},
+				HttpStatusCode.NotFound,
+			);
+		}
 
 		return c.json(
 			{
@@ -192,6 +205,7 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 		);
 	}
 });
+
 authRouter.delete("/logout", verifyJWT, async (c: Context) => {
 	try {
 		const userId = await getIdFromMiddleware(c);
@@ -215,6 +229,22 @@ authRouter.delete("/logout", verifyJWT, async (c: Context) => {
 				message: "failed to logout user! Internal database error",
 			},
 			HttpStatusCode.InternalServerError,
+		);
+	}
+});
+
+authRouter.get("/get-user", verifyJWT, async (c: Context) => {
+	try {
+		const user = await c.get("user");
+		if (Object.keys(user).length === 0) throw new Error("Unauthorized user");
+		return c.json({ user }, HttpStatusCode.Ok);
+	} catch (error) {
+		return c.json(
+			{
+				success: false,
+				message: "Unauthorized user",
+			},
+			HttpStatusCode.Unauthenticated,
 		);
 	}
 });

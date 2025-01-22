@@ -4,21 +4,40 @@ import { checkUrlExists, createShortLink } from "../service/link-service";
 import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
 import { HttpStatusCode } from "../types/types";
 import { verifyJWT } from "../middlewares/auth-middleware";
-import { getCookie } from "hono/cookie";
+import { getIdFromMiddleware } from "../service/user-service";
+import { nanoid } from "nanoid";
+import db from "../config/dbConfig";
 
 const urlRouter = new Hono();
 
 urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
 	try {
-		const { accessTokens, refreshTokens } = getCookie(c);
-		console.log(accessTokens, refreshTokens);
+		const createdById = await getIdFromMiddleware(c);
 		const { url, title } = LinkSchema.parse(await c.req.json());
-		const shortUrl = await createShortLink(url, title);
+
+		const shortCode = title || nanoid(8);
+		const existingUrl = await checkUrlExists(url);
+		if (existingUrl) {
+			return c.json(
+				{
+					message: "Short url already exists",
+					shortUrl: `http://localhost:8080/${existingUrl}`,
+				},
+				HttpStatusCode.Ok,
+			);
+		}
+		await db.url.create({
+			data: {
+				longUrl: url,
+				shortUrl: shortCode,
+				createdById,
+			},
+		});
+
 		return c.json(
 			{
-				success: true,
-				message: "created shorted url",
-				url: shortUrl,
+				message: "creared",
+				shortUrl: `http://localhost:8080/${shortCode}`,
 			},
 			HttpStatusCode.Created,
 		);

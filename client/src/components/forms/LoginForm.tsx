@@ -20,8 +20,10 @@ const useLoginMutation = () => {
 	const navigate = useNavigate();
 
 	return useMutation({
-		mutationFn: async (data: LogInForm) => {
-			return await axios.post(`http://localhost:8080/api/v1/auth/login`, data);
+		mutationFn: (data: LogInForm) => {
+			return axios.post(`http://localhost:8080/api/v1/auth/login`, data, {
+				withCredentials: true,
+			});
 		},
 
 		onSuccess: () => {
@@ -33,7 +35,7 @@ const useLoginMutation = () => {
 
 		onError: () => {
 			toast({
-				title: "Login failed!!!",
+				title: "Email does not exists",
 				description: "Please check your credentials",
 				variant: "destructive",
 			});
@@ -60,8 +62,7 @@ const LoginForm = () => {
 	});
 
 	const onSubmit = async (data: LogInForm) => {
-		const res = await mutate(data);
-		console.log(res);
+		mutate(data);
 	};
 
 	const TogglePassword = () => {

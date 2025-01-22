@@ -1,9 +1,7 @@
 import { Context, Hono } from "hono";
-import { etag } from "hono/etag";
 import db from "./config/dbConfig";
 import { logger } from "hono/logger";
 import { cors } from "hono/cors";
-import { secureHeaders } from "hono/secure-headers";
 
 const app = new Hono();
 
@@ -20,27 +18,25 @@ import { sentryMiddleware } from "./middlewares/sentry-middleware";
 
 // middlewares
 // app.use("*", security);  turn on security middleware
-app.use("*", sentryMiddleware);
+// app.use("*", sentryMiddleware);
 app.use(logger());
-app.use(secureHeaders());
 app.use(
-	"/*",
+	"*",
 	cors({
-		origin: "http://localhost:5173",
 		credentials: true,
-		allowMethods: ["POST", "GET", "DELETE", "PUT"],
-		allowHeaders: ["Content-Type"],
-		exposeHeaders: ["Set-Cookie"],
+		origin: "http://localhost:5173",
+		allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+		allowHeaders: ["Content-Type", "Authorization"],
+		maxAge: 864000,
 	}),
 );
-app.use("/api/v1", etag({ weak: true }));
 
 // routes
 app.route("/api/v1/", appRouter);
 app.route("/admin/queues", dashboardApp);
 app.get("/", (c: Context) => c.text("Welcome to the URL shortener service"));
 
-app.get("/:shorturl", verifyJWT, async (c: Context) => {
+app.get("/:shorturl", async (c: Context) => {
 	try {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));
 		const userAgentInfo = getUserDetails(c.req);
@@ -54,7 +50,7 @@ app.get("/:shorturl", verifyJWT, async (c: Context) => {
 				expiresAt: true,
 			},
 		});
-
+		console.log("response: ", response); //remove this line
 		if (!response) {
 			return c.json(
 				{ message: "Short url not found" },

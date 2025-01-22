@@ -1,7 +1,6 @@
 import { createMiddleware } from "hono/factory";
 import { Context, Next } from "hono";
 import { verify } from "hono/jwt";
-import { logger } from "../config/loggerConfig";
 import { HttpStatusCode } from "../types/types";
 import db from "../config/dbConfig";
 import { AuthHandler } from "../utils/auth-utils";
@@ -77,7 +76,6 @@ export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
 			return await next();
 		}
 	} catch (error) {
-		logger.error("JWT verification failed:", error);
 		return c.json(
 			{ message: "Authentication failed" },
 			HttpStatusCode.InternalServerError,

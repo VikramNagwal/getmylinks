@@ -4,6 +4,7 @@ import { logger } from "../config/loggerConfig";
 import { emailQueue } from "../queues/email.queue";
 import { generateOTP, generateUID } from "./otp-service";
 import redis from "../lib/redis";
+import { setCookie } from "hono/cookie";
 
 // config
 const USERNAME_PREFIX = "username";
@@ -145,6 +146,15 @@ async function checkUserByUsername(username: string): Promise<boolean> {
 	}
 }
 
+async function setAllCookies(
+	accessToken: string,
+	refreshToken: string,
+	c: Context,
+) {
+	setCookie(c, "accessTokens", accessToken);
+	setCookie(c, "refreshTokens", refreshToken);
+}
+
 export {
 	isUserIdExist,
 	isUserEmailExist,
@@ -155,4 +165,5 @@ export {
 	getIdFromMiddleware,
 	updateUsername,
 	checkUserByUsername,
+	setAllCookies,
 };

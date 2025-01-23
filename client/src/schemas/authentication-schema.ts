@@ -37,3 +37,8 @@ export const LoginSchema = z.object({
 	email: z.string().email("Invalid email address"),
 	password: z.string().min(8).max(255),
 });
+
+export const ShortnSchema = z.object({
+	url: z.string().url("Invalid URL").nonempty("Please enter a URL"),
+	title: z.string().optional(),
+});

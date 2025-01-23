@@ -206,19 +206,31 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 	}
 });
 
-authRouter.delete("/logout", verifyJWT, async (c: Context) => {
+authRouter.get("/logout", verifyJWT, async (c: Context) => {
 	try {
 		const userId = await getIdFromMiddleware(c);
+		if (!userId) {
+			return c.json(
+				{
+					success: false,
+					message: "Unauthorized request! please login to continue",
+				},
+				HttpStatusCode.Unauthenticated,
+			);
+		}
+
 		deleteCookie(c, "accessTokens");
 		deleteCookie(c, "refreshTokens");
+
 		await db.user.update({
 			where: { id: userId },
 			data: { refreshToken: null },
 		});
+
 		return c.json(
 			{
 				success: true,
-				message: "Successfully logged out",
+				message: "User logged out successfully",
 			},
 			HttpStatusCode.Ok,
 		);

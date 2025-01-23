@@ -86,7 +86,6 @@ const SignUpForm = () => {
 		if (isSubmitting) return;
 		setIsSubmitting(true);
 		mutate(data);
-		form.reset();
 		setIsSubmitting(false);
 	};
 

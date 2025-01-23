@@ -4,6 +4,7 @@ import { verify } from "hono/jwt";
 import { HttpStatusCode } from "../types/types";
 import db from "../config/dbConfig";
 import { AuthHandler } from "../utils/auth-utils";
+import { setAllCookies } from "../service/user-service";
 
 interface Tokens {
 	accessTokens: string;
@@ -58,20 +59,28 @@ export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
 
 			if (!user || tokens.refreshTokens !== user.refreshToken) {
 				return c.json(
-					{ message: user ? "Token expired or used" : "Invalid user" },
-					HttpStatusCode.Unauthenticated,
+					{
+						success: false,
+						message: "expired tokens or invalid user",
+					},
+					HttpStatusCode.BadRequest,
 				);
 			}
 
 			const newTokens = await AuthHandler.generateRefreshandAccessToken(
 				user.id,
 			);
+
+			const { accessTokens, refreshTokens } = newTokens;
+			await setAllCookies(accessTokens, refreshTokens, c);
+
 			await db.$transaction(async (tx) => {
 				await tx.user.update({
 					where: { id: user.id },
 					data: { refreshToken: newTokens.refreshTokens },
 				});
 			});
+
 			c.set("user", user);
 			return await next();
 		}

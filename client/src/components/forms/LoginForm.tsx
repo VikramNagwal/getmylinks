@@ -61,7 +61,7 @@ const LoginForm = () => {
 		},
 	});
 
-	const onSubmit = async (data: LogInForm) => {
+	const onSubmit = (data: LogInForm) => {
 		mutate(data);
 	};
 

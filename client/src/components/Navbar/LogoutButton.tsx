@@ -9,18 +9,13 @@ const LogoutButton = () => {
 
 	const handleLogout = async () => {
 		try {
-			const res = await axios.delete(
-				`http://localhost:8080/api/v1/auth/logout`,
-				{
-					withCredentials: true,
-				},
-			);
-			if (res.status === 200) {
-				toast({
-					title: "Logout successful",
-					description: "You have been logged out",
-				});
-			}
+			console.log("called");
+			const res = await axios.get("http://localhost:8080/api/v1/auth/logout", {
+				withCredentials: true,
+			});
+			toast({
+				title: "we'll miss you 🥲",
+			});
 			return navigate("/");
 		} catch (error) {
 			return toast({

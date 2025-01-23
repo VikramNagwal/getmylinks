@@ -10,15 +10,12 @@ const LogoutButton = () => {
 	const handleLogout = async () => {
 		try {
 			console.log("called");
-			const res = await axios.get(
-				"http://localhost:8080/api/v1/auth/logout",
-				{
-					withCredentials: true,
-				}
-			);
+			const res = await axios.get("http://localhost:8080/api/v1/auth/logout", {
+				withCredentials: true,
+			});
 			toast({
-				title: "we'll miss you 🥲"
-			})
+				title: "we'll miss you 🥲",
+			});
 			return navigate("/");
 		} catch (error) {
 			return toast({

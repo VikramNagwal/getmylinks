@@ -41,4 +41,4 @@ export const LoginSchema = z.object({
 export const ShortnSchema = z.object({
 	url: z.string().url("Invalid URL").nonempty("Please enter a URL"),
 	title: z.string().optional(),
-})
+});

@@ -18,6 +18,7 @@ const ShortnForm = () => {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm<shortnForm>({
 		resolver: zodResolver(ShortnSchema),
@@ -36,10 +37,11 @@ const ShortnForm = () => {
 
 			if (res.status > 199 && res.status < 300) {
 				toast({
-					title: "URL shortened successfully",
+					title: "URL shortened successfully 🎉",
 				});
 				setLink(res.data.shortUrl);
 			}
+			reset();
 		} catch (error) {
 			return toast({
 				title: "Something went wrong on our side 😢",

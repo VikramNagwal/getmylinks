@@ -9,8 +9,7 @@ const LogoutButton = () => {
 
 	const handleLogout = async () => {
 		try {
-			console.log("called");
-			const res = await axios.get("http://localhost:8080/api/v1/auth/logout", {
+			await axios.get("http://localhost:8080/api/v1/auth/logout", {
 				withCredentials: true,
 			});
 			toast({

@@ -1,6 +1,10 @@
 import { Context, Hono } from "hono";
 import { logger } from "../config/loggerConfig";
-import { checkUrlExists, createShortLink } from "../service/link-service";
+import {
+	checkTitleExists,
+	checkUrlExists,
+	createShortLink,
+} from "../service/link-service";
 import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
 import { HttpStatusCode } from "../types/types";
 import { verifyJWT } from "../middlewares/auth-middleware";
@@ -14,6 +18,16 @@ urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
 	try {
 		const createdById = await getIdFromMiddleware(c);
 		const { url, title } = LinkSchema.parse(await c.req.json());
+
+		if (title) {
+			const existingTitle = await checkTitleExists(title!); // check if title exists
+			if (existingTitle) {
+				return c.json({
+					message: "title already exists",
+					shortUrl: `http://localhost:8080/${title}`,
+				});
+			}
+		}
 
 		const shortCode = title || nanoid(8);
 		const existingUrl = await checkUrlExists(url);

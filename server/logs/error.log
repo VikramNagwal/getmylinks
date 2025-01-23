@@ -1497,3 +1497,14 @@ Argument `id`: Invalid value provided. Expected Int, provided Object.
 2025-01-20T17:59:38.127Z [[31merror[39m]: Email queue error: Failed to connect
 2025-01-21T07:42:53.117Z [[31merror[39m]: ✗ Email job 45 failed:
 2025-01-21T13:45:32.948Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-22T17:04:17.871Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-22T17:04:53.587Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-22T17:05:12.802Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-22T17:05:17.980Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-22T17:05:20.877Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-22T17:06:29.618Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-22T17:06:34.661Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-22T17:07:06.907Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-22T17:07:12.380Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-22T17:07:17.027Z [[31merror[39m]: Redis connection error: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+2025-01-23T08:45:25.644Z [[31merror[39m]: Error in getting user id from middleware: TypeError: undefined is not an object (evaluating 'c.get("user").payload.userId')

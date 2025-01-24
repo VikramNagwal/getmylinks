@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import axios from "axios";
@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 type shortnForm = z.infer<typeof ShortnSchema>;
 
 const ShortnForm = () => {
-	const [link, setLink] = useState<string>("");
+	// const [link, setLink] = useState<string>("");
 	const { toast } = useToast();
 
 	const {
@@ -33,26 +33,25 @@ const ShortnForm = () => {
 					withCredentials: true,
 				},
 			);
-			console.log(res);
 
-			if (res.status > 199 && res.status < 300) {
+			if (res.data.success) {
 				toast({
 					title: "URL shortened successfully 🎉",
 				});
-				setLink(res.data.shortUrl);
+				// setLink(res.data.shortUrl);
 			}
 			reset();
 		} catch (error) {
 			return toast({
-				title: "Something went wrong on our side 😢",
-				description: "Please try again",
+				title: "Something went wrong on our side :(",
 				variant: "destructive",
 			});
 		}
 	};
 
 	return (
-		<section className="flex flex-col items-center justify-center">
+		<section className="flex flex-col items-center justify-center md:mt-[120px]">
+			<h1 className="text-2xl font-bold my-4">Shorten your URL</h1>
 			<form onSubmit={handleSubmit(onSubmit)} className="mx-auto space-y-4">
 				<div>
 					<Label htmlFor="longUrl">Long URL</Label>
@@ -73,7 +72,7 @@ const ShortnForm = () => {
 					<Label htmlFor="customShort">Custom Short URL (optional)</Label>
 					<div className="flex items-center w-full">
 						<span className="inline-flex items-center px-3 h-10 rounded-l-md border border-gray-300 bg-gray-50 text-gray-500 text-sm">
-							short.url/
+							getmylinks.url/
 						</span>
 						<Input
 							type="text"
@@ -87,15 +86,10 @@ const ShortnForm = () => {
 					</div>
 				</div>
 
-				<Button type="submit" className="w-full">
+				<Button type="submit" className="w-full hover:bg-hcolor">
 					Shorten URL
 				</Button>
 			</form>
-			<div className="mt-[80px]">
-				<p>
-					Shortened URL: <a href="#">{link}</a>
-				</p>
-			</div>
 		</section>
 	);
 };

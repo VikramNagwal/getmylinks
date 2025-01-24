@@ -34,9 +34,13 @@ const useVerifyMutation = () => {
 	const { uuid } = useParams();
 	return useMutation({
 		mutationFn: (data: z.infer<typeof FormSchema>) => {
-			return axios.post(`http://localhost:8080/api/v1/auth/${uuid}/verify`, data, {
-				withCredentials: true,
-			})
+			return axios.post(
+				`http://localhost:8080/api/v1/auth/${uuid}/verify`,
+				data,
+				{
+					withCredentials: true,
+				},
+			);
 		},
 
 		onSuccess() {
@@ -53,12 +57,11 @@ const useVerifyMutation = () => {
 				variant: "destructive",
 			});
 		},
-	})
-}
+	});
+};
 
 const VerificationPage = () => {
-
-	const { mutate } = useVerifyMutation()
+	const { mutate } = useVerifyMutation();
 
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),

@@ -24,7 +24,7 @@ function App() {
 				<Route path="/register" element={<RegisterPage />} />
 				<Route path="/register/about-me" element={<UserBioPage />} />
 				<Route path="/:username/dashboard" element={<Dashboard />} />
-				<Route path="/user/verify" element={<VerificationPage />} />
+				<Route path="/:uuid/verify" element={<VerificationPage />} />
 				<Route path="/terms" element={<Terms />} />
 				<Route path="/phone-preview" element={<PhonePreview data={user} />} />
 			</Routes>

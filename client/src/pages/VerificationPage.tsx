@@ -20,6 +20,9 @@ import {
 } from "@/components/ui/input-otp";
 import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/navbar/Navbar";
+import { useMutation } from "react-query";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const FormSchema = z.object({
 	pin: z.string().min(6, {
@@ -27,7 +30,36 @@ const FormSchema = z.object({
 	}),
 });
 
+const useVerifyMutation = () => {
+	const { uuid } = useParams();
+	return useMutation({
+		mutationFn: (data: z.infer<typeof FormSchema>) => {
+			return axios.post(`http://localhost:8080/api/v1/auth/${uuid}/verify`, data, {
+				withCredentials: true,
+			})
+		},
+
+		onSuccess() {
+			toast({
+				title: "Account Verified",
+				description: "You can now login to your account",
+			});
+		},
+
+		onError() {
+			toast({
+				title: "Invalid OTP",
+				description: "Invalid OTP",
+				variant: "destructive",
+			});
+		},
+	})
+}
+
 const VerificationPage = () => {
+
+	const { mutate } = useVerifyMutation()
+
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -36,14 +68,7 @@ const VerificationPage = () => {
 	});
 
 	function onSubmit(data: z.infer<typeof FormSchema>) {
-		toast({
-			title: "You submitted the following values:",
-			description: (
-				<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-					<code className="text-white">{JSON.stringify(data, null, 2)}</code>
-				</pre>
-			),
-		});
+		mutate(data);
 	}
 
 	return (

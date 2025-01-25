@@ -7,8 +7,11 @@ import {
 	SidebarProvider,
 	SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { useState } from "react";
 
 const Dashboard = () => {
+	const [activePage, setActivePage] = useState("shorten");
+
 	return (
 		<SidebarProvider className="font-roboto">
 			<AppSidebar />

@@ -3,7 +3,7 @@ import LogoutButton from "./LogoutButton";
 
 const Navbar = () => {
 	return (
-		<nav>
+		<nav className="z-10">
 			<div className="max-w-[1400px] mx-auto px-4 py-4 flex justify-between items-center">
 				<a href="/" className="text-xl md:text-3xl font-Gloock">
 					getmylinks

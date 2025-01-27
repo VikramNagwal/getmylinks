@@ -1,8 +1,12 @@
-import { z } from "zod";
 import db from "../config/dbConfig";
+import { z } from "zod";
 import { Context, Hono } from "hono";
-import { verifyJWT } from "../middlewares/auth-middleware";
 import { HttpStatusCode } from "../types/types";
+import { AuthHandler } from "../utils/tokens";
+import { emailQueue } from "../queues/email.queue";
+import { deleteCookie, setCookie } from "hono/cookie";
+import { verifyJWT } from "../middlewares/auth-middleware";
+
 import {
 	generateOTP,
 	generateUID,
@@ -10,9 +14,7 @@ import {
 } from "../service/otp-service";
 import { UserLoginSchema, UserRegisterSchema } from "../schemas/userSchema";
 import { getIdFromMiddleware, isUserEmailExist } from "../service/user-service";
-import { AuthHandler } from "../utils/auth-utils";
-import { emailQueue } from "../queues/email.queue";
-import { deleteCookie, setCookie } from "hono/cookie";
+
 
 const authRouter = new Hono();
 
@@ -22,7 +24,7 @@ const otpSchema = z.object({
 
 authRouter.post("/register", async (c: Context) => {
 	try {
-		const { username, name, email, password, bio } = UserRegisterSchema.parse(
+		const { username, name, email, password } = UserRegisterSchema.parse(
 			await c.req.json(),
 		);
 		const existingUser = await isUserEmailExist(email);
@@ -45,9 +47,8 @@ authRouter.post("/register", async (c: Context) => {
 				username: String(username.trim().toLowerCase()),
 				name: String(name.trim().toLowerCase()),
 				email: String(email.trim().toLowerCase()),
-				password: hashedPassword,
+				passwordHash: hashedPassword,
 				verificationUid: uid,
-				bio,
 			},
 		});
 		if (!user) {
@@ -60,7 +61,7 @@ authRouter.post("/register", async (c: Context) => {
 			);
 		}
 		await emailQueue.add("sendEmail", { email, otp, uid });
-		const { password: _, verificationUid, ...userData } = user;
+		const { passwordHash: _, verificationUid, ...userData } = user;
 		return c.json(
 			{
 				success: true,
@@ -89,7 +90,7 @@ authRouter.post("/login", async (c: Context) => {
 			select: {
 				id: true,
 				username: true,
-				password: true,
+				passwordHash: true,
 			},
 		});
 		if (!user) {
@@ -103,7 +104,7 @@ authRouter.post("/login", async (c: Context) => {
 		}
 		const isPasswordMatch = await AuthHandler.comparePassword(
 			password,
-			user.password,
+			user.passwordHash,
 		);
 		if (!isPasswordMatch) {
 			return c.json(
@@ -122,7 +123,7 @@ authRouter.post("/login", async (c: Context) => {
 			expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
 		});
 
-		const { password: _, ...userData } = user;
+		const { passwordHash: _, ...userData } = user;
 
 		return c.json(
 			{
@@ -176,7 +177,7 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 		// const user = await db.user.findUnique({ where: { verificationUid: uid } });
 		const authenticUser = await db.user.update({
 			where: { verificationUid: uid },
-			data: { isVerified: true, verificationUid: null },
+			data: { emailVerified: true, verificationUid: null },
 		});
 		if (!authenticUser) {
 			return c.json(

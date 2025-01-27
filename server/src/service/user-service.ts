@@ -1,16 +1,16 @@
 import { Context } from "hono";
 import db from "../config/dbConfig";
-import { logger } from "../config/loggerConfig";
 import { emailQueue } from "../queues/email.queue";
 import { generateOTP, generateUID } from "./otp-service";
 import redis from "../lib/redis";
 import { setCookie } from "hono/cookie";
+import { logger } from "../utils/logger";
 
 // config
 const USERNAME_PREFIX = "username";
 const CACHE_TTL = 60 * 60 * 4;
 
-async function isUserIdExist(id: number): Promise<boolean> {
+async function isUserIdExist(id: string): Promise<boolean> {
 	try {
 		const doesExist = await db.user.findUnique({ where: { id } });
 		return doesExist ? true : false;
@@ -30,7 +30,7 @@ async function isUserEmailExist(email: string): Promise<boolean> {
 	}
 }
 
-async function getRecordById(id: number): Promise<any> {
+async function getRecordById(id: string): Promise<any> {
 	try {
 		const record = await db.user.findUnique({ where: { id } });
 		return record;
@@ -40,7 +40,7 @@ async function getRecordById(id: number): Promise<any> {
 	}
 }
 
-async function deleteUserById(id: number): Promise<void> {
+async function deleteUserById(id: string): Promise<void> {
 	try {
 		const deletedUser = await db.user.delete({ where: { id } });
 	} catch (error) {
@@ -49,13 +49,13 @@ async function deleteUserById(id: number): Promise<void> {
 	}
 }
 
-async function updateUserProfile(userId: number, body: any): Promise<any> {
+async function updateUserProfile(userId: string, body: any): Promise<any> {
 	try {
 		const updatedUser = await db.user.update({
 			where: { id: userId },
 			data: body,
 		});
-		const { password, refreshToken, verificationUid, id, ...profile } =
+		const { passwordHash, refreshToken, verificationUid, id, ...profile } =
 			updatedUser;
 		return profile;
 	} catch (error) {
@@ -65,7 +65,7 @@ async function updateUserProfile(userId: number, body: any): Promise<any> {
 }
 
 async function updateUserEmail(
-	userId: number,
+	userId: string,
 	email: string,
 ): Promise<boolean> {
 	try {
@@ -93,7 +93,7 @@ async function updateUserEmail(
 }
 
 async function updateUsername(
-	userId: number,
+	userId: string,
 	username: string,
 ): Promise<boolean> {
 	try {
@@ -111,7 +111,7 @@ async function updateUsername(
 	}
 }
 
-async function getIdFromMiddleware(c: Context): Promise<number> {
+async function getIdFromMiddleware(c: Context): Promise<string> {
 	try {
 		const userId = await c.get("user").payload.userId;
 

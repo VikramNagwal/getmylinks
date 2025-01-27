@@ -3,7 +3,7 @@ import { Context, Next } from "hono";
 import { verify } from "hono/jwt";
 import { HttpStatusCode } from "../types/types";
 import db from "../config/dbConfig";
-import { AuthHandler } from "../utils/auth-utils";
+import { AuthHandler } from "../utils/tokens";
 import { setAllCookies } from "../service/user-service";
 
 interface Tokens {

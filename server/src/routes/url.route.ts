@@ -1,16 +1,16 @@
 import { Context, Hono } from "hono";
-import { logger } from "../config/loggerConfig";
-import {
-	checkTitleExists,
-	checkUrlExists,
-	createShortLink,
-} from "../service/link-service";
 import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
 import { HttpStatusCode } from "../types/types";
 import { verifyJWT } from "../middlewares/auth-middleware";
 import { getIdFromMiddleware } from "../service/user-service";
 import { nanoid } from "nanoid";
 import db from "../config/dbConfig";
+
+import {
+	checkTitleExists,
+	checkUrlExists,
+} from "../service/link-service";
+import { logger } from "../utils/logger";
 
 const urlRouter = new Hono();
 
@@ -35,16 +35,16 @@ urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
 			return c.json(
 				{
 					message: "Short url already exists",
-					shortUrl: `http://localhost:8080/${existingUrl}`,
+					shortUrl: `http://localhost:5173/${existingUrl}`,
 				},
 				HttpStatusCode.Ok,
 			);
 		}
-		await db.url.create({
+		await db.link.create({
 			data: {
-				longUrl: url,
+				url,
 				shortUrl: shortCode,
-				createdById,
+				userId: createdById,
 			},
 		});
 

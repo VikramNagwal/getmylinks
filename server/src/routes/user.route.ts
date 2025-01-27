@@ -15,9 +15,10 @@ import {
 	UserUpdateSchema,
 } from "../schemas/userSchema";
 import { verifyJWT } from "../middlewares/auth-middleware";
-import { getCookie, setCookie } from "hono/cookie";
+import { deleteCookie, getCookie, setCookie } from "hono/cookie";
 import db from "../config/dbConfig";
-import { AuthHandler } from "../utils/auth-utils";
+import { AuthHandler } from "../utils/tokens";
+import { logger } from "../utils/logger";
 
 const userRouter = new Hono();
 
@@ -47,24 +48,54 @@ userRouter.get("/profile", async (c: Context) => {
 		);
 	}
 });
-userRouter.put("/email/update", async (c: Context) => {
-	try {
-		const userId = await c.get("user").payload.id;
-		console.log(c.get("user"));
-		console.log(userId);
-		const body = await c.req.parseBody();
-		const { email } = EmailBody.parse(body);
 
-		const updateEmail = await updateUserEmail(userId, email);
-		if (!updateEmail) {
-			return c.json({
-				success: false,
-				message: "An error occurred while updating user email",
-			});
+userRouter.post("/add/profile", async (c: Context) => {
+	try {
+		const user = await c.get("user");
+		const {bio, avatar} = await c.req.json();
+		const userId = user.payload.id;
+
+		if (!userId) {
+			throw new Error("Invalid user id");
 		}
+
+		const profile = await db.profile.create({
+			data: {
+				bio, 
+				avatar,
+				user: {
+					connect: { id: userId },
+				},
+			}
+		})
+		if (!profile) throw new Error("Unable to add profile");
+		return c.json({
+			success: true,
+			message: "Profile added successfully",	
+		}, HttpStatusCode.Created)
+	} catch (error) {
+		logger.error(error);
+		return c.json({
+			success: false,
+			message: "An error occurred while adding profile",
+			error,
+		}, HttpStatusCode.InternalServerError)
+	}
+})
+
+userRouter.put("/profile/update", async (c: Context) => {
+	try {
+		const userId = await getIdFromMiddleware(c);
+		const profileData = await c.req.json();
+
+		const updatedProfile = await db.profile.update({ where: { userId }, data: profileData });
+		if (!updatedProfile) {
+			throw new Error("Unable to update profile");
+		}
+
 		return c.json(
 			{
-				success: updateEmail,
+				success: true,
 				message:
 					"user email updated successfully! A verififcation email has been sent to your new email address",
 			},
@@ -82,78 +113,20 @@ userRouter.put("/email/update", async (c: Context) => {
 		);
 	}
 });
-userRouter.put("/username/update", async (c: Context) => {
-	try {
-		const userId = await c.get("user").payload.id;
-		const { username } = UsernameBody.parse(await c.req.parseBody());
 
-		const existUser = await checkUserByUsername(username);
-		if (existUser) {
-			return c.json({
-				success: false,
-				message: "Username already exists",
-			});
-		}
-		const updatedUser = await updateUsername(userId, username);
-		if (!updatedUser) {
-			return c.json({
-				success: false,
-				message: "An error occurred while updating username",
-			});
-		}
-
-		return c.json(
-			{
-				success: true,
-				message: "username updated successfully",
-			},
-			HttpStatusCode.Ok,
-		);
-	} catch (error) {
-		return c.json(
-			{
-				success: false,
-				isOperational: true,
-				message: "Unable to update username! Please try again later",
-			},
-			HttpStatusCode.InternalServerError,
-		);
-	}
-});
-userRouter.put("/update", async (c: Context) => {
-	try {
-		const body = UserUpdateSchema.parse(await c.req.parseBody());
-		const userId = await getIdFromMiddleware(c);
-
-		const updatedUser = await updateUserProfile(userId, body);
-		return c.json({
-			success: true,
-			message: "user profile updated successfully",
-			updatedUser,
-		});
-	} catch (error) {
-		return c.json(
-			{
-				success: false,
-				isOperational: true,
-				message: "An error occurred while updating user profile",
-				error,
-			},
-			HttpStatusCode.InternalServerError,
-		);
-	}
-});
-userRouter.delete("/delete", async (c: Context) => {
+userRouter.delete("/account/delete", async (c: Context) => {
 	try {
 		const user = await c.get("user");
 		const userId = user.payload.id;
 
 		await deleteUserById(userId);
+		deleteCookie(c, "accessToken");
+		deleteCookie(c, "refreshToken");
 
 		return c.json({
 			success: true,
 			message: "user deleted successfully",
-		});
+		}, HttpStatusCode.Ok);
 	} catch (error) {
 		return c.json(
 			{
@@ -165,17 +138,13 @@ userRouter.delete("/delete", async (c: Context) => {
 		);
 	}
 });
+
 userRouter.post("/refresh-tokens", async (c: Context) => {
 	try {
 		const refreshToken = getCookie(c, "refershTokens");
+
 		if (!refreshToken) {
-			return c.json(
-				{
-					success: false,
-					message: "cookies not found",
-				},
-				HttpStatusCode.NotFound,
-			);
+			throw new Error("Invalid tokens");
 		}
 
 		const user = await db.user.findFirst({
@@ -185,12 +154,14 @@ userRouter.post("/refresh-tokens", async (c: Context) => {
 				email: true,
 			},
 		});
-		if (user) {
-			throw new Error("Invalid tokens");
+		if (!user) {
+			throw new Error("internal database error");
 		}
-		const newTokens = await AuthHandler.generateAccessToken(user);
+		const newTokens = await AuthHandler.generateRefreshandAccessToken(user.id);
 
-		setCookie(c, "accessToken", newTokens);
+		setCookie(c, "accessToken", newTokens.accessTokens,);
+		setCookie(c, "refreshToken", newTokens.refreshTokens,);
+		
 		return c.json(
 			{
 				success: true,

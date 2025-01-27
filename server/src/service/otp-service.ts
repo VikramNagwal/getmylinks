@@ -1,6 +1,6 @@
 import { authenticator, totp } from "otplib";
-import { logger } from "../config/loggerConfig";
 import { randomUUIDv7 } from "bun";
+import { logger } from "../utils/logger";
 
 const secret = authenticator.generateSecret(4);
 totp.options = {

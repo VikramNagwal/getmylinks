@@ -1,0 +1,8 @@
+NODE clicks_by_url
+SQL >
+    SELECT
+        short_url,
+        count() as total_clicks,
+        max(timestamp) as last_click
+    FROM clicks
+    GROUP BY short_url

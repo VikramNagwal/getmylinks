@@ -29,7 +29,7 @@ const extractTokens = (cookieHeader?: string): Tokens | null => {
 		: null;
 };
 
-export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
+export const authenticateJWT = createMiddleware(async (c: Context, next: Next) => {
 	try {
 		const tokens = extractTokens(c.req.header("Cookie"));
 		if (!tokens) {
@@ -53,7 +53,7 @@ export const verifyJWT = createMiddleware(async (c: Context, next: Next) => {
 			);
 
 			const user = await db.user.findUnique({
-				where: { id: Number(decodedRefresh.userId) },
+				where: { id: String(decodedRefresh.userId) },
 				select: { id: true, refreshToken: true },
 			});
 

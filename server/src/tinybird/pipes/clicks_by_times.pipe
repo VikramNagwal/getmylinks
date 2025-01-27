@@ -1,0 +1,9 @@
+NODE clicks_by_time
+SQL >
+    SELECT
+        toStartOfHour(timestamp) as hour,
+        short_url,
+        count() as clicks
+    FROM clicks
+    GROUP BY hour, short_url
+    ORDER BY hour DESC

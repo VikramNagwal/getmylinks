@@ -1,3 +1,6 @@
+import db from "../config/dbConfig";
+import { AuthHandler } from "../utils/tokens";
+import { logger } from "../utils/logger"
 import { Context, Hono } from "hono";
 import {
 	checkUserByUsername,
@@ -9,20 +12,13 @@ import {
 	updateUserProfile,
 } from "../service/user-service";
 import { HttpStatusCode } from "../types/types";
-import {
-	EmailBody,
-	UsernameBody,
-	UserUpdateSchema,
-} from "../schemas/userSchema";
-import { verifyJWT } from "../middlewares/auth-middleware";
+import { authenticateJWT } from "../middlewares/auth-middleware";
 import { deleteCookie, getCookie, setCookie } from "hono/cookie";
-import db from "../config/dbConfig";
-import { AuthHandler } from "../utils/tokens";
-import { logger } from "../utils/logger";
+
 
 const userRouter = new Hono();
 
-userRouter.use("*", verifyJWT);
+userRouter.use("*", authenticateJWT);
 
 userRouter.get("/profile", async (c: Context) => {
 	try {

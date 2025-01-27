@@ -5,7 +5,7 @@ import { HttpStatusCode } from "../types/types";
 import { AuthHandler } from "../utils/tokens";
 import { emailQueue } from "../queues/email.queue";
 import { deleteCookie, setCookie } from "hono/cookie";
-import { verifyJWT } from "../middlewares/auth-middleware";
+import { authenticateJWT } from "../middlewares/auth-middleware";
 
 import {
 	generateOTP,
@@ -206,7 +206,7 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 	}
 });
 
-authRouter.get("/logout", verifyJWT, async (c: Context) => {
+authRouter.get("/logout", authenticateJWT, async (c: Context) => {
 	try {
 		const userId = await getIdFromMiddleware(c);
 		if (!userId) {
@@ -245,7 +245,7 @@ authRouter.get("/logout", verifyJWT, async (c: Context) => {
 	}
 });
 
-authRouter.get("/get-user", verifyJWT, async (c: Context) => {
+authRouter.get("/get-user", authenticateJWT, async (c: Context) => {
 	try {
 		const user = await c.get("user");
 		if (Object.keys(user).length === 0) throw new Error("Unauthorized user");

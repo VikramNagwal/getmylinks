@@ -26,7 +26,7 @@ class AuthHandler {
 		return accessToken;
 	}
 
-	static async generateRefreshToken(userId: number): Promise<string> {
+	static async generateRefreshToken(userId: string): Promise<string> {
 		const refreshToken = await sign(
 			{ userId, exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60 }, // 7 days
 			process.env.REFRESH_TOKEN_SECRET!,
@@ -34,7 +34,7 @@ class AuthHandler {
 		return refreshToken;
 	}
 
-	static async generateRefreshandAccessToken(userId: number) {
+	static async generateRefreshandAccessToken(userId: string) {
 		try {
 			const user = await db.user.findUnique({ where: { id: userId } });
 			if (!user) throw Error("user not found! Invalid user Id");

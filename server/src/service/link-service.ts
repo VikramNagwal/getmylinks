@@ -12,11 +12,11 @@ async function createShortLink(c: Context): Promise<string> {
 
 		const shortCode = title || nanoid(8);
 		console.log(shortCode);
-		const urlData = await db.url.create({
+		const urlData = await db.link.create({
 			data: {
-				longUrl: url,
+				url,
 				shortUrl: shortCode,
-				createdById,
+				userId: createdById,
 			},
 		});
 		console.log(urlData);
@@ -44,8 +44,8 @@ function getUserDetails(req: any) {
 
 async function checkUrlExists(url: string) {
 	try {
-		const response = await db.url.findFirst({
-			where: { longUrl: url },
+		const response = await db.link.findFirst({
+			where: { url },
 			select: {
 				isActive: true,
 				shortUrl: true,
@@ -62,7 +62,7 @@ async function checkUrlExists(url: string) {
 
 async function checkTitleExists(title: string) {
 	try {
-		const response = await db.url.findFirst({
+		const response = await db.link.findFirst({
 			where: { shortUrl: title },
 			select: {
 				isActive: true,

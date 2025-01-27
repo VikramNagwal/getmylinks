@@ -8,56 +8,71 @@ datasource db {
 }
 
 model User {
-  id              Int       @id @default(autoincrement())
-  username        String    @unique
+  id              String   @id @default(cuid())
+  username        String   @unique
   name            String?
-  email           String    @unique
-  password        String
-  bio             String?
-  urls            Url[]    
-  isVerified      Boolean   @default(false)
-  emailVerifiedAt DateTime?
-  verificationUid String?   @unique
+  email           String   @unique
+  emailVerified   Boolean  @default(false)
+  verificationUid String?  @unique
+  passwordHash    String   @db.VarChar(160) @unique
   refreshToken    String?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
+  links   link[]
+  Profile Profile?
+
+  @@index([email, id])
   @@map("users")
-  @@index([isVerified])
-  @@index([email])
 }
 
-model Url {
-  id          Int         @id @default(autoincrement())
-  shortUrl    String      @unique
-  longUrl     String
-  totalViews  Int         @default(1)
-  isActive    Boolean     @default(true)
-  createdById Int
-  createdBy   User        @relation(fields: [createdById], references: [id], onDelete: Cascade)
-  createdAt   DateTime    @default(now())
-  expiresAt   DateTime?
-  updatedAt   DateTime    @updatedAt
-  clickEvents Analytics[]
+model link {
+  id         String    @id @default(cuid())
+  userId     String
+  shortUrl   String    @unique @db.VarChar(400)
+  url        String
+  totalViews Int       @default(0)
+  isActive   Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime?
+  updatedAt  DateTime  @updatedAt
 
-  @@index([createdById])
-  @@index([isActive])
-  @@map("urls")
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  analytics Analytics?
+
+  @@index([userId, shortUrl])
+  @@map("links")
 }
 
 model Analytics {
-  id          Int      @id @default(autoincrement())
-  urlId       Int
-  url         Url     @relation(fields: [urlId], references: [id], onDelete: Cascade)
+  id          String   @id @default(cuid())
+  linkId      String   @unique
   clickedAt   DateTime @default(now())
   userAgent   String?
   ipAddress   String?
   referer     String?
   countryCode String?  @db.VarChar(2)
-  deviceType  String?  @db.VarChar(20)
-  browser     String?  @db.VarChar(50)
-  os          String?  @db.VarChar(50)
+  deviceType  String?  @db.VarChar(220)
+  browser     String?  @db.VarChar(200)
+  os          String?  @db.VarChar(150)
+  createdAt   DateTime @default(now())
 
-  @@index([urlId])
+  link        link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  @@index([linkId])
   @@map("analytics")
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  bio       String?
+  avatar    String?   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("profiles")
 }

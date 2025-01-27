@@ -9,7 +9,6 @@ const app = new Hono();
 import { appRouter } from "./routes/index.route";
 import { HttpStatusCode } from "./types/types";
 import { ShortUrlSchema } from "./schemas/link-schema";
-import { verifyJWT } from "./middlewares/auth-middleware";
 import { getUserDetails } from "./service/link-service";
 import { dashboardApp } from "./queues/dashboard";
 import { security } from "./middlewares/security-middleware";
@@ -41,11 +40,11 @@ app.get("/:shorturl", async (c: Context) => {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));
 		const userAgentInfo = getUserDetails(c.req);
 
-		const response = await db.url.findUnique({
+		const response = await db.link.findUnique({
 			where: { shortUrl },
 			select: {
 				id: true,
-				longUrl: true,
+				url: true,
 				isActive: true,
 				expiresAt: true,
 			},
@@ -73,7 +72,7 @@ app.get("/:shorturl", async (c: Context) => {
 		}
 
 		await db.$transaction(async (tx) => {
-			await tx.url.update({
+			await tx.link.update({
 				where: {
 					id: response.id,
 				},
@@ -81,13 +80,13 @@ app.get("/:shorturl", async (c: Context) => {
 			}),
 				await tx.analytics.create({
 					data: {
-						urlId: response.id,
+						linkId: response.id,
 						...userAgentInfo,
 					},
 				});
 		});
 
-		return c.redirect(response.longUrl);
+		return c.redirect(response.url);
 	} catch (error) {
 		return c.json(
 			{

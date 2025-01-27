@@ -1,31 +1,31 @@
-import { Context, Hono } from "hono";
-import { logger } from "../config/loggerConfig";
-import {
-	checkTitleExists,
-	checkUrlExists,
-	createShortLink,
-} from "../service/link-service";
-import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
-import { HttpStatusCode } from "../types/types";
-import { verifyJWT } from "../middlewares/auth-middleware";
-import { getIdFromMiddleware } from "../service/user-service";
 import { nanoid } from "nanoid";
 import db from "../config/dbConfig";
+import { Context, Hono } from "hono";
+import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
+import { HttpStatusCode } from "../types/types";
+import { authenticateJWT } from "../middlewares/auth-middleware";
+import { getIdFromMiddleware } from "../service/user-service";
+
+import { checkTitleExists, checkUrlExists } from "../service/link-service";
+import { logger } from "../utils/logger";
 
 const urlRouter = new Hono();
 
-urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
+urlRouter.post("/r/shorten", authenticateJWT, async (c: Context) => {
 	try {
 		const createdById = await getIdFromMiddleware(c);
 		const { url, title } = LinkSchema.parse(await c.req.json());
 
 		if (title) {
-			const existingTitle = await checkTitleExists(title!); // check if title exists
+			const existingTitle = await checkTitleExists(title);
 			if (existingTitle) {
-				return c.json({
-					message: "title already exists",
-					shortUrl: `http://localhost:8080/${title}`,
-				});
+				return c.json(
+					{
+						message: "title already exists",
+						shortUrl: `http://localhost:8080/${title}`,
+					},
+					HttpStatusCode.Ok,
+				);
 			}
 		}
 
@@ -40,11 +40,11 @@ urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
 				HttpStatusCode.Ok,
 			);
 		}
-		await db.url.create({
+		await db.link.create({
 			data: {
-				longUrl: url,
+				url,
 				shortUrl: shortCode,
-				createdById,
+				userId: createdById,
 			},
 		});
 
@@ -67,7 +67,7 @@ urlRouter.post("/shorten", verifyJWT, async (c: Context) => {
 	}
 });
 
-urlRouter.get("/:shortUrl/analytics", verifyJWT, async (c: Context) => {
+urlRouter.get("/stats/:shortUrl/", authenticateJWT, async (c: Context) => {
 	try {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shortUrl"));
 
@@ -86,27 +86,27 @@ urlRouter.get("/:shortUrl/analytics", verifyJWT, async (c: Context) => {
 	}
 });
 
-urlRouter.get("/:shortUrl/check", async (c: Context) => {
-	try {
-		const shortUrl = ShortUrlSchema.parse(c.req.param("shortUrl"));
-		const response = await checkUrlExists(shortUrl);
+// urlRouter.get("/:shortUrl/check", async (c: Context) => {
+// 	try {
+// 		const shortUrl = ShortUrlSchema.parse(c.req.param("shortUrl"));
+// 		const response = await checkUrlExists(shortUrl);
 
-		return c.json({
-			available: !response,
-		});
-	} catch (error) {
-		logger.error("Error while checking short url", error);
-		return c.json(
-			{
-				success: false,
-				isOperationl: true,
-				message: "Url not found",
-				available: false,
-				error,
-			},
-			HttpStatusCode.InternalServerError,
-		);
-	}
-});
+// 		return c.json({
+// 			available: !response,
+// 		});
+// 	} catch (error) {
+// 		logger.error("Error while checking short url", error);
+// 		return c.json(
+// 			{
+// 				success: false,
+// 				isOperationl: true,
+// 				message: "Url not found",
+// 				available: false,
+// 				error,
+// 			},
+// 			HttpStatusCode.InternalServerError,
+// 		);
+// 	}
+// });
 
 export { urlRouter };

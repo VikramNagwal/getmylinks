@@ -1,4 +1,4 @@
-import { AuthHandler } from "../utils/auth-utils";
+import { AuthHandler } from "../utils/tokens";
 import { describe, it, expect } from "bun:test";
 
 describe("refersh tokens", () => {

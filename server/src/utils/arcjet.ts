@@ -4,7 +4,6 @@ export const arcjetSecurity = arcjet({
 	key: Bun.env.ARCJET_KEY!,
 	characteristics: ["ip.src"],
 	rules: [
-		// Shield protects your app from common attacks e.g. SQL injection
 		shield({ mode: "LIVE" }),
 		// Create a bot detection rule
 		detectBot({

@@ -1,25 +1,30 @@
 import { PrismaClient } from '@prisma/client'
+import { logger } from '../src/utils/logger'
 
 const prisma = new PrismaClient()
 
 async function main() {
   const user = await prisma.user.create({
     data: {
-      username: 'thegreatkhali',
-      name: 'milkha singh',
-      email: 'singhmilkha@prisma.io',
-      password: 'yetibiggint',
-      bio: "this is test user data"
+      username: 'dineshranaut',
+      name: 'dinesh ranaut',
+      email: 'dinneshranaut@prisma.io',
+      passwordHash: 'gyut876aw87b',
     },
   })
 
-  const allUsers = await prisma.user.findFirst({
-   where: {
-        username: 'taxqueen'
-   }
+  const profile = await prisma.profile.create({
+    data: {
+      bio: 'solo traveller',
+      user: {
+        connect: { id: user.id },
+      },
+    }
   })
-  console.dir(allUsers)
-  console.log(user)
+
+
+  logger.info(user)
+  console.log(profile)
 }
 
 main()

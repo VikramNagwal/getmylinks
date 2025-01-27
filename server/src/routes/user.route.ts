@@ -1,6 +1,6 @@
 import db from "../config/dbConfig";
 import { AuthHandler } from "../utils/tokens";
-import { logger } from "../utils/logger"
+import { logger } from "../utils/logger";
 import { Context, Hono } from "hono";
 import {
 	checkUserByUsername,
@@ -14,7 +14,6 @@ import {
 import { HttpStatusCode } from "../types/types";
 import { authenticateJWT } from "../middlewares/auth-middleware";
 import { deleteCookie, getCookie, setCookie } from "hono/cookie";
-
 
 const userRouter = new Hono();
 

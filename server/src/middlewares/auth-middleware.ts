@@ -29,65 +29,67 @@ const extractTokens = (cookieHeader?: string): Tokens | null => {
 		: null;
 };
 
-export const authenticateJWT = createMiddleware(async (c: Context, next: Next) => {
-	try {
-		const tokens = extractTokens(c.req.header("Cookie"));
-		if (!tokens) {
-			return c.json(
-				{ message: "Authentication required" },
-				HttpStatusCode.Unauthenticated,
-			);
-		}
-
+export const authenticateJWT = createMiddleware(
+	async (c: Context, next: Next) => {
 		try {
-			const decodedToken = await verify(
-				tokens.accessTokens,
-				Bun.env.ACCESS_TOKEN_SECRET!,
-			);
-			c.set("user", decodedToken);
-			return await next();
-		} catch {
-			const decodedRefresh = await verify(
-				tokens.refreshTokens,
-				Bun.env.REFRESH_TOKEN_SECRET!,
-			);
-
-			const user = await db.user.findUnique({
-				where: { id: String(decodedRefresh.userId) },
-				select: { id: true, refreshToken: true },
-			});
-
-			if (!user || tokens.refreshTokens !== user.refreshToken) {
+			const tokens = extractTokens(c.req.header("Cookie"));
+			if (!tokens) {
 				return c.json(
-					{
-						success: false,
-						message: "expired tokens or invalid user",
-					},
-					HttpStatusCode.BadRequest,
+					{ message: "Authentication required" },
+					HttpStatusCode.Unauthenticated,
 				);
 			}
 
-			const newTokens = await AuthHandler.generateRefreshandAccessToken(
-				user.id,
-			);
+			try {
+				const decodedToken = await verify(
+					tokens.accessTokens,
+					Bun.env.ACCESS_TOKEN_SECRET!,
+				);
+				c.set("user", decodedToken);
+				return await next();
+			} catch {
+				const decodedRefresh = await verify(
+					tokens.refreshTokens,
+					Bun.env.REFRESH_TOKEN_SECRET!,
+				);
 
-			const { accessTokens, refreshTokens } = newTokens;
-			await setAllCookies(accessTokens, refreshTokens, c);
-
-			await db.$transaction(async (tx) => {
-				await tx.user.update({
-					where: { id: user.id },
-					data: { refreshToken: newTokens.refreshTokens },
+				const user = await db.user.findUnique({
+					where: { id: String(decodedRefresh.userId) },
+					select: { id: true, refreshToken: true },
 				});
-			});
 
-			c.set("user", user);
-			return await next();
+				if (!user || tokens.refreshTokens !== user.refreshToken) {
+					return c.json(
+						{
+							success: false,
+							message: "expired tokens or invalid user",
+						},
+						HttpStatusCode.BadRequest,
+					);
+				}
+
+				const newTokens = await AuthHandler.generateRefreshandAccessToken(
+					user.id,
+				);
+
+				const { accessTokens, refreshTokens } = newTokens;
+				await setAllCookies(accessTokens, refreshTokens, c);
+
+				await db.$transaction(async (tx) => {
+					await tx.user.update({
+						where: { id: user.id },
+						data: { refreshToken: newTokens.refreshTokens },
+					});
+				});
+
+				c.set("user", user);
+				return await next();
+			}
+		} catch (error) {
+			return c.json(
+				{ message: "Authentication failed" },
+				HttpStatusCode.InternalServerError,
+			);
 		}
-	} catch (error) {
-		return c.json(
-			{ message: "Authentication failed" },
-			HttpStatusCode.InternalServerError,
-		);
-	}
-});
+	},
+);

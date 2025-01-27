@@ -6,7 +6,6 @@ import { HttpStatusCode } from "../types/types";
 import { authenticateJWT } from "../middlewares/auth-middleware";
 import { getIdFromMiddleware } from "../service/user-service";
 
-
 import { checkTitleExists, checkUrlExists } from "../service/link-service";
 import { logger } from "../utils/logger";
 
@@ -20,10 +19,13 @@ urlRouter.post("/r/shorten", authenticateJWT, async (c: Context) => {
 		if (title) {
 			const existingTitle = await checkTitleExists(title);
 			if (existingTitle) {
-				return c.json({
-					message: "title already exists",
-					shortUrl: `http://localhost:8080/${title}`,
-				}, HttpStatusCode.Ok);
+				return c.json(
+					{
+						message: "title already exists",
+						shortUrl: `http://localhost:8080/${title}`,
+					},
+					HttpStatusCode.Ok,
+				);
 			}
 		}
 

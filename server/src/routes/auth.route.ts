@@ -15,7 +15,6 @@ import {
 import { UserLoginSchema, UserRegisterSchema } from "../schemas/userSchema";
 import { getIdFromMiddleware, isUserEmailExist } from "../service/user-service";
 
-
 const authRouter = new Hono();
 
 const otpSchema = z.object({

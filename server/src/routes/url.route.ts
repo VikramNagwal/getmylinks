@@ -6,10 +6,7 @@ import { getIdFromMiddleware } from "../service/user-service";
 import { nanoid } from "nanoid";
 import db from "../config/dbConfig";
 
-import {
-	checkTitleExists,
-	checkUrlExists,
-} from "../service/link-service";
+import { checkTitleExists, checkUrlExists } from "../service/link-service";
 import { logger } from "../utils/logger";
 
 const urlRouter = new Hono();

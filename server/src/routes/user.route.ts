@@ -52,7 +52,7 @@ userRouter.get("/profile", async (c: Context) => {
 userRouter.post("/add/profile", async (c: Context) => {
 	try {
 		const user = await c.get("user");
-		const {bio, avatar} = await c.req.json();
+		const { bio, avatar } = await c.req.json();
 		const userId = user.payload.id;
 
 		if (!userId) {
@@ -61,34 +61,43 @@ userRouter.post("/add/profile", async (c: Context) => {
 
 		const profile = await db.profile.create({
 			data: {
-				bio, 
+				bio,
 				avatar,
 				user: {
 					connect: { id: userId },
 				},
-			}
-		})
+			},
+		});
 		if (!profile) throw new Error("Unable to add profile");
-		return c.json({
-			success: true,
-			message: "Profile added successfully",	
-		}, HttpStatusCode.Created)
+		return c.json(
+			{
+				success: true,
+				message: "Profile added successfully",
+			},
+			HttpStatusCode.Created,
+		);
 	} catch (error) {
 		logger.error(error);
-		return c.json({
-			success: false,
-			message: "An error occurred while adding profile",
-			error,
-		}, HttpStatusCode.InternalServerError)
+		return c.json(
+			{
+				success: false,
+				message: "An error occurred while adding profile",
+				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
 	}
-})
+});
 
 userRouter.put("/profile/update", async (c: Context) => {
 	try {
 		const userId = await getIdFromMiddleware(c);
 		const profileData = await c.req.json();
 
-		const updatedProfile = await db.profile.update({ where: { userId }, data: profileData });
+		const updatedProfile = await db.profile.update({
+			where: { userId },
+			data: profileData,
+		});
 		if (!updatedProfile) {
 			throw new Error("Unable to update profile");
 		}
@@ -123,10 +132,13 @@ userRouter.delete("/account/delete", async (c: Context) => {
 		deleteCookie(c, "accessToken");
 		deleteCookie(c, "refreshToken");
 
-		return c.json({
-			success: true,
-			message: "user deleted successfully",
-		}, HttpStatusCode.Ok);
+		return c.json(
+			{
+				success: true,
+				message: "user deleted successfully",
+			},
+			HttpStatusCode.Ok,
+		);
 	} catch (error) {
 		return c.json(
 			{
@@ -159,9 +171,9 @@ userRouter.post("/refresh-tokens", async (c: Context) => {
 		}
 		const newTokens = await AuthHandler.generateRefreshandAccessToken(user.id);
 
-		setCookie(c, "accessToken", newTokens.accessTokens,);
-		setCookie(c, "refreshToken", newTokens.refreshTokens,);
-		
+		setCookie(c, "accessToken", newTokens.accessTokens);
+		setCookie(c, "refreshToken", newTokens.refreshTokens);
+
 		return c.json(
 			{
 				success: true,

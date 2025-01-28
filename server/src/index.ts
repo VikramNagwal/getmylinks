@@ -5,4 +5,4 @@ Bun.serve({
 	fetch: app.fetch,
 });
 
-logger.info("Server started on port http://localhost:8080")
+logger.info("Server started on port http://localhost:8080");

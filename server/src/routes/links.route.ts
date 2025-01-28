@@ -79,8 +79,12 @@ urlRouter.get("/stats/:shortUrl/", authenticateJWT, async (c: Context) => {
 				totalViews: true,
 				createdAt: true,
 			},
-		})
-		if (!stats) return c.json({ message: "Short url not found" }, HttpStatusCode.NotFound);
+		});
+		if (!stats)
+			return c.json(
+				{ message: "Short url not found" },
+				HttpStatusCode.NotFound,
+			);
 		return c.json({
 			success: true,
 			stats,

@@ -16,13 +16,13 @@ redis.on("error", (error) => {
 
 redis.on("connect", () => {
 	logger.success("Redis connected successfully");
-})
+});
 
 redis.on("reconnecting", () => {
 	logger.warning("Redis reconnecting");
-})
+});
 
 redis.on("end", () => {
 	logger.warning("Redis connection ended");
-})
+});
 export default redis;

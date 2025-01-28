@@ -23,7 +23,6 @@ export const addEmailtoQueue = async ({ email, otp, uid }: EmailJobData) => {
 	}
 };
 
-
 // Event listeners
 emailQueue.on("error", (error) => {
 	logger.error("Email queue error:", error);

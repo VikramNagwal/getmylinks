@@ -18,7 +18,7 @@ const otpTemplate = (uid: string, otp: string) =>
 async function sendMailtoUser(email: string, otp: string, uid: string) {
 	try {
 		logger.info("Sending email to", email);
-		
+
 		const sentMail = await transporter.sendMail({
 			from: `"OTP Verification" <${Bun.env.SMTP_EMAIL}>`,
 			to: email,

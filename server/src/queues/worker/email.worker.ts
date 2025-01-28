@@ -3,8 +3,6 @@ import { logger } from "../../utils/logger";
 import { QUEUE_NAME, REDIS_CONFIG } from "../../config/queueConfig";
 import { sendMailtoUser } from "../../service/email-service";
 
-
-
 const emailWorker = new Worker(
 	QUEUE_NAME,
 
@@ -42,7 +40,6 @@ const emailWorker = new Worker(
 		},
 	},
 );
-
 
 // Event listeners
 emailWorker.on("completed", (job) => {

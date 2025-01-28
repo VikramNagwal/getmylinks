@@ -12,12 +12,14 @@ import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { randomUUID } from "crypto";
 
 type LogInForm = z.infer<typeof LoginSchema>;
 
 const useLoginMutation = () => {
 	const { toast } = useToast();
 	const navigate = useNavigate();
+	const uid = randomUUID();
 
 	return useMutation({
 		mutationFn: (data: LogInForm) => {
@@ -30,7 +32,7 @@ const useLoginMutation = () => {
 			toast({
 				title: "Welcome Back🥳",
 			});
-			navigate("/modu/dashboard");
+			navigate(`/${uid}/dashboard`);
 		},
 
 		onError: () => {

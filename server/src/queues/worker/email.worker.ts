@@ -1,20 +1,21 @@
 import { Worker } from "bullmq";
+import { logger } from "../../utils/logger";
 import { QUEUE_NAME, REDIS_CONFIG } from "../../config/queueConfig";
-import { logger } from "../../config/loggerConfig";
 import { sendMailtoUser } from "../../service/email-service";
 
 const emailWorker = new Worker(
 	QUEUE_NAME,
+
 	async (job) => {
-		const { email, otp } = job.data;
+		const { email, otp, uid } = job.data;
 		logger.info(`Starting to process email job ${job.id} for ${email}`);
 
 		try {
 			await job.updateProgress(50);
-			const result = await sendMailtoUser(email, otp);
+			const result = await sendMailtoUser(email, otp, uid);
 			await job.updateProgress(100);
 
-			logger.info(`Email sent successfully for job ${job.id}`, {
+			logger.success(`Email sent successfully for job ${job.id}`, {
 				messageId: result.messageId,
 				response: result.response,
 			});
@@ -26,7 +27,7 @@ const emailWorker = new Worker(
 				email,
 				attempt: job.attemptsMade + 1,
 			});
-			throw error;
+			throw new Error("Failed to send email");
 		}
 	},
 	{
@@ -40,8 +41,9 @@ const emailWorker = new Worker(
 	},
 );
 
+// Event listeners
 emailWorker.on("completed", (job) => {
-	logger.info(`✓ Email job ${job.id} completed successfully`, {
+	logger.success(`✓ Email job ${job.id} completed successfully`, {
 		result: job.returnvalue,
 	});
 });

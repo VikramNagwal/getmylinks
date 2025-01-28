@@ -11,7 +11,7 @@ import { logger } from "../utils/logger";
 
 const urlRouter = new Hono();
 
-urlRouter.post("/r/shorten", authenticateJWT, async (c: Context) => {
+urlRouter.post("/shorten", authenticateJWT, async (c: Context) => {
 	try {
 		const createdById = await getIdFromMiddleware(c);
 		const { url, title } = LinkSchema.parse(await c.req.json());
@@ -22,7 +22,7 @@ urlRouter.post("/r/shorten", authenticateJWT, async (c: Context) => {
 				return c.json(
 					{
 						message: "title already exists",
-						shortUrl: `http://localhost:8080/${title}`,
+						shortUrl: `http://localhost:8080/r/${title}`,
 					},
 					HttpStatusCode.Ok,
 				);
@@ -35,7 +35,7 @@ urlRouter.post("/r/shorten", authenticateJWT, async (c: Context) => {
 			return c.json(
 				{
 					message: "Short url already exists",
-					shortUrl: `http://localhost:8080/${existingUrl}`,
+					shortUrl: `http://localhost:8080/r/${existingUrl}`,
 				},
 				HttpStatusCode.Ok,
 			);
@@ -51,7 +51,7 @@ urlRouter.post("/r/shorten", authenticateJWT, async (c: Context) => {
 		return c.json(
 			{
 				message: "creared",
-				shortUrl: `http://localhost:8080/${shortCode}`,
+				shortUrl: `http://localhost:8080/r/${shortCode}`,
 			},
 			HttpStatusCode.Created,
 		);
@@ -70,14 +70,30 @@ urlRouter.post("/r/shorten", authenticateJWT, async (c: Context) => {
 urlRouter.get("/stats/:shortUrl/", authenticateJWT, async (c: Context) => {
 	try {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shortUrl"));
-
-		// complte here
+		const stats = await db.link.findUnique({
+			where: { shortUrl },
+			select: {
+				id: true,
+				url: true,
+				shortUrl: true,
+				totalViews: true,
+				createdAt: true,
+			},
+		});
+		if (!stats)
+			return c.json(
+				{ message: "Short url not found" },
+				HttpStatusCode.NotFound,
+			);
+		return c.json({
+			success: true,
+			stats,
+		});
 	} catch (error) {
 		logger.error("Error while fetching analytics", error);
 		return c.json(
 			{
 				success: false,
-				isOperationl: true,
 				message: "Error while fetching analytics",
 				error,
 			},

@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { logger } from "../utils/logger";
 
 const transporter = nodemailer.createTransport({
 	host: Bun.env.SMTP_HOST,
@@ -7,8 +8,8 @@ const transporter = nodemailer.createTransport({
 		user: Bun.env.SMTP_EMAIL,
 		pass: Bun.env.SMTP_PASS,
 	},
-	logger: true,
-	debug: true,
+	// logger: true,
+	// debug: true,
 });
 
 const otpTemplate = (uid: string, otp: string) =>
@@ -16,7 +17,8 @@ const otpTemplate = (uid: string, otp: string) =>
 
 async function sendMailtoUser(email: string, otp: string, uid: string) {
 	try {
-		console.log("Sending email to", email);
+		logger.info("Sending email to", email);
+
 		const sentMail = await transporter.sendMail({
 			from: `"OTP Verification" <${Bun.env.SMTP_EMAIL}>`,
 			to: email,
@@ -27,7 +29,7 @@ async function sendMailtoUser(email: string, otp: string, uid: string) {
 
 		return sentMail;
 	} catch (error) {
-		console.log(error);
+		logger.error(error);
 		throw new Error(
 			"Unable to send email. Email sending utility malfunctioned! please check the logs",
 		);

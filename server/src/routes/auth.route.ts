@@ -6,7 +6,6 @@ import { AuthHandler } from "../utils/tokens";
 import { emailQueue } from "../queues/email.queue";
 import { deleteCookie, setCookie } from "hono/cookie";
 import { authenticateJWT } from "../middlewares/auth-middleware";
-
 import {
 	generateOTP,
 	generateUID,

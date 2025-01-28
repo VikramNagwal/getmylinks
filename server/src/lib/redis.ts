@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { logger } from "../config/loggerConfig";
+import { logger } from "../utils/logger";
 
 const redis = new Redis({
 	host: Bun.env.REDIS_HOST,
@@ -12,5 +12,17 @@ const redis = new Redis({
 
 redis.on("error", (error) => {
 	logger.error(`Redis connection error: ${error}`);
+});
+
+redis.on("connect", () => {
+	logger.success("Redis connected successfully");
+});
+
+redis.on("reconnecting", () => {
+	logger.warning("Redis reconnecting");
+});
+
+redis.on("end", () => {
+	logger.warning("Redis connection ended");
 });
 export default redis;

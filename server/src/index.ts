@@ -1,12 +1,8 @@
 import app from "./app";
-import chalk from "chalk";
+import { logger } from "./utils/logger";
 
-const server = Bun.serve({
+Bun.serve({
 	fetch: app.fetch,
 });
 
-console.log(
-	chalk.green(
-		`server is up and running on port http://localhost:${server.port}`,
-	),
-);
+logger.info("Server started on port http://localhost:8080")

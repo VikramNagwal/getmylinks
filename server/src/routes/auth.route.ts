@@ -6,7 +6,6 @@ import { AuthHandler } from "../utils/tokens";
 import { emailQueue } from "../queues/email.queue";
 import { deleteCookie, setCookie } from "hono/cookie";
 import { authenticateJWT } from "../middlewares/auth-middleware";
-
 import {
 	generateOTP,
 	generateUID,
@@ -14,6 +13,7 @@ import {
 } from "../service/otp-service";
 import { UserLoginSchema, UserRegisterSchema } from "../schemas/userSchema";
 import { getIdFromMiddleware, isUserEmailExist } from "../service/user-service";
+
 
 const authRouter = new Hono();
 

@@ -1,7 +1,7 @@
 import { Queue } from "bullmq";
 import { QUEUE_NAME, REDIS_CONFIG, QUEUE_CONFIG } from "../config/queueConfig";
 import { EmailJobData } from "../types/email.types";
-import { logger } from "../config/loggerConfig";
+import { logger } from "../utils/logger";
 
 export const emailQueue = new Queue<EmailJobData>(QUEUE_NAME, {
 	connection: REDIS_CONFIG,
@@ -23,6 +23,16 @@ export const addEmailtoQueue = async ({ email, otp, uid }: EmailJobData) => {
 	}
 };
 
+
+// Event listeners
 emailQueue.on("error", (error) => {
 	logger.error("Email queue error:", error);
+});
+
+emailQueue.on("resumed", () => {
+	logger.info("Email queue resumed");
+});
+
+emailQueue.on("waiting", () => {
+	logger.warning("Email queue waiting");
 });

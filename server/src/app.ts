@@ -2,8 +2,7 @@ import { Context, Hono } from "hono";
 import db from "./config/dbConfig";
 import { logger } from "hono/logger";
 import { cors } from "hono/cors";
-
-const app = new Hono();
+import "./queues/worker/email.worker";
 
 // router imports
 import { appRouter } from "./routes/index.route";
@@ -12,12 +11,15 @@ import { ShortUrlSchema } from "./schemas/link-schema";
 import { getUserDetails } from "./service/link-service";
 import { dashboardApp } from "./queues/dashboard";
 import { security } from "./middlewares/security-middleware";
-import "./queues/worker/email.worker";
 import { sentryMiddleware } from "./middlewares/sentry-middleware";
 
+
+const app = new Hono();
+
+
 // middlewares
-// app.use("*", security);  turn on security middleware
-// app.use("*", sentryMiddleware);
+app.use("*", security);
+app.use("*", sentryMiddleware);
 app.use(logger());
 app.use(
 	"*",
@@ -30,12 +32,14 @@ app.use(
 	}),
 );
 
+
 // routes
 app.route("/api/v1/", appRouter);
 app.route("/admin/queues", dashboardApp);
-app.get("/", (c: Context) => c.text("Welcome to the URL shortener service"));
-
-app.get("/:shorturl", async (c: Context) => {
+app.get("/", async (c: Context) => {
+	return c.text("Welcome to the URL shortener service")
+});
+app.get("/r/:shorturl", async (c: Context) => {
 	try {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));
 		const userAgentInfo = getUserDetails(c.req);
@@ -99,5 +103,7 @@ app.get("/:shorturl", async (c: Context) => {
 		);
 	}
 });
+
+
 
 export default app;

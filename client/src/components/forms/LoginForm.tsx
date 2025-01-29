@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Input } from "../ui/input";
@@ -9,7 +10,6 @@ import { z } from "zod";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import axios from "axios";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -18,6 +18,7 @@ type LogInForm = z.infer<typeof LoginSchema>;
 const useLoginMutation = () => {
 	const { toast } = useToast();
 	const navigate = useNavigate();
+	const uid = crypto.randomUUID();
 
 	return useMutation({
 		mutationFn: (data: LogInForm) => {
@@ -30,7 +31,7 @@ const useLoginMutation = () => {
 			toast({
 				title: "Welcome Back🥳",
 			});
-			navigate("/modu/dashboard");
+			navigate(`/${uid}/dashboard`);
 		},
 
 		onError: () => {

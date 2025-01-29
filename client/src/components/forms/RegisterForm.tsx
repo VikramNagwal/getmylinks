@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,9 +19,9 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { signUpSchema } from "@/schemas/authentication-schema";
 import { usePasswordStreanth } from "@/hooks/use-password";

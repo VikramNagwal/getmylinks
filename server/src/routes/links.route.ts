@@ -50,6 +50,7 @@ urlRouter.post("/shorten", authenticateJWT, async (c: Context) => {
 
 		return c.json(
 			{
+				success: true,
 				message: "creared",
 				shortUrl: `http://localhost:8080/r/${shortCode}`,
 			},

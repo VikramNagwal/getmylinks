@@ -16,8 +16,8 @@ import { sentryMiddleware } from "./middlewares/sentry-middleware";
 const app = new Hono();
 
 // middlewares
-app.use("*", security);
-app.use("*", sentryMiddleware);
+// app.use("*", security);
+// app.use("*", sentryMiddleware);
 app.use(logger());
 app.use(
 	"*",

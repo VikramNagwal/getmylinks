@@ -2,41 +2,43 @@ import * as React from "react";
 import {
 	Sidebar,
 	SidebarContent,
-	SidebarGroup,
 	SidebarGroupContent,
-	SidebarGroupLabel,
 	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarRail,
 } from "@/components/ui/sidebar";
+import { Settings, Link, BarChart2, User } from "lucide-react";
 
 const data = {
-	navMain: [
+	items: [
 		{
-			title: "Getting Started",
-			url: "#",
-			items: [
-				{
-					title: "short links",
-					url: "/short-links",
-					isActive: true,
-					color: "#39FF14",
-				},
-				{
-					title: "Analytics",
-					url: "/:url/analytics",
-					color: "#025415",
-				},
-			],
+			title: "Short links",
+			url: "/short-links",
+			icon: <Link />,
+		},
+		{
+			title: "Analytics",
+			url: "/:url/analytics",
+			icon: <BarChart2 />,
+		},
+		{
+			title: "Settings",
+			url: "/settings",
+			icon: <Settings />,
+		},
+		{
+			title: "Profile",
+			url: "/profile",
+			icon: <User />,
 		},
 	],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	return (
-		<Sidebar {...props} className="">
+		<Sidebar {...props}>
 			<SidebarHeader>
 				<a
 					href="/"
@@ -45,23 +47,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 					getmylinks
 				</a>
 			</SidebarHeader>
-			<SidebarContent>
+			<SidebarContent className="mt-8">
 				{/* We create a SidebarGroup for each parent. */}
-				{data.navMain.map((item) => (
-					<SidebarGroup key={item.title}>
-						<SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-						<SidebarGroupContent>
-							<SidebarMenu>
-								{item.items.map((item) => (
-									<SidebarMenuItem key={item.title}>
-										<SidebarMenuButton className={`hover:bg-[#3FCF8E] py-6`}>
-											<a href={item.url}>{item.title}</a>
-										</SidebarMenuButton>
-									</SidebarMenuItem>
-								))}
-							</SidebarMenu>
-						</SidebarGroupContent>
-					</SidebarGroup>
+				{data.items.map((item) => (
+					<SidebarGroupContent key={item.title}>
+						<SidebarMenu className="mx-auto" key={item.url}>
+							<SidebarMenuItem key={item.title} className="px-2">
+								<a href={item.url} key={item.title}>
+									<SidebarMenuButton
+										className={`hover:bg-[#3FCF8E] p-5 border font-sans`}
+										key={item.title}
+									>
+										{item.icon} {item.title}
+									</SidebarMenuButton>
+								</a>
+							</SidebarMenuItem>
+						</SidebarMenu>
+					</SidebarGroupContent>
 				))}
 			</SidebarContent>
 			<SidebarRail />

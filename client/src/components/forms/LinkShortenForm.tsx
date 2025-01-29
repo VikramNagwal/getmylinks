@@ -1,18 +1,20 @@
-// import { useState } from "react";
+import { z } from "zod";
+import axios from "axios";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { Label } from "../ui/label";
-import { z } from "zod";
 import { ShortnSchema } from "@/schemas/authentication-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useState } from "react";
+// import { LinkIcon } from "lucide-react";
 
 type shortnForm = z.infer<typeof ShortnSchema>;
 
-const ShortnForm = () => {
-	// const [link, setLink] = useState<string>("");
+const LinkShortenForm = () => {
+	const [link, setLink] = useState<string[]>([""]);
+	console.log(link);
 	const { toast } = useToast();
 
 	const {
@@ -24,30 +26,34 @@ const ShortnForm = () => {
 		resolver: zodResolver(ShortnSchema),
 	});
 
-	const onSubmit = async (data: any) => {
-		try {
-			const res = await axios.post(
-				"http://localhost:8080/api/v1/url/shorten",
-				data,
-				{
-					withCredentials: true,
-				},
-			);
+	const onSubmit = useCallback(
+		async (data: any) => {
+			try {
+				const res = await axios.post(
+					"http://localhost:8080/api/v1/url/shorten",
+					data,
+					{
+						withCredentials: true,
+					},
+				);
 
-			if (res.data.success) {
-				toast({
-					title: "URL shortened successfully 🎉",
+				if (res.data.success) {
+					toast({
+						title: "URL shortened successfully 🎉",
+						description: link,
+					});
+					setLink([res.data.shortUrl]);
+				}
+				reset();
+			} catch (error) {
+				return toast({
+					title: "Something went wrong on our side :(",
+					variant: "destructive",
 				});
-				// setLink(res.data.shortUrl);
 			}
-			reset();
-		} catch (error) {
-			return toast({
-				title: "Something went wrong on our side :(",
-				variant: "destructive",
-			});
-		}
-	};
+		},
+		[reset, toast, setLink],
+	);
 
 	return (
 		<section className="flex flex-col items-center justify-center md:mt-[120px]">
@@ -90,8 +96,25 @@ const ShortnForm = () => {
 					Shorten URL
 				</Button>
 			</form>
+			{/* <div className="mt-6 p-4 rounded-md bg-gray-900 w-96">
+        <p className="text-start my-3 font-light text-xl tetx-white">links:</p>
+        <div className="flex flex-col gap-3 space-y-3 text-green-500">
+          {link.map((l, index) => (
+            <a
+              key={index}
+              href={l}
+              target="_blank"
+              rel="noreferrer"
+              className="text-center hover:text-green-400 p-2 rounded-md bg-gray-800"
+            >
+              <LinkIcon />
+              {l}
+            </a>
+          ))}
+        </div>
+      </div> */}
 		</section>
 	);
 };
 
-export default ShortnForm;
+export default LinkShortenForm;

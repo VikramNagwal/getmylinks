@@ -28,8 +28,6 @@ import { usePasswordStreanth } from "@/hooks/use-password";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 
-
-
 const useSignUpMutation = () => {
 	const { toast } = useToast();
 	const navigate = useNavigate();

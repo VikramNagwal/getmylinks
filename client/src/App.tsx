@@ -9,7 +9,6 @@ import PhonePreview from "./components/Phone-preview.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import VerificationPage from "./pages/VerificationPage.tsx";
 
-
 function App() {
 	return (
 		<>
@@ -21,7 +20,7 @@ function App() {
 				<Route path="/:username/dashboard" element={<Dashboard />} />
 				<Route path="/:uuid/verify" element={<VerificationPage />} />
 				<Route path="/terms" element={<Terms />} />
-				<Route path="/phone-preview" element={<PhonePreview  />} />
+				<Route path="/phone-preview" element={<PhonePreview />} />
 			</Routes>
 			<Toaster />
 		</>

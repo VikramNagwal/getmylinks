@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { signUpSchema } from "@/schemas/authentication-schema";
-import { usePasswordStreanth } from "@/hooks/use-password";
+import { usePasswordStreanth } from "@/helper/use-password";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 

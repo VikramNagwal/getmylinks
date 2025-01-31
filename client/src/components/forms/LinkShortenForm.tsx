@@ -8,13 +8,14 @@ import { Label } from "../ui/label";
 import { ShortnSchema } from "@/schemas/authentication-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
-// import { LinkIcon } from "lucide-react";
+import KeyGenerator from "../Key-generator";
 
 type shortnForm = z.infer<typeof ShortnSchema>;
 
 const LinkShortenForm = () => {
 	const [link, setLink] = useState<string[]>([""]);
-	console.log(link);
+	const [randomNames, setRandomNames] = useState<string>('');
+
 	const { toast } = useToast();
 
 	const {
@@ -54,6 +55,7 @@ const LinkShortenForm = () => {
 		},
 		[reset, toast, setLink],
 	);
+ 
 
 	return (
 		<section className="flex flex-col items-center justify-center md:mt-[120px]">
@@ -76,19 +78,21 @@ const LinkShortenForm = () => {
 				</div>
 				<div>
 					<Label htmlFor="customShort">Custom Short URL (optional)</Label>
-					<div className="flex items-center w-full">
+					<div className="flex items-center w-full relative">
 						<span className="inline-flex items-center px-3 h-10 rounded-l-md border border-gray-300 bg-gray-50 text-gray-500 text-sm">
 							getmylinks.url/
 						</span>
 						<Input
 							type="text"
 							id="customShort"
+							value={randomNames}
 							{...register("title")}
 							placeholder={
 								errors.title ? "Please add a valid URL" : "custom url"
 							}
 							className="h-10 rounded-l-none border-gray-300 w-full"
 						/>
+						<KeyGenerator setnames={setRandomNames}/>
 					</div>
 				</div>
 

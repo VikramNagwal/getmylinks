@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/profile/LoginPage.tsx";
+import LoginPage from "./pages/auth/LoginPage.tsx";
 import HomePage from "./pages/HomePage";
 import { Toaster } from "./components/ui/toaster.tsx";
-import RegisterPage from "./pages/profile/RegisterPage.tsx";
+import RegisterPage from "./pages/auth/RegisterPage.tsx";
 import PhonePreview from "./components/Phone-preview.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
-import VerificationPage from "./pages/VerificationPage.tsx";
+import VerificationPage from "./pages/auth/VerificationPage.tsx";
 
 function App() {
 	return (

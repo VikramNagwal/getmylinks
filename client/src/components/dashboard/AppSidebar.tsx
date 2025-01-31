@@ -9,34 +9,41 @@ import {
 	SidebarMenuItem,
 	SidebarRail,
 } from "@/components/ui/sidebar";
-import { Settings, Link, BarChart2, User } from "lucide-react";
+import { Settings, LinkIcon, BarChart2, User } from "lucide-react";
+import { AllTabContentProps } from "@/pages/Dashboard";
 
 const data = {
 	items: [
+		{ id: 1, title: "Short links", tab: "shortLinks", icon: <LinkIcon /> },
 		{
-			title: "Short links",
-			url: "/short-links",
-			icon: <Link />,
-		},
-		{
+			id: 2,
 			title: "Analytics",
-			url: "/:url/analytics",
+			tab: "analytics",
 			icon: <BarChart2 />,
 		},
 		{
+			id: 3,
 			title: "Settings",
-			url: "/settings",
+			tab: "settings",
 			icon: <Settings />,
 		},
 		{
+			id: 4,
 			title: "Profile",
-			url: "/profile",
+			tab: "profile",
 			icon: <User />,
 		},
 	],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps {
+	setActiveTab: React.Dispatch<React.SetStateAction<keyof AllTabContentProps>>;
+}
+
+export function AppSidebar({
+	setActiveTab,
+	...props
+}: React.ComponentProps<typeof Sidebar> & AppSidebarProps) {
 	return (
 		<Sidebar {...props}>
 			<SidebarHeader>
@@ -51,16 +58,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				{/* We create a SidebarGroup for each parent. */}
 				{data.items.map((item) => (
 					<SidebarGroupContent key={item.title}>
-						<SidebarMenu className="mx-auto" key={item.url}>
+						<SidebarMenu className="mx-auto" key={item.id}>
 							<SidebarMenuItem key={item.title} className="px-2">
-								<a href={item.url} key={item.title}>
+								<div
+									key={item.title}
+									onClick={() =>
+										setActiveTab(
+											item.tab.toLowerCase() as keyof AllTabContentProps,
+										)
+									}
+								>
 									<SidebarMenuButton
 										className={`hover:bg-[#3FCF8E] p-5 border font-sans`}
 										key={item.title}
 									>
 										{item.icon} {item.title}
 									</SidebarMenuButton>
-								</a>
+								</div>
 							</SidebarMenuItem>
 						</SidebarMenu>
 					</SidebarGroupContent>

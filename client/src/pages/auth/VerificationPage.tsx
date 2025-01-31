@@ -1,7 +1,6 @@
 import { VerifyForm } from "@/components/forms/VerifyForm";
 
 const VerificationPage = () => {
-
 	return (
 		<div className="overflow-hidden">
 			<div className="flex h-[700px]">

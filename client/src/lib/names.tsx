@@ -12,7 +12,7 @@ export const generateRandomNames = () => {
 		dictionaries: [adjectives, colors, animals, starWars],
 		separator: " ",
 		length: 2,
-        style: "capital",
+		style: "capital",
 	};
-    return uniqueNamesGenerator(config).replace(/ /g, '-');
+	return uniqueNamesGenerator(config).replace(/ /g, "-");
 };

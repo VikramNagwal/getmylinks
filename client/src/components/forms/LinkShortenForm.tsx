@@ -14,7 +14,7 @@ type shortnForm = z.infer<typeof ShortnSchema>;
 
 const LinkShortenForm = () => {
 	const [link, setLink] = useState<string[]>([""]);
-	const [randomNames, setRandomNames] = useState<string>('');
+	const [randomNames, setRandomNames] = useState<string>("");
 
 	const { toast } = useToast();
 
@@ -55,7 +55,6 @@ const LinkShortenForm = () => {
 		},
 		[reset, toast, setLink],
 	);
- 
 
 	return (
 		<section className="flex flex-col items-center justify-center md:mt-[120px]">
@@ -92,7 +91,7 @@ const LinkShortenForm = () => {
 							}
 							className="h-10 rounded-l-none border-gray-300 w-full"
 						/>
-						<KeyGenerator setnames={setRandomNames}/>
+						<KeyGenerator setnames={setRandomNames} />
 					</div>
 				</div>
 

@@ -1,142 +1,131 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { MailCheck } from "lucide-react";
-import { z } from "zod";
-
-import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
-import {
-	InputOTP,
-	InputOTPGroup,
-	InputOTPSlot,
-} from "@/components/ui/input-otp";
-import { toast } from "@/hooks/use-toast";
-import { useMutation } from "react-query";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { z } from "zod";
+import { Button } from "../ui/button";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "../ui/input-otp";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import { BadgeCheck } from "lucide-react";
+import { generateRandomUid } from "@/lib/randomId";
 
-const FormSchema = z.object({
-	otp: z.string().min(6, {
-		message: "Your one-time password must be 6 characters.",
-	}),
+
+const VerificationCodeSchema = z.object({
+  otp: z.string().length(6),
 });
 
-const useVerifyMutation = () => {
-	const { uuid } = useParams();
-	console.log(uuid);
+type VerificationCodePageSchema = z.infer<typeof VerificationCodeSchema>;
 
-	return useMutation({
-		mutationFn: (data: z.infer<typeof FormSchema>) => {
-			return axios.post(
-				`http://localhost:8080/api/v1/auth/${uuid}/verify`,
-				data,
-				{
-					withCredentials: true,
-				},
-			);
-		},
+const VerifyForm = () => {
 
-		onSuccess() {
-			toast({
-				title: "Account Verified",
-				description: "You can now login to your account",
-			});
-		},
+// const [submitting, setSubmitting] = useState<boolean>(false);
 
-		onError() {
-			toast({
-				title: "Invalid OTP",
-				description: "Invalid OTP",
-				variant: "destructive",
-			});
-		},
-	});
+  const email = "ranjasvant@gmail.com"; //replace with your email
+	const uid = generateRandomUid();
+
+  const { toast } = useToast();
+  const { uuid } = useParams();
+  const navigate = useNavigate();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<VerificationCodePageSchema>({
+    resolver: zodResolver(VerificationCodeSchema),
+    defaultValues: {
+      otp: undefined,
+    },
+  });
+
+  const onFormSubmit = async (data: any) => {
+	console.log(data)
+    try {
+      const res = await axios.post(
+        `http://localhost:8080/api/v1/auth/${uuid}/verify`,
+        data
+      );
+	  console.log(res)
+      if (res.status === 400) {
+        return toast({
+          title: "Invalid Code",
+          description: "Invalid code",
+          variant: "destructive",
+        });
+      }
+	  if(!res) throw new Error("Invalid response from server");
+	  navigate(`/${uid}/dashboard`);
+
+	  return toast({
+      title: `Account Verified ${<BadgeCheck fill="green"/>}`,
+      description: "Your account has been verified",
+    });
+    } catch (error) {
+      return toast({
+        title: "Verification Failed",
+        description: "Something went wrong on our side. Please try later",
+        variant: "destructive",
+      });
+    }
+  };
+
+  return (
+    <div className="flex flex-col space-y-4 justify-center items-center shrink">
+      <div className="my-4 flex flex-col items-center">
+        <h1 className="font-heading font-semibold text-2xl md:text-4xl xl:text-6xl p-2">
+          Verify your Account
+        </h1>
+        <p className="text-xl font-thin opacity-70">
+          we have sent you 6 digits code via Email on <strong>{email}</strong>
+        </p>
+      </div>
+      <form
+        onSubmit={handleSubmit(onFormSubmit)}
+        className="flex flex-col space-y-6 my-6"
+      >
+        <div className="p-2 border-opacity-30 ring-2 ring-slate-400 ring-opacity-40 rounded-md">
+          <Controller
+            name="otp"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <InputOTP maxLength={6} {...field} pattern={REGEXP_ONLY_DIGITS}>
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            )}
+          />
+          {errors.otp && (
+            <p className="text-red-500 text-sm">Please enter valid code</p>
+          )}
+        </div>
+        <Button type="submit">verify</Button>
+      </form>
+      <div className="md:mt-6 mt-4">
+        <p className="leading-8 text-blue-600 md:text-lg text-thin">
+          Did'nt recieved code?{" "}
+          <a href="/resend-again" className="underline underline-offset-2">
+            Resend again
+          </a>
+        </p>
+      </div>
+    </div>
+  );
 };
 
-export const VerifyForm = () => {
-	const { mutate } = useVerifyMutation();
-	const { uuid } = useParams();
-
-	const form = useForm<z.infer<typeof FormSchema>>({
-		resolver: zodResolver(FormSchema),
-		defaultValues: {
-			otp: "",
-		},
-	});
-
-	function onSubmit(data: z.infer<typeof FormSchema>) {
-		mutate(data);
-	}
-
-	return (
-		<div className="p-4 mt-[10px] md:w-[500px] h-full shadow-xl rounded-md flex flex-col justify-between items-center bg-slate-200 text-black">
-			<h2 className="font-Gloock text-start text-2xl cursor-default">
-				getmylinks
-			</h2>
-			<Form {...form}>
-				<form
-					onSubmit={form.handleSubmit(onSubmit)}
-					className="flex flex-col items-center p-4 h-2/4 md:mt-[60px]"
-				>
-					<FormField
-						control={form.control}
-						name="otp"
-						render={({ field }) => (
-							<FormItem className="flex flex-col justify-between h-full ">
-								<div className="flex flex-col items-start space-x-3 py-3">
-									<div className="flex flex-col items-center space-x-3">
-										<MailCheck />
-										<FormLabel className="text-xl font-heading font-normal text-center mx-auto">
-											Please enter the 6 digits code
-										</FormLabel>
-									</div>
-									<FormDescription>
-										We've sent you Verification code on{" "}
-										<strong className="text-black">
-											dhanwansingh@gmail.com
-										</strong>
-									</FormDescription>
-									<p></p>
-								</div>
-
-								<FormControl className="px-2">
-									<InputOTP maxLength={6} {...field}>
-										<InputOTPGroup>
-											<InputOTPSlot index={0} />
-											<InputOTPSlot index={1} />
-											<InputOTPSlot index={2} />
-											<InputOTPSlot index={3} />
-											<InputOTPSlot index={4} />
-											<InputOTPSlot index={5} />
-										</InputOTPGroup>
-									</InputOTP>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</form>
-				<Button
-					type="submit"
-					className="bg-[#0069FE] text-white hover:bg-[#0050d2] my-3"
-				>
-					Continue
-				</Button>
-			</Form>
-
-			<div className="flex flex-col justify-end items-start w-full h-full text-sm">
-				<a href="/resend-again" className="text-blue-800 leading-5">
-					Did'nt recieved code?
-				</a>
-			</div>
-		</div>
-	);
-};
+export default VerifyForm;

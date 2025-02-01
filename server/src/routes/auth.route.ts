@@ -12,12 +12,16 @@ import {
 	validateOtpToken,
 } from "../service/otp-service";
 import { UserLoginSchema, UserRegisterSchema } from "../schemas/userSchema";
-import { getIdFromMiddleware, isUserEmailExist } from "../service/user-service";
+import {
+	getIdFromMiddleware,
+	isUserEmailExist,
+	setAllCookies,
+} from "../service/user-service";
 
 const authRouter = new Hono();
 
 const otpSchema = z.object({
-	otp: z.number().max(6).min(6),
+	otp: z.string().max(6).min(6),
 });
 
 authRouter.post("/register", async (c: Context) => {
@@ -155,10 +159,10 @@ authRouter.post("/login", async (c: Context) => {
 authRouter.post("/:uid/verify", async (c: Context) => {
 	try {
 		const uid = c.req.param("uid");
-		const { otp } = otpSchema.parse(await c.req.json());
+		const { otp } = otpSchema.parse(await c.req.parseBody());
 		const token = String(otp);
 
-		if (!otp || !uid) {
+		if (!token || !uid) {
 			return c.json(
 				{
 					success: false,
@@ -169,14 +173,22 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 		}
 
 		const isValid = await validateOtpToken(token);
+		console.log(isValid);
 		if (!isValid) {
-			throw new Error("Invalid OTP token");
+			return c.json(
+				{
+					success: false,
+					message: "Invalid OTP token",
+				},
+				HttpStatusCode.BadRequest,
+			);
 		}
-		// const user = await db.user.findUnique({ where: { verificationUid: uid } });
+
 		const authenticUser = await db.user.update({
 			where: { verificationUid: uid },
 			data: { emailVerified: true, verificationUid: null },
 		});
+
 		if (!authenticUser) {
 			return c.json(
 				{
@@ -186,6 +198,10 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 				HttpStatusCode.NotFound,
 			);
 		}
+
+		const { accessTokens, refreshTokens } =
+			await AuthHandler.generateRefreshandAccessToken(authenticUser.id);
+		await setAllCookies(c, accessTokens, refreshTokens);
 
 		return c.json(
 			{
@@ -256,6 +272,54 @@ authRouter.get("/get-user", authenticateJWT, async (c: Context) => {
 				message: "Unauthorized user",
 			},
 			HttpStatusCode.Unauthenticated,
+		);
+	}
+});
+
+authRouter.post("/:email/resend-otp", async (c: Context) => {
+	try {
+		const email = c.req.param("email");
+		const existingUser = await isUserEmailExist(email);
+		if (!existingUser) {
+			return c.json(
+				{
+					success: false,
+					message: "Email not found",
+				},
+				HttpStatusCode.NotFound,
+			);
+		}
+		if (existingUser.emailVerified) {
+			return c.json(
+				{
+					success: false,
+					message: "Email already verified",
+				},
+				HttpStatusCode.BadRequest,
+			);
+		}
+		const otp = await generateOTP();
+		const uid = await generateUID();
+
+		await db.user.update({
+			where: { email },
+			data: { verificationUid: uid },
+		});
+		await emailQueue.add("sendEmail", { email, otp, uid });
+		return c.json(
+			{
+				success: true,
+				message: "OTP sent successfully",
+			},
+			HttpStatusCode.Ok,
+		);
+	} catch (error) {
+		return c.json(
+			{
+				success: false,
+				message: "failed to resend otp",
+			},
+			HttpStatusCode.BadRequest,
 		);
 	}
 });

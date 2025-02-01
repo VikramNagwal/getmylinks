@@ -1,5 +1,3 @@
-import { OrganizationType } from "../controller/auth.controller";
-
 export type Request = {
 	username: string;
 	email: string;
@@ -43,5 +41,4 @@ export type TokenPaylod = {
 	userId: number;
 	name: string;
 	email: string;
-	organization?: OrganizationType;
 };

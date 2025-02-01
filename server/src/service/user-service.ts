@@ -20,10 +20,10 @@ async function isUserIdExist(id: string): Promise<boolean> {
 	}
 }
 
-async function isUserEmailExist(email: string): Promise<boolean> {
+async function isUserEmailExist(email: string) {
 	try {
 		const doesExist = await db.user.findFirst({ where: { email } });
-		return doesExist ? true : false;
+		return doesExist;
 	} catch (error) {
 		logger.error(`Error in checking user existence: ${error}`);
 		throw new Error("Unable to check user existence! db operation failed");
@@ -147,12 +147,16 @@ async function checkUserByUsername(username: string): Promise<boolean> {
 }
 
 async function setAllCookies(
+	c: Context,
 	accessToken: string,
 	refreshToken: string,
-	c: Context,
 ) {
-	setCookie(c, "accessTokens", accessToken);
-	setCookie(c, "refreshTokens", refreshToken);
+	setCookie(c, "accessTokens", accessToken, {
+		expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
+	});
+	setCookie(c, "refreshTokens", refreshToken, {
+		expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days
+	});
 }
 
 export {

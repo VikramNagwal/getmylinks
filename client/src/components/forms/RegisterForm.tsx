@@ -27,6 +27,7 @@ import { signUpSchema } from "@/schemas/authentication-schema";
 import { usePasswordStreanth } from "@/helper/use-password";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { useEmail } from "@/context/email-context";
 
 const useSignUpMutation = () => {
 	const { toast } = useToast();
@@ -39,8 +40,8 @@ const useSignUpMutation = () => {
 				data,
 			);
 		},
-		onSuccess: (res) => {
-			navigate(`/${res.data.username}/dashboard`);
+		onSuccess: () => {
+			navigate(`/request/verify-email`);
 			toast({
 				title: "Welcome Senior🎉",
 				description: "we've sent you a verification link!",
@@ -64,6 +65,7 @@ const SignUpForm = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const { mutate } = useSignUpMutation();
+	const { setEmail } = useEmail();
 
 	const form = useForm<SignUpForm>({
 		resolver: zodResolver(signUpSchema),
@@ -84,6 +86,7 @@ const SignUpForm = () => {
 		usePasswordStreanth(password);
 
 	const onSubmit = async (data: SignUpForm) => {
+		setEmail(data.email);
 		if (isSubmitting) return;
 		setIsSubmitting(true);
 		mutate(data);

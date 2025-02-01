@@ -1,11 +1,7 @@
-import { ReactNode } from 'react'
+import { ReactNode } from "react";
 
-const useContextProvider = ({children}: {children: ReactNode}) => {
-  return (
-    <div>
-      {children}
-    </div>
-  )
-}
+const useContextProvider = ({ children }: { children: ReactNode }) => {
+	return <div>{children}</div>;
+};
 
-export default useContextProvider
+export default useContextProvider;

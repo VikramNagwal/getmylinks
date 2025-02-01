@@ -29,8 +29,6 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useEmail } from "@/context/email-context";
 
-
-
 const useSignUpMutation = () => {
 	const { toast } = useToast();
 	const navigate = useNavigate();

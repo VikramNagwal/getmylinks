@@ -12,7 +12,11 @@ import {
 	validateOtpToken,
 } from "../service/otp-service";
 import { UserLoginSchema, UserRegisterSchema } from "../schemas/userSchema";
-import { getIdFromMiddleware, isUserEmailExist, setAllCookies } from "../service/user-service";
+import {
+	getIdFromMiddleware,
+	isUserEmailExist,
+	setAllCookies,
+} from "../service/user-service";
 
 const authRouter = new Hono();
 
@@ -169,12 +173,15 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 		}
 
 		const isValid = await validateOtpToken(token);
-		console.log(isValid)
+		console.log(isValid);
 		if (!isValid) {
-			return c.json({
-				success: false,
-				message: "Invalid OTP token",
-			}, HttpStatusCode.BadRequest);
+			return c.json(
+				{
+					success: false,
+					message: "Invalid OTP token",
+				},
+				HttpStatusCode.BadRequest,
+			);
 		}
 
 		const authenticUser = await db.user.update({
@@ -192,7 +199,8 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 			);
 		}
 
-		const {accessTokens, refreshTokens} = await AuthHandler.generateRefreshandAccessToken(authenticUser.id);
+		const { accessTokens, refreshTokens } =
+			await AuthHandler.generateRefreshandAccessToken(authenticUser.id);
 		await setAllCookies(c, accessTokens, refreshTokens);
 
 		return c.json(
@@ -273,16 +281,22 @@ authRouter.post("/:email/resend-otp", async (c: Context) => {
 		const email = c.req.param("email");
 		const existingUser = await isUserEmailExist(email);
 		if (!existingUser) {
-			return c.json({
-				success: false,
-				message: "Email not found",
-			}, HttpStatusCode.NotFound);
+			return c.json(
+				{
+					success: false,
+					message: "Email not found",
+				},
+				HttpStatusCode.NotFound,
+			);
 		}
 		if (existingUser.emailVerified) {
-			return c.json({
-				success: false,
-				message: "Email already verified",
-			}, HttpStatusCode.BadRequest);
+			return c.json(
+				{
+					success: false,
+					message: "Email already verified",
+				},
+				HttpStatusCode.BadRequest,
+			);
 		}
 		const otp = await generateOTP();
 		const uid = await generateUID();
@@ -292,17 +306,22 @@ authRouter.post("/:email/resend-otp", async (c: Context) => {
 			data: { verificationUid: uid },
 		});
 		await emailQueue.add("sendEmail", { email, otp, uid });
-		return c.json({
-			success: true,
-			message: "OTP sent successfully",
-		}, HttpStatusCode.Ok);
-
+		return c.json(
+			{
+				success: true,
+				message: "OTP sent successfully",
+			},
+			HttpStatusCode.Ok,
+		);
 	} catch (error) {
-		return c.json({
-			success: false,
-			message: "failed to resend otp",
-		}, HttpStatusCode.BadRequest);
+		return c.json(
+			{
+				success: false,
+				message: "failed to resend otp",
+			},
+			HttpStatusCode.BadRequest,
+		);
 	}
-})
+});
 
 export { authRouter };

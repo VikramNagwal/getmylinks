@@ -23,7 +23,7 @@ async function isUserIdExist(id: string): Promise<boolean> {
 async function isUserEmailExist(email: string) {
 	try {
 		const doesExist = await db.user.findFirst({ where: { email } });
-		return doesExist
+		return doesExist;
 	} catch (error) {
 		logger.error(`Error in checking user existence: ${error}`);
 		throw new Error("Unable to check user existence! db operation failed");

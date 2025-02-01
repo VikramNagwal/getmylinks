@@ -11,9 +11,8 @@ export interface AllTabContentProps {
 }
 
 const Dashboard = () => {
-
-	const [activeTab, setActiveTab] = useState<keyof AllTabContentProps>("shortlinks");
-
+	const [activeTab, setActiveTab] =
+		useState<keyof AllTabContentProps>("shortlinks");
 
 	const allTabContent: AllTabContentProps = {
 		shortlinks: <LinkShortenForm />,

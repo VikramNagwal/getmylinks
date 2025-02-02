@@ -1,7 +1,7 @@
 import { Worker } from "bullmq";
 import { logger } from "../../utils/logger";
 import { QUEUE_NAME, REDIS_CONFIG } from "../../config/queueConfig";
-import { sendMailtoUser } from "../../service/email-service";
+import { sendMailtoUser } from "../../email/nodemailer";
 
 const emailWorker = new Worker(
 	QUEUE_NAME,
@@ -16,8 +16,8 @@ const emailWorker = new Worker(
 			await job.updateProgress(100);
 
 			logger.success(`Email sent successfully for job ${job.id}`, {
-				messageId: result.messageId,
-				response: result.response,
+				result: {...result},
+				// response: result.response,
 			});
 
 			return result.messageId;

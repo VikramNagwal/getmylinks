@@ -305,7 +305,7 @@ authRouter.post("/:email/resend-otp", async (c: Context) => {
 			where: { email },
 			data: { verificationUid: uid },
 		});
-		await emailQueue.add("sendEmail", { email, otp, uid });
+		await emailQueue.add("ResendEmail", { email, otp, uid });
 		return c.json(
 			{
 				success: true,

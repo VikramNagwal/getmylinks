@@ -4,10 +4,13 @@ import db from "../config/dbConfig";
 
 const addUrl = async (url: string) => {
 	const shortId = "HuvT76CV";
-	const shortData = await db.url.create({
+	const shortData = await db.link.create({
 		data: {
-			longUrl: url,
+			url,
 			shortUrl: shortId,
+			user: {
+				connect: { id: "1" },
+			}
 		},
 	});
 	console.log(shortData);

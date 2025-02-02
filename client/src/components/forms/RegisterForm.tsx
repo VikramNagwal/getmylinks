@@ -24,10 +24,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { signUpSchema } from "@/schemas/authentication-schema";
-import { usePasswordStreanth } from "@/helper/use-password";
+import { usePasswordStreanth } from "@/utils/use-password";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useEmail } from "@/context/email-context";
+
 
 const useSignUpMutation = () => {
 	const { toast } = useToast();

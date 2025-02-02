@@ -1,5 +1,11 @@
 import nodemailer from "nodemailer";
 import { logger } from "../utils/logger";
+import { render } from "@react-email/components";
+import React from "react";
+import { VerificationEmail } from "./template/verification-code";
+
+
+// for development purposes only
 
 const transporter = nodemailer.createTransport({
 	host: Bun.env.SMTP_HOST,
@@ -12,11 +18,21 @@ const transporter = nodemailer.createTransport({
 	// debug: true,
 });
 
+
 const otpTemplate = (uid: string, otp: string) =>
-	`<b>Please verify your email address</b><br><h1>this is your uid</h1><br>${uid}<br><h1>${otp}</h1>`;
+`<p>Please verify your email address</p>
+<br>
+<h1>this is your uid</h1>
+<h2>${uid}</h2>
+<button>
+<a href="http://localhost:5173/${uid}/verify">verify code</a>
+</button>
+<br />
+<h1>${otp}</h1>`;
 
 async function sendMailtoUser(email: string, otp: string, uid: string) {
 	try {
+		const verificationEmailHTML = await render(<VerificationEmail Code={otp} uid={uid}/>);
 		logger.info("Sending email to", email);
 
 		const sentMail = await transporter.sendMail({
@@ -24,7 +40,7 @@ async function sendMailtoUser(email: string, otp: string, uid: string) {
 			to: email,
 			subject: "Email Verification",
 			text: "Please verify your email address",
-			html: otpTemplate(uid, otp),
+			html: verificationEmailHTML,
 		});
 
 		return sentMail;

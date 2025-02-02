@@ -13,7 +13,9 @@ import { useForm, Controller } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { BadgeCheck } from "lucide-react";
-import { generateRandomUid } from "@/lib/randomId";
+import { generateRandomUid } from "@/utils/randomId";
+import { useEmail } from "@/context/email-context";
+import { useState } from "react";
 
 const VerificationCodeSchema = z.object({
 	otp: z.string().length(6),
@@ -22,13 +24,13 @@ const VerificationCodeSchema = z.object({
 type VerificationCodePageSchema = z.infer<typeof VerificationCodeSchema>;
 
 const VerifyForm = () => {
-	// const [submitting, setSubmitting] = useState<boolean>(false);
+	const [submitting, setSubmitting] = useState<boolean>(false);
 
-	const email = "ranjasvant@gmail.com"; //replace with your email
-	const uid = generateRandomUid();
-
+	const { email } = useEmail();
 	const { toast } = useToast();
 	const { uuid } = useParams();
+
+	const uid = generateRandomUid();
 	const navigate = useNavigate();
 
 	const {
@@ -43,7 +45,7 @@ const VerifyForm = () => {
 	});
 
 	const onFormSubmit = async (data: any) => {
-		console.log(data);
+		setSubmitting(true);
 		try {
 			const res = await axios.post(
 				`http://localhost:8080/api/v1/auth/${uuid}/verify`,
@@ -70,6 +72,8 @@ const VerifyForm = () => {
 				description: "Something went wrong on our side. Please try later",
 				variant: "destructive",
 			});
+		} finally {
+			setSubmitting(false);
 		}
 	};
 
@@ -112,16 +116,8 @@ const VerifyForm = () => {
 						<p className="text-red-500 text-sm">Please enter valid code</p>
 					)}
 				</div>
-				<Button type="submit">verify</Button>
+				<Button disabled={submitting} type="submit">verify</Button>
 			</form>
-			<div className="md:mt-6 mt-4">
-				<p className="leading-8 text-blue-600 md:text-lg text-thin">
-					Did'nt recieved code?{" "}
-					<a href="/resend-again" className="underline underline-offset-2">
-						Resend again
-					</a>
-				</p>
-			</div>
 		</div>
 	);
 };

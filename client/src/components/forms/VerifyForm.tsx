@@ -116,7 +116,9 @@ const VerifyForm = () => {
 						<p className="text-red-500 text-sm">Please enter valid code</p>
 					)}
 				</div>
-				<Button disabled={submitting} type="submit">verify</Button>
+				<Button disabled={submitting} type="submit">
+					verify
+				</Button>
 			</form>
 		</div>
 	);

@@ -10,7 +10,7 @@ const addUrl = async (url: string) => {
 			shortUrl: shortId,
 			user: {
 				connect: { id: "1" },
-			}
+			},
 		},
 	});
 	console.log(shortData);

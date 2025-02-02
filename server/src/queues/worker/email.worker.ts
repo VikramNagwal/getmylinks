@@ -16,7 +16,7 @@ const emailWorker = new Worker(
 			await job.updateProgress(100);
 
 			logger.success(`Email sent successfully for job ${job.id}`, {
-				result: {...result},
+				result: { ...result },
 				// response: result.response,
 			});
 

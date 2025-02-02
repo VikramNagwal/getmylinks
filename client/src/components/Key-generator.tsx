@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Sparkles } from "lucide-react";
 import { Button } from "./ui/button";
-import { generateRandomNames } from "@/lib/names";
+import { generateRandomNames } from "@/utils/names";
 
 const KeyGenerator = ({
 	setnames,

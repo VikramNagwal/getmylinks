@@ -1,8 +1,6 @@
 import db from "../config/dbConfig";
-import { logger } from "../config/loggerConfig";
-import { isUserEmailExist } from "../service/user-service";
 import { describe, it, expect } from "bun:test";
-
+import { logger } from "../utils/logger";
 const key = String(Bun.env.DATABASE_URL);
 logger.info(key);
 console.log(key);

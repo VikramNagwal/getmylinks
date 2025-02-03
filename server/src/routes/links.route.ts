@@ -14,8 +14,12 @@ urlRouter.post("/shorten", authenticateJWT, async (c: Context) => {
 		const createdById = await getIdFromMiddleware(c);
 		const { url, title } = LinkSchema.parse(await c.req.json());
 
-		const link = await linkService.createShortLink({url, title, userId: createdById});
-		
+		const link = await linkService.createShortLink({
+			url,
+			title,
+			userId: createdById,
+		});
+
 		return c.json(
 			{
 				success: true,

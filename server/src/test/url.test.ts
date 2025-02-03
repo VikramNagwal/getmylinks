@@ -18,11 +18,11 @@ const addUrl = async (url: string) => {
 };
 
 describe("test url", () => {
-    it("should create short link", async () => {
-        const url = 'https://claude.ai/chat/7e667ccd-cbb5-4c90-8a84-3e50eb290c11'
+	it("should create short link", async () => {
+		const url = "https://claude.ai/chat/7e667ccd-cbb5-4c90-8a84-3e50eb290c11";
 
-        const shorturl = await createShortLink("gysagya",url,'test');
-        expect(shorturl.length).toBeGreaterThan(6)
-        expect(shorturl).toBeString()
-    });
-})
+		const shorturl = await createShortLink("gysagya", url, "test");
+		expect(shorturl.length).toBeGreaterThan(6);
+		expect(shorturl).toBeString();
+	});
+});

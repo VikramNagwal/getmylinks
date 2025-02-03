@@ -40,7 +40,7 @@ authRouter.post("/register", async (c: Context) => {
 			);
 		}
 
-		const { otp , secret } = await generateOTP();
+		const { otp, secret } = await generateOTP();
 		const uid = await generateUID();
 		const hashedPassword = await AuthHandler.hashPassword(password);
 
@@ -177,8 +177,8 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 			where: { verificationUid: uid },
 			select: {
 				secretToken: true,
-			}
-		})
+			},
+		});
 
 		const secret = user?.secretToken;
 		await validateOtpToken(token, secret!);
@@ -297,7 +297,7 @@ authRouter.post("/:email/resend-otp", async (c: Context) => {
 				HttpStatusCode.BadRequest,
 			);
 		}
-		const {otp, secret} = await generateOTP();
+		const { otp, secret } = await generateOTP();
 		const uid = await generateUID();
 
 		await db.user.update({

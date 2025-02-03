@@ -1,7 +1,6 @@
 import db from "../config/dbConfig";
 import { describe, it, expect } from "bun:test";
 
-
 const key = String(Bun.env.DATABASE_URL);
 
 async function createUser() {
@@ -24,4 +23,3 @@ describe("create user", () => {
 		expect(user).toHaveReturned();
 	});
 });
-

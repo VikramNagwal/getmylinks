@@ -59,11 +59,14 @@ const VerifyForm = () => {
 				description: "Your account has been verified",
 			});
 		} catch (error) {
-		toast({
-		title: error instanceof Error ? error.message : (error as any)?.response?.data?.message || "Verification Failed",
-		description: "Something went wrong on our side. Please try later",
-		variant: "destructive",
-	  })
+			toast({
+				title:
+					error instanceof Error
+						? error.message
+						: (error as any)?.response?.data?.message || "Verification Failed",
+				description: "Something went wrong on our side. Please try later",
+				variant: "destructive",
+			});
 		} finally {
 			setSubmitting(false);
 		}

@@ -1,17 +1,16 @@
 import db from "../config/dbConfig";
 import { describe, it, expect } from "bun:test";
-import { logger } from "../utils/logger";
+
+
 const key = String(Bun.env.DATABASE_URL);
-logger.info(key);
-console.log(key);
 
 async function createUser() {
 	const user = await db.user.create({
 		data: {
+			username: "johndoex",
 			name: "John Doe",
 			email: "johndoe@itself.me",
-			password: "password",
-			username: "johndoex",
+			passwordHash: "password",
 		},
 	});
 	console.log(user);
@@ -26,10 +25,3 @@ describe("create user", () => {
 	});
 });
 
-// async function getUser(email: string) {
-// 	const doesExist = await isUserEmailExist(email);
-// 	console.log(doesExist);
-// 	return doesExist;
-// }
-
-// getUser("johndoe@itsef.me");

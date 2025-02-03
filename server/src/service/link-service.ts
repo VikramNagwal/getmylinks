@@ -1,31 +1,9 @@
 import { nanoid } from "nanoid";
 import db from "../config/dbConfig";
 import { UAParser } from "ua-parser-js";
-import { Context } from "hono";
-import { getIdFromMiddleware } from "./user-service";
-import { LinkSchema } from "../schemas/link-schema";
+import { logger } from "../utils/logger";
 
-async function createShortLink(c: Context): Promise<string> {
-	try {
-		const createdById = await getIdFromMiddleware(c);
-		const { url, title } = LinkSchema.parse(await c.req.json());
 
-		const shortCode = title || nanoid(8);
-		console.log(shortCode);
-		const urlData = await db.link.create({
-			data: {
-				url,
-				shortUrl: shortCode,
-				userId: createdById,
-			},
-		});
-		console.log(urlData);
-
-		return shortCode;
-	} catch (error) {
-		throw new Error("Error while creating short link");
-	}
-}
 
 function getUserDetails(req: any) {
 	const uaParser = new UAParser(req.header("User-Agent"));
@@ -42,7 +20,58 @@ function getUserDetails(req: any) {
 	};
 }
 
-async function checkUrlExists(url: string) {
+
+export { getUserDetails };
+
+
+class LinkService {
+
+	async createShortLink(params: {
+		url: string,
+		title?: string,
+		userId: string,
+	}) {
+		const { url, title, userId } = params;
+		try {
+			if (title) {
+		const existingTitle = await this.checkTitleExists(title);
+		if (existingTitle) {
+			return {
+				message: "title already exists",
+				shortUrl: `http://localhost:8080/r/${title}`,
+			}
+		}}
+
+		const existingUrl = await this.checkUrlExists(url);
+		if (existingUrl) {
+			return {
+				message: "Short url already exists",
+				shortUrl: `http://localhost:8080/r/${existingUrl}`,
+			}
+		}
+
+		const shortCode = title || nanoid(8);
+		await db.link.create({
+			data: {
+				url,
+				shortUrl: shortCode,
+				userId,
+			},
+		});
+
+		return {
+			success: true,
+			message: "creared",
+			shortUrl: `http://localhost:8080/r/${shortCode}`,
+		}
+			
+		} catch (error) {
+			logger.error("Error while creating short link", error);
+			throw new Error("Error while creating short link");
+		}
+	}
+
+	private async checkUrlExists(url: string) {
 	try {
 		const response = await db.link.findFirst({
 			where: { url },
@@ -51,16 +80,16 @@ async function checkUrlExists(url: string) {
 				shortUrl: true,
 			},
 		});
-		if (!response) {
-			return false;
-		}
+		if (!response) return false;
+
 		return response.shortUrl;
 	} catch (error) {
+		logger.error("Error while fetching short link", error);
 		throw new Error("Error while fetching short link");
 	}
-}
+    }
 
-async function checkTitleExists(title: string) {
+	private async checkTitleExists(title: string) {
 	try {
 		const response = await db.link.findFirst({
 			where: { shortUrl: title },
@@ -68,13 +97,14 @@ async function checkTitleExists(title: string) {
 				isActive: true,
 			},
 		});
-		if (!response) {
-			return false;
-		}
-		return true;
+		if (!response) return false;
+		
+		return true
 	} catch (error) {
-		throw new Error("Error while fetching short link");
+		logger.error("Error while fetching short link title", error);
+		throw new Error("Error while fetching short link title");
 	}
+    }
 }
 
-export { createShortLink, getUserDetails, checkUrlExists, checkTitleExists };
+export default new LinkService() as LinkService;

@@ -43,7 +43,7 @@ export function VerificationEmail({
               </Text>
               <Section style={verificationSection}>
                 <Text style={text}>If button given below does not work use this link below 👇</Text>
-                <Text style={link}>http://{baseUrl}{uid}/verify</Text>
+                <Text style={link}>{baseUrl}/{uid}/verify</Text>
                 <Text style={verifyText}>Verification code</Text>
 
                 <Text style={codeText}>{Code}</Text>

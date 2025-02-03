@@ -1,5 +1,4 @@
 import axios from "axios";
-import { z } from "zod";
 import { Button } from "../ui/button";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import {
@@ -16,6 +15,7 @@ import { BadgeCheck } from "lucide-react";
 import { generateRandomUid } from "@/utils/randomId";
 import { useEmail } from "@/context/email-context";
 import { useState } from "react";
+import { z } from "zod";
 
 const VerificationCodeSchema = z.object({
 	otp: z.string().length(6),
@@ -51,14 +51,6 @@ const VerifyForm = () => {
 				`http://localhost:8080/api/v1/auth/${uuid}/verify`,
 				data,
 			);
-			console.log(res);
-			if (res.status === 400) {
-				return toast({
-					title: "Invalid Code",
-					description: "Invalid code",
-					variant: "destructive",
-				});
-			}
 			if (!res) throw new Error("Invalid response from server");
 			navigate(`/${uid}/dashboard`);
 
@@ -67,11 +59,11 @@ const VerifyForm = () => {
 				description: "Your account has been verified",
 			});
 		} catch (error) {
-			return toast({
-				title: "Verification Failed",
-				description: "Something went wrong on our side. Please try later",
-				variant: "destructive",
-			});
+		toast({
+		title: error instanceof Error ? error.message : (error as any)?.response?.data?.message || "Verification Failed",
+		description: "Something went wrong on our side. Please try later",
+		variant: "destructive",
+	  })
 		} finally {
 			setSubmitting(false);
 		}

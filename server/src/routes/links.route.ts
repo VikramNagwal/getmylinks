@@ -1,13 +1,11 @@
-import { nanoid } from "nanoid";
 import db from "../config/dbConfig";
 import { Context, Hono } from "hono";
 import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
 import { HttpStatusCode } from "../types/types";
 import { authenticateJWT } from "../middlewares/auth-middleware";
 import { getIdFromMiddleware } from "../service/user-service";
-
-import { checkTitleExists, checkUrlExists } from "../service/link-service";
 import { logger } from "../utils/logger";
+import linkService from "../service/link-service";
 
 const urlRouter = new Hono();
 
@@ -16,43 +14,13 @@ urlRouter.post("/shorten", authenticateJWT, async (c: Context) => {
 		const createdById = await getIdFromMiddleware(c);
 		const { url, title } = LinkSchema.parse(await c.req.json());
 
-		if (title) {
-			const existingTitle = await checkTitleExists(title);
-			if (existingTitle) {
-				return c.json(
-					{
-						message: "title already exists",
-						shortUrl: `http://localhost:8080/r/${title}`,
-					},
-					HttpStatusCode.Ok,
-				);
-			}
-		}
-
-		const shortCode = title || nanoid(8);
-		const existingUrl = await checkUrlExists(url);
-		if (existingUrl) {
-			return c.json(
-				{
-					message: "Short url already exists",
-					shortUrl: `http://localhost:8080/r/${existingUrl}`,
-				},
-				HttpStatusCode.Ok,
-			);
-		}
-		await db.link.create({
-			data: {
-				url,
-				shortUrl: shortCode,
-				userId: createdById,
-			},
-		});
-
+		const link = await linkService.createShortLink({url, title, userId: createdById});
+		
 		return c.json(
 			{
 				success: true,
-				message: "creared",
-				shortUrl: `http://localhost:8080/r/${shortCode}`,
+				message: "short link successfully generated",
+				shortUrl: `http://localhost:8080/r/${link.shortUrl}`,
 			},
 			HttpStatusCode.Created,
 		);

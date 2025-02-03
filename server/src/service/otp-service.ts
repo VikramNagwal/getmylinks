@@ -2,15 +2,17 @@ import { authenticator, totp } from "otplib";
 import { randomUUIDv7 } from "bun";
 import { logger } from "../utils/logger";
 
-const secret = authenticator.generateSecret(4);
+
 totp.options = {
-	step: 6660,
-};
+			step: 1800,
+			window: 3,
+		}
 
 async function generateOTP() {
+	const secret = authenticator.generateSecret(20);
 	try {
-		const token = totp.generate(secret);
-		return token;
+		const otp = totp.generate(secret);
+		return {otp, secret};
 	} catch (error) {
 		logger.error(`Error in generating OTP: ${error}`);
 		throw new Error("Unable to generate OTP");
@@ -18,7 +20,7 @@ async function generateOTP() {
 }
 
 // Validate OTP Token
-async function validateOtpToken(token: string) {
+async function validateOtpToken(token: string, secret: string) {
 	try {
 		const isValid = totp.verify({ token, secret });
 		if (!isValid) throw new Error("Invalid OTP");

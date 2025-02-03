@@ -17,11 +17,12 @@ const addUrl = async (url: string) => {
 	return shortData;
 };
 
-// describe("test url", () => {
-//     it("should create short link", async () => {
-//         const url = 'https://claude.ai/chat/7e667ccd-cbb5-4c90-8a84-3e50eb290c11'
-//         const shorturl = await createShortLink(url);
-//         expect(shorturl.length).toBeGreaterThan(6)
-//         expect(shorturl).toBeString()
-//     });
-// })
+describe("test url", () => {
+	it("should create short link", async () => {
+		const url = "https://claude.ai/chat/7e667ccd-cbb5-4c90-8a84-3e50eb290c11";
+
+		const shorturl = await createShortLink("gysagya", url, "test");
+		expect(shorturl.length).toBeGreaterThan(6);
+		expect(shorturl).toBeString();
+	});
+});

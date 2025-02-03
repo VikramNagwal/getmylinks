@@ -40,7 +40,7 @@ authRouter.post("/register", async (c: Context) => {
 			);
 		}
 
-		const otp = await generateOTP();
+		const { otp, secret } = await generateOTP();
 		const uid = await generateUID();
 		const hashedPassword = await AuthHandler.hashPassword(password);
 
@@ -51,6 +51,7 @@ authRouter.post("/register", async (c: Context) => {
 				email: String(email.trim().toLowerCase()),
 				passwordHash: hashedPassword,
 				verificationUid: uid,
+				secretToken: secret,
 			},
 		});
 		if (!user) {
@@ -159,7 +160,7 @@ authRouter.post("/login", async (c: Context) => {
 authRouter.post("/:uid/verify", async (c: Context) => {
 	try {
 		const uid = c.req.param("uid");
-		const { otp } = otpSchema.parse(await c.req.parseBody());
+		const { otp } = otpSchema.parse(await c.req.json());
 		const token = String(otp);
 
 		if (!token || !uid) {
@@ -172,17 +173,15 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 			);
 		}
 
-		const isValid = await validateOtpToken(token);
-		console.log(isValid);
-		if (!isValid) {
-			return c.json(
-				{
-					success: false,
-					message: "Invalid OTP token",
-				},
-				HttpStatusCode.BadRequest,
-			);
-		}
+		const user = await db.user.findUnique({
+			where: { verificationUid: uid },
+			select: {
+				secretToken: true,
+			},
+		});
+
+		const secret = user?.secretToken;
+		await validateOtpToken(token, secret!);
 
 		const authenticUser = await db.user.update({
 			where: { verificationUid: uid },
@@ -298,12 +297,12 @@ authRouter.post("/:email/resend-otp", async (c: Context) => {
 				HttpStatusCode.BadRequest,
 			);
 		}
-		const otp = await generateOTP();
+		const { otp, secret } = await generateOTP();
 		const uid = await generateUID();
 
 		await db.user.update({
 			where: { email },
-			data: { verificationUid: uid },
+			data: { verificationUid: uid, secretToken: secret },
 		});
 		await emailQueue.add("ResendEmail", { email, otp, uid });
 		return c.json(

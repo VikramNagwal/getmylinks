@@ -8,16 +8,18 @@ datasource db {
 }
 
 model User {
-  id              String   @id @default(cuid())
-  username        String   @unique
+  id              String    @id @default(cuid())
+  username        String    @unique
   name            String?
-  email           String   @unique
-  emailVerified   Boolean  @default(false)
-  verificationUid String?  @unique
-  passwordHash    String   @db.VarChar(160) @unique
+  email           String    @unique
+  emailVerified   Boolean   @default(false)
+  verificationUid String?   @unique
+  emailVerifiedAt DateTime?
+  secretToken     String?
+  passwordHash    String    @unique @db.VarChar(160)
   refreshToken    String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   links   link[]
   Profile Profile?
@@ -58,7 +60,7 @@ model Analytics {
   os          String?  @db.VarChar(150)
   createdAt   DateTime @default(now())
 
-  link        link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  link link @relation(fields: [linkId], references: [id], onDelete: Cascade)
 
   @@index([linkId])
   @@map("analytics")
@@ -68,7 +70,7 @@ model Profile {
   id        String   @id @default(cuid())
   userId    String   @unique
   bio       String?
-  avatar    String?   @db.Text
+  avatar    String?  @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

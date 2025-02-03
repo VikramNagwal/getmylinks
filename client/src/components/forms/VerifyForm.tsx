@@ -16,7 +16,6 @@ import { useEmail } from "@/context/email-context";
 import { useState } from "react";
 import { z } from "zod";
 
-
 const VerificationCodeSchema = z.object({
 	otp: z.string().length(6),
 });

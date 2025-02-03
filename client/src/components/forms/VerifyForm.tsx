@@ -11,11 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import { BadgeCheck } from "lucide-react";
 import { generateRandomUid } from "@/utils/randomId";
 import { useEmail } from "@/context/email-context";
 import { useState } from "react";
 import { z } from "zod";
+
 
 const VerificationCodeSchema = z.object({
 	otp: z.string().length(6),
@@ -55,7 +55,7 @@ const VerifyForm = () => {
 			navigate(`/${uid}/dashboard`);
 
 			return toast({
-				title: `Account Verified ${<BadgeCheck fill="green" />}`,
+				title: `Account Verified Successfully`,
 				description: "Your account has been verified",
 			});
 		} catch (error) {

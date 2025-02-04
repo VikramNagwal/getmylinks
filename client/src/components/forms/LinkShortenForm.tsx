@@ -10,9 +10,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import KeyGenerator from "../Key-generator";
 
+
 type shortnForm = z.infer<typeof ShortnSchema>;
 
 const LinkShortenForm = () => {
+
 	const [link, setLink] = useState<string[]>([""]);
 	const [randomNames, setRandomNames] = useState<string>("");
 
@@ -99,23 +101,6 @@ const LinkShortenForm = () => {
 					Shorten URL
 				</Button>
 			</form>
-			{/* <div className="mt-6 p-4 rounded-md bg-gray-900 w-96">
-        <p className="text-start my-3 font-light text-xl tetx-white">links:</p>
-        <div className="flex flex-col gap-3 space-y-3 text-green-500">
-          {link.map((l, index) => (
-            <a
-              key={index}
-              href={l}
-              target="_blank"
-              rel="noreferrer"
-              className="text-center hover:text-green-400 p-2 rounded-md bg-gray-800"
-            >
-              <LinkIcon />
-              {l}
-            </a>
-          ))}
-        </div>
-      </div> */}
 		</section>
 	);
 };

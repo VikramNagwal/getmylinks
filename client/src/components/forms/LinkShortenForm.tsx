@@ -10,11 +10,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import KeyGenerator from "../Key-generator";
 
-
 type shortnForm = z.infer<typeof ShortnSchema>;
 
 const LinkShortenForm = () => {
-
 	const [link, setLink] = useState<string[]>([""]);
 	const [randomNames, setRandomNames] = useState<string>("");
 

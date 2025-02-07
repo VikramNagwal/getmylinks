@@ -185,7 +185,11 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 
 		const authenticUser = await db.user.update({
 			where: { verificationUid: uid },
-			data: { emailVerified: true, verificationUid: null, emailVerifiedAt: new Date() },
+			data: {
+				emailVerified: true,
+				verificationUid: null,
+				emailVerifiedAt: new Date(),
+			},
 		});
 
 		if (!authenticUser) {
@@ -224,7 +228,7 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 authRouter.get("/logout", authenticateJWT, async (c: Context) => {
 	try {
 		const userId = await getIdFromMiddleware(c);
-		console.log(userId)
+		console.log(userId);
 		if (!userId) {
 			return c.json(
 				{

@@ -36,8 +36,7 @@ export const EmailVerifyRequest = () => {
 				<div className="text-center text-lg font-thin">
 					<p>We know its annoying but its ssential for your own security</p>
 					<p>
-						We have sent you a <span>Secret Code</span> via email on your
-						{" "}
+						We have sent you a <span>Secret Code</span> via email on your{" "}
 						{email}
 					</p>
 				</div>

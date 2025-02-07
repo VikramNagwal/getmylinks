@@ -11,24 +11,24 @@ import { EmailContextProvider } from "./context/email-context.tsx";
 
 function App() {
 	return (
-    <>
-      <EmailContextProvider>
-        <Routes>
-          <Route index element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/:uuid/verify" element={<VerificationPage />} />
-          <Route path="/:username/dashboard" element={<Dashboard />} />
-          <Route
-            path="/request/verify-email"
-            element={<EmailVerifyRequest />}
-          />
-          <Route path="/phone-preview" element={<PhonePreview />} />
-        </Routes>
-        <Toaster />
-      </EmailContextProvider>
-    </>
-  );
+		<>
+			<EmailContextProvider>
+				<Routes>
+					<Route index element={<HomePage />} />
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/register" element={<RegisterPage />} />
+					<Route path="/:uuid/verify" element={<VerificationPage />} />
+					<Route path="/:username/dashboard" element={<Dashboard />} />
+					<Route
+						path="/request/verify-email"
+						element={<EmailVerifyRequest />}
+					/>
+					<Route path="/phone-preview" element={<PhonePreview />} />
+				</Routes>
+				<Toaster />
+			</EmailContextProvider>
+		</>
+	);
 }
 
 export default App;

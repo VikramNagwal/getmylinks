@@ -76,7 +76,7 @@ async function updateUserEmail(
 		if (!updatedUser) {
 			throw new Error("Unable to update user email! db operation failed");
 		}
-		const {otp, secret} = await generateOTP();
+		const { otp, secret } = await generateOTP();
 		const uid = await generateUID();
 
 		await db.user.update({
@@ -162,7 +162,6 @@ async function setAllCookies(
 	} catch (error) {
 		logger.error(`Error in setting cookies: ${error}`);
 		throw new Error("Unable to set cookies");
-		
 	}
 }
 

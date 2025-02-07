@@ -15,13 +15,13 @@ const LogoutButton = () => {
 	const handleLogout = async () => {
 		try {
 			const res = await axios.get(`http://localhost:8080/api/v1/auth/logout`, {
-                withCredentials: true,
-                        });
-	  console.log(res);
-		toast({
-              title: "Logout successful",
-              description: `Goodbye ${username}`,
-            });
+				withCredentials: true,
+			});
+			console.log(res);
+			toast({
+				title: "Logout successful",
+				description: `Goodbye ${username}`,
+			});
 			logout();
 			dispatch(userLogout());
 			return navigate("/");

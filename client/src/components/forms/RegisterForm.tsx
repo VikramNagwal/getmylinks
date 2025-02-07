@@ -91,7 +91,7 @@ const SignUpForm = () => {
 
 	const onSubmit = async (data: SignUpForm) => {
 		if (isSubmitting) return;
-    setIsSubmitting(true);
+		setIsSubmitting(true);
 		setEmail(data.email);
 		setUsername(data.username);
 		dispatch(setUser({ email: data.email, username: data.username }));

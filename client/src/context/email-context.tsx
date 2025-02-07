@@ -7,7 +7,11 @@ interface EmailContextType {
 	setEmailVerified: (isVerified: boolean) => void;
 	setEmail: (email: string) => void;
 	setUsername: (username: string) => void;
-	getDatafromLocalStorage: () => { email: string; username: string; isVerified: boolean; };
+	getDatafromLocalStorage: () => {
+		email: string;
+		username: string;
+		isVerified: boolean;
+	};
 	logout: () => void;
 }
 
@@ -26,12 +30,15 @@ export const EmailContextProvider = ({
 }: {
 	children: React.ReactNode;
 }) => {
-	const [email, setEmail] = useState<string>(() => 
-		localStorage.getItem("email") || "");
-	const [username, setUsername] = useState<string>(() => 
-	localStorage.getItem("username") || "");
-	const [isVerified, setEmailVerified] = useState<boolean>(() => 
-	localStorage.getItem("isVerified") === "true");
+	const [email, setEmail] = useState<string>(
+		() => localStorage.getItem("email") || "",
+	);
+	const [username, setUsername] = useState<string>(
+		() => localStorage.getItem("username") || "",
+	);
+	const [isVerified, setEmailVerified] = useState<boolean>(
+		() => localStorage.getItem("isVerified") === "true",
+	);
 
 	function getDatafromLocalStorage() {
 		setEmail(localStorage.getItem("email") || "");
@@ -41,7 +48,7 @@ export const EmailContextProvider = ({
 			email,
 			username,
 			isVerified,
-		}
+		};
 	}
 
 	function logout() {
@@ -52,7 +59,16 @@ export const EmailContextProvider = ({
 
 	return (
 		<EmailContext.Provider
-			value={{ email, username, isVerified, setUsername, setEmailVerified, setEmail, getDatafromLocalStorage,logout }}
+			value={{
+				email,
+				username,
+				isVerified,
+				setUsername,
+				setEmailVerified,
+				setEmail,
+				getDatafromLocalStorage,
+				logout,
+			}}
 		>
 			{children}
 		</EmailContext.Provider>

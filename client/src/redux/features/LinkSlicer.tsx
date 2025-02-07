@@ -1,31 +1,52 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+
+interface User {
+	username: string;
+	email: string;
+}
+
+interface Links {
+	_id: string;
+	link: string;
+	totalViews: number;
+	isActive: boolean;
+	createdAt: Date;
+	title?: string;
+}
 
 interface LinkState {
-	links: string[];
-	isActive: boolean;
-	expiresAt: Date | null;
+	links: Links[];
+	user?: User | null;
+	expiresAt?: Date | null;
 }
 
 const initialState: LinkState = {
 	links: [],
-	isActive: true,
 	expiresAt: null,
 };
 
 export const LinkSlicer = createSlice({
 	name: "links",
 	initialState,
+
 	reducers: {
-		setLinks(state, action: PayloadAction<string[]>) {
+		getlinks(state, action: PayloadAction<Links[]>) {
 			state.links = action.payload;
 		},
-		setIsActive(state, action: PayloadAction<boolean>) {
-			state.isActive = action.payload;
+		setUser(state, action: PayloadAction<User>) {
+			state.user = action.payload;
 		},
 		setExpiresAt(state, action: PayloadAction<Date>) {
 			state.expiresAt = action.payload;
 		},
+		getLinkById(state, action: PayloadAction<string>) {
+			state.links = state.links.filter((link) => link._id === action.payload);
+		},
+		deleteLink(state, action: PayloadAction<string>) {
+			state.links = state.links.filter((link) => link._id !== action.payload);
+		},
 	},
 });
 
-export const { setLinks, setIsActive, setExpiresAt } = LinkSlicer.actions;
+export const { getLinkById, getlinks, deleteLink, setExpiresAt } =
+	LinkSlicer.actions;

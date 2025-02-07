@@ -66,7 +66,7 @@ const LinkShortenForm = () => {
 						type="url"
 						id="longUrl"
 						{...register("url", { required: true })}
-						placeholder="https://example.com/very/long/url"
+						placeholder="shorten any link"
 						required
 					/>
 					{errors.url && (

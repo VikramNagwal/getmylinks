@@ -10,8 +10,8 @@ import {
 	updateUserEmail,
 	updateUsername,
 	updateUserProfile,
-} from "../service/user-service";
-import { HttpStatusCode } from "../types/types";
+} from "../services/user-service";
+import { HttpStatusCode } from "../@types/types";
 import { authenticateJWT } from "../middlewares/auth-middleware";
 import { deleteCookie, getCookie, setCookie } from "hono/cookie";
 

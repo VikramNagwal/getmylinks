@@ -1,11 +1,11 @@
 import db from "../config/dbConfig";
 import { Context, Hono } from "hono";
 import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
-import { HttpStatusCode } from "../types/types";
+import { HttpStatusCode } from "../@types/types";
 import { authenticateJWT } from "../middlewares/auth-middleware";
-import { getIdFromMiddleware } from "../service/user-service";
+import { getIdFromMiddleware } from "../services/user-service";
 import { logger } from "../utils/logger";
-import linkService from "../service/link-service";
+import linkService from "../services/link-service";
 
 const urlRouter = new Hono();
 
@@ -75,27 +75,48 @@ urlRouter.get("/stats/:shortUrl/", authenticateJWT, async (c: Context) => {
 	}
 });
 
-// urlRouter.get("/:shortUrl/check", async (c: Context) => {
-// 	try {
-// 		const shortUrl = ShortUrlSchema.parse(c.req.param("shortUrl"));
-// 		const response = await checkUrlExists(shortUrl);
+urlRouter.get("/:shortUrl/check", async (c: Context) => {
+	try {
+		const shortUrl = ShortUrlSchema.parse(c.req.param("shortUrl"));
+		const response = await linkService.checkUrlExists(shortUrl);
 
-// 		return c.json({
-// 			available: !response,
-// 		});
-// 	} catch (error) {
-// 		logger.error("Error while checking short url", error);
-// 		return c.json(
-// 			{
-// 				success: false,
-// 				isOperationl: true,
-// 				message: "Url not found",
-// 				available: false,
-// 				error,
-// 			},
-// 			HttpStatusCode.InternalServerError,
-// 		);
-// 	}
-// });
+		return c.json({
+			available: !response,
+		});
+	} catch (error) {
+		logger.error("Error while checking short url", error);
+		return c.json(
+			{
+				success: false,
+				message: "Internal server error",
+				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
+	}
+});
+
+urlRouter.get("/links", authenticateJWT, async (c: Context) => {
+	try {
+		const userId = await getIdFromMiddleware(c);
+		const links = await linkService.getAllLinks(userId);
+		return c.json(
+			{
+				success: true,
+				links,
+			},
+			HttpStatusCode.Ok,
+		);
+	} catch (error) {
+		return c.json(
+			{
+				success: false,
+				message: "Error while fetching links",
+				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
+	}
+});
 
 export { urlRouter };

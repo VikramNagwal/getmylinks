@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import { createShortLink } from "../service/link-service";
+import { createShortLink } from "../services/link-service";
 import db from "../config/dbConfig";
 
 const addUrl = async (url: string) => {

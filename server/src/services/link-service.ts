@@ -66,18 +66,47 @@ class LinkService {
 		}
 	}
 
-	private async checkUrlExists(url: string) {
+	async getAllLinks(userId: string) {
+		try {
+			const links = await db.link.findMany({
+				where: { userId },
+				select: {
+					url: true,
+					shortUrl: true,
+					totalViews: true,
+					createdAt: true,
+				},
+			});
+			return links;
+		} catch (error) {
+			logger.error("Error while fetching all links", error);
+			throw new Error("No links found");
+		}
+	}
+
+	async checkUrlExists(url: string) {
 		try {
 			const response = await db.link.findFirst({
 				where: { url },
 				select: {
+					id: true,
 					isActive: true,
+					expiresAt: true,
+					url: true,
 					shortUrl: true,
 				},
 			});
 			if (!response) return false;
 
-			return response.shortUrl;
+			if (response.expiresAt && new Date(response.expiresAt) < new Date()) {
+				await db.link.delete({ where: { id: response.id } });
+				return false;
+			}
+			if (!response.isActive) {
+				return false;
+			}
+
+			return response;
 		} catch (error) {
 			logger.error("Error while fetching short link", error);
 			throw new Error("Error while fetching short link");

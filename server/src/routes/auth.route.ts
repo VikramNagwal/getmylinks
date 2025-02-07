@@ -1,7 +1,7 @@
 import db from "../config/dbConfig";
 import { z } from "zod";
 import { Context, Hono } from "hono";
-import { HttpStatusCode } from "../types/types";
+import { HttpStatusCode } from "../@types/types";
 import { AuthHandler } from "../utils/tokens";
 import { emailQueue } from "../queues/email.queue";
 import { deleteCookie, setCookie } from "hono/cookie";
@@ -10,13 +10,13 @@ import {
 	generateOTP,
 	generateUID,
 	validateOtpToken,
-} from "../service/otp-service";
+} from "../services/otp-service";
 import { UserLoginSchema, UserRegisterSchema } from "../schemas/userSchema";
 import {
 	getIdFromMiddleware,
 	isUserEmailExist,
 	setAllCookies,
-} from "../service/user-service";
+} from "../services/user-service";
 
 const authRouter = new Hono();
 
@@ -185,7 +185,11 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 
 		const authenticUser = await db.user.update({
 			where: { verificationUid: uid },
-			data: { emailVerified: true, verificationUid: null },
+			data: {
+				emailVerified: true,
+				verificationUid: null,
+				emailVerifiedAt: new Date(),
+			},
 		});
 
 		if (!authenticUser) {
@@ -200,6 +204,7 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 
 		const { accessTokens, refreshTokens } =
 			await AuthHandler.generateRefreshandAccessToken(authenticUser.id);
+
 		await setAllCookies(c, accessTokens, refreshTokens);
 
 		return c.json(
@@ -223,6 +228,7 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 authRouter.get("/logout", authenticateJWT, async (c: Context) => {
 	try {
 		const userId = await getIdFromMiddleware(c);
+		console.log(userId);
 		if (!userId) {
 			return c.json(
 				{

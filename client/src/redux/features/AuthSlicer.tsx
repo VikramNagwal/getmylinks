@@ -5,21 +5,14 @@ interface User {
 	username: string;
 }
 
-interface Token {
-	accessToken: string;
-	refreshtoken: string;
-}
-
 interface AuthState {
 	user: User | null;
-	token: Token | null;
 	isAuthenticated: boolean;
 	isVerified: boolean;
 }
 
 const initialState: AuthState = {
 	user: null,
-	token: null,
 	isAuthenticated: false,
 	isVerified: false,
 };
@@ -31,17 +24,19 @@ export const AuthSlicer = createSlice({
 		setUser(state, action: PayloadAction<User>) {
 			state.user = action.payload;
 		},
-		setToken(state, action: PayloadAction<Token>) {
-			state.token = action.payload;
-		},
 		setIsAuthenticated(state, action: PayloadAction<boolean>) {
 			state.isAuthenticated = action.payload;
 		},
 		setIsVerified(state, action: PayloadAction<boolean>) {
 			state.isVerified = action.payload;
 		},
+		userLogout(state) {
+			state.user = null;
+			state.isAuthenticated = false;
+			state.isVerified = false;
+		},
 	},
 });
 
-export const { setUser, setToken, setIsAuthenticated, setIsVerified } =
+export const { setUser, setIsAuthenticated, setIsVerified, userLogout } =
 	AuthSlicer.actions;

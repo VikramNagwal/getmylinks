@@ -1,6 +1,6 @@
 import { addEmailtoQueue, emailQueue } from "../queues/email.queue";
 import { describe, it, expect } from "bun:test";
-import { generateOTP, generateUID } from "../service/otp-service";
+import { generateOTP, generateUID } from "../services/otp-service";
 
 describe("send mail", () => {
 	it("it should send mail", async () => {

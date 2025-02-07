@@ -6,6 +6,8 @@ CREATE TABLE "users" (
     "email" TEXT NOT NULL,
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "verificationUid" TEXT,
+    "emailVerifiedAt" TIMESTAMP(3),
+    "secretToken" TEXT,
     "passwordHash" VARCHAR(160) NOT NULL,
     "refreshToken" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

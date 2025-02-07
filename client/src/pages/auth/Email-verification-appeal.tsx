@@ -2,7 +2,7 @@ import { useEmail } from "@/context/email-context";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 
-export const EmailVerificationAppealPage = () => {
+export const EmailVerifyRequest = () => {
 	const { email } = useEmail();
 	const { toast } = useToast();
 
@@ -37,7 +37,8 @@ export const EmailVerificationAppealPage = () => {
 					<p>We know its annoying but its ssential for your own security</p>
 					<p>
 						We have sent you a <span>Secret Code</span> via email on your
-						registered email id
+						{" "}
+						{email}
 					</p>
 				</div>
 			</div>

@@ -11,10 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import { generateRandomUid } from "@/utils/randomId";
 import { useEmail } from "@/context/email-context";
 import { useState } from "react";
 import { z } from "zod";
+import { useDispatch } from "react-redux";
+import { setIsAuthenticated } from "@/redux/features/AuthSlicer";
 
 const VerificationCodeSchema = z.object({
 	otp: z.string().length(6),
@@ -25,11 +26,11 @@ type VerificationCodePageSchema = z.infer<typeof VerificationCodeSchema>;
 const VerifyForm = () => {
 	const [submitting, setSubmitting] = useState<boolean>(false);
 
-	const { email } = useEmail();
 	const { toast } = useToast();
 	const { uuid } = useParams();
+	const { email, username, setEmailVerified } = useEmail();
 
-	const uid = generateRandomUid();
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const {
@@ -51,7 +52,9 @@ const VerifyForm = () => {
 				data,
 			);
 			if (!res) throw new Error("Invalid response from server");
-			navigate(`/${uid}/dashboard`);
+			dispatch(setIsAuthenticated(true));
+			setEmailVerified(true);
+			navigate(`/${username}/dashboard`);
 
 			return toast({
 				title: `Account Verified Successfully`,

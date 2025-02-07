@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "@/components/Theme-provider.tsx";
 import { Provider } from "react-redux";
+import { Provider as Wrapper } from "react-wrap-balancer";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { PostHogProvider } from "posthog-js/react";
 import { BrowserRouter } from "react-router-dom";
@@ -22,11 +23,13 @@ createRoot(document.getElementById("root")!).render(
 		<QueryClientProvider client={queryClient}>
 			<Provider store={store}>
 				<BrowserRouter>
-					<StrictMode>
-						<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-							<App />
-						</ThemeProvider>
-					</StrictMode>
+					<Wrapper>
+						<StrictMode>
+							<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+								<App />
+							</ThemeProvider>
+						</StrictMode>
+					</Wrapper>
 				</BrowserRouter>
 			</Provider>
 		</QueryClientProvider>

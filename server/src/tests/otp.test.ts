@@ -1,4 +1,4 @@
-import { generateOTP, validateOtpToken } from "../service/otp-service";
+import { generateOTP, validateOtpToken } from "../services/otp-service";
 import { describe, it, expect } from "bun:test";
 import { logger } from "../utils/logger";
 

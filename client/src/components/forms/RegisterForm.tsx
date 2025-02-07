@@ -28,6 +28,8 @@ import { usePasswordStreanth } from "@/utils/use-password";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useEmail } from "@/context/email-context";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/features/AuthSlicer";
 
 const useSignUpMutation = () => {
 	const { toast } = useToast();
@@ -41,12 +43,13 @@ const useSignUpMutation = () => {
 			);
 		},
 		onSuccess: () => {
-			navigate(`/request/verify-email`);
 			toast({
-				title: "Welcome Senior🎉",
+				title: "Just few steps away🎉",
 				description: "we've sent you a verification link!",
 			});
+			navigate(`/request/verify-email`);
 		},
+
 		onError: () => {
 			toast({
 				title: "Registeration Failed",
@@ -65,7 +68,8 @@ const SignUpForm = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const { mutate } = useSignUpMutation();
-	const { setEmail } = useEmail();
+	const { setEmail, setUsername } = useEmail();
+	const dispatch = useDispatch();
 
 	const form = useForm<SignUpForm>({
 		resolver: zodResolver(signUpSchema),
@@ -86,9 +90,11 @@ const SignUpForm = () => {
 		usePasswordStreanth(password);
 
 	const onSubmit = async (data: SignUpForm) => {
-		setEmail(data.email);
 		if (isSubmitting) return;
-		setIsSubmitting(true);
+    setIsSubmitting(true);
+		setEmail(data.email);
+		setUsername(data.username);
+		dispatch(setUser({ email: data.email, username: data.username }));
 		mutate(data);
 		setIsSubmitting(false);
 	};

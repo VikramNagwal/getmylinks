@@ -6,9 +6,9 @@ import "./queues/worker/email.worker";
 
 // router imports
 import { appRouter } from "./routes/index.route";
-import { HttpStatusCode } from "./types/types";
+import { HttpStatusCode } from "./@types/types";
 import { ShortUrlSchema } from "./schemas/link-schema";
-import { getUserDetails } from "./service/link-service";
+import linkService, { getUserDetails } from "./services/link-service";
 import { dashboardApp } from "./queues/dashboard";
 import { security } from "./middlewares/security-middleware";
 import { sentryMiddleware } from "./middlewares/sentry-middleware";
@@ -41,34 +41,11 @@ app.get("/r/:shorturl", async (c: Context) => {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));
 		const userAgentInfo = getUserDetails(c.req);
 
-		const response = await db.link.findUnique({
-			where: { shortUrl },
-			select: {
-				id: true,
-				url: true,
-				isActive: true,
-				expiresAt: true,
-			},
-		});
-		console.log("response: ", response); //remove this line
+		const response = await linkService.checkUrlExists(shortUrl);
 		if (!response) {
 			return c.json(
 				{ message: "Short url not found" },
 				HttpStatusCode.NotFound,
-			);
-		}
-
-		if (!response.isActive) {
-			return c.json(
-				{ message: "Short url is not active" },
-				HttpStatusCode.NoContent,
-			);
-		}
-
-		if (response.expiresAt && new Date(response.expiresAt) < new Date()) {
-			return c.json(
-				{ message: "Short url has expired" },
-				HttpStatusCode.NoContent,
 			);
 		}
 

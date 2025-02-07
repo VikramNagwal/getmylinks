@@ -76,12 +76,12 @@ async function updateUserEmail(
 		if (!updatedUser) {
 			throw new Error("Unable to update user email! db operation failed");
 		}
-		const otp = await generateOTP();
+		const {otp, secret} = await generateOTP();
 		const uid = await generateUID();
 
 		await db.user.update({
 			where: { id: userId },
-			data: { verificationUid: uid },
+			data: { verificationUid: uid, secretToken: secret },
 		});
 		await emailQueue.add("email-update", { email, otp, uid });
 
@@ -148,15 +148,22 @@ async function checkUserByUsername(username: string): Promise<boolean> {
 
 async function setAllCookies(
 	c: Context,
-	accessToken: string,
-	refreshToken: string,
+	accessTokens: string,
+	refreshTokens: string,
 ) {
-	setCookie(c, "accessTokens", accessToken, {
-		expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
-	});
-	setCookie(c, "refreshTokens", refreshToken, {
-		expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days
-	});
+	try {
+		setCookie(c, "accessTokens", accessTokens, {
+			expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+		});
+		setCookie(c, "refreshTokens", refreshTokens, {
+			expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+		});
+		return true;
+	} catch (error) {
+		logger.error(`Error in setting cookies: ${error}`);
+		throw new Error("Unable to set cookies");
+		
+	}
 }
 
 export {

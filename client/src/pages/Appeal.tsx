@@ -3,13 +3,13 @@ import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 
 export const EmailVerifyRequest = () => {
-	const { email } = useEmail();
 	const { toast } = useToast();
+	const { email } = useEmail();
 
 	const handleResendEmail = async () => {
 		try {
 			const response = await axios.post(
-				"http:localhost:8080/api/v1/auth/request/resend-email",
+				`${import.meta.env.VITE_BACKEND_URL}/auth/email/resend-otp`,
 				email,
 			);
 			if (!response)
@@ -31,13 +31,15 @@ export const EmailVerifyRequest = () => {
 	return (
 		<div className="flex flex-col items-center space-y-4 justify-center shrink p-4 md:p-8">
 			<h1 className="font-heading text-3xl font-extrabold">Check your Email</h1>
-			<div className="flex flex-col space-y-10 items-center font-passage">
+			<div className="flex flex-col space-y-10 items-center">
 				<h2 className="text-2xl">You are just one step away</h2>
 				<div className="text-center text-lg font-thin">
 					<p>We know its annoying but its ssential for your own security</p>
-					<p>
-						We have sent you a <span>Secret Code</span> via email on your{" "}
-						{email}
+					<p className="font-thin opacity-90">
+						We have sent you a Secret Code via email on your{" "}
+						<span className="underline underline-offset-4 capitalize font-normal">
+							{email}
+						</span>
 					</p>
 				</div>
 			</div>

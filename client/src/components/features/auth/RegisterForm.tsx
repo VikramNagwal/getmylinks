@@ -30,10 +30,13 @@ import { useNavigate } from "react-router-dom";
 import { useEmail } from "@/app/context/email-context";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { logger } from "@/utils/logger";
+import { useAppDispatch } from "@/app/hooks";
+import { setUser } from "@/app/slices/AuthSlicer";
 
 const useSignUpMutation = () => {
 	const { toast } = useToast();
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
 
 	return useMutation({
 		mutationFn: async (data: Omit<SignUpForm, "confirmPassword">) => {
@@ -42,7 +45,9 @@ const useSignUpMutation = () => {
 				data,
 			);
 		},
-		onSuccess: () => {
+
+		onSuccess(context) {
+			dispatch(setUser(context.data));
 			toast({
 				title: "Just few steps away🎉",
 				description: "we've sent you a verification link!",
@@ -50,14 +55,13 @@ const useSignUpMutation = () => {
 			navigate(`/request/verify-email`);
 		},
 
-		onError(error, context) {
+		onError(error) {
 			logger.error("erro while registering user", error);
 			toast({
 				title: "Registeration Failed",
 				description: "Something went wrong on our side. Please try later",
 				variant: "destructive",
 			});
-			logger.info(context);
 		},
 	});
 };
@@ -70,7 +74,7 @@ const SignUpForm = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const { mutate } = useSignUpMutation();
-	const { setEmail, setUsername } = useEmail();
+	const { setEmail } = useEmail();
 
 	const form = useForm<SignUpForm>({
 		resolver: zodResolver(signUpSchema),
@@ -94,9 +98,8 @@ const SignUpForm = () => {
 		if (isSubmitting) return;
 		setIsSubmitting(true);
 		setEmail(data.email);
-		setUsername(data.username);
 		mutate(data);
-		setIsSubmitting(false);
+		return setIsSubmitting(false);
 	};
 
 	return (

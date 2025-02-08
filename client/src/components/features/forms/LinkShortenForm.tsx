@@ -1,14 +1,14 @@
 import { z } from "zod";
 import axios from "axios";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
-import { Label } from "../ui/label";
-import { ShortnSchema } from "@/schemas/authentication-schema";
+import { Label } from "@/components/ui/label";
+import { ShortnSchema } from "@/zod/authentication-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
-import KeyGenerator from "../Key-generator";
+import KeyGenerator from "@/components/Key-generator";
 
 type shortnForm = z.infer<typeof ShortnSchema>;
 

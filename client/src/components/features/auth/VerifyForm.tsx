@@ -1,21 +1,20 @@
 import axios from "axios";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import {
 	InputOTP,
 	InputOTPGroup,
 	InputOTPSeparator,
 	InputOTPSlot,
-} from "../ui/input-otp";
+} from "@/components/ui/input-otp";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEmail } from "@/context/email-context";
+import { useEmail } from "@/app/context/email-context";
 import { useState } from "react";
 import { z } from "zod";
-import { useDispatch } from "react-redux";
-import { setIsAuthenticated } from "@/redux/features/AuthSlicer";
+import { generateRandomUid } from "@/utils/randomId";
 
 const VerificationCodeSchema = z.object({
 	otp: z.string().length(6),
@@ -28,9 +27,9 @@ const VerifyForm = () => {
 
 	const { toast } = useToast();
 	const { uuid } = useParams();
-	const { email, username, setEmailVerified } = useEmail();
+	const uid = generateRandomUid();
+	const { email } = useEmail();
 
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const {
@@ -51,16 +50,14 @@ const VerifyForm = () => {
 				`http://localhost:8080/api/v1/auth/${uuid}/verify`,
 				data,
 			);
-			if (!res) throw new Error("Invalid response from server");
-			dispatch(setIsAuthenticated(true));
-			setEmailVerified(true);
-			navigate(`/${username}/dashboard`);
-
-			return toast({
+			if (!res) return;
+			toast({
 				title: `Account Verified Successfully`,
 				description: "Your account has been verified",
 			});
+			return navigate(`/${uid}/dashboard`);
 		} catch (error) {
+			console.log(error);
 			toast({
 				title:
 					error instanceof Error

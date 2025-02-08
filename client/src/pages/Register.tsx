@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/forms/RegisterForm";
+import RegisterForm from "@/components/features/auth/RegisterForm";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 

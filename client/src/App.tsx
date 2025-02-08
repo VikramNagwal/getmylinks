@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/auth/LoginPage.tsx";
-import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/Login.tsx";
+import HomePage from "./pages/Home.tsx";
 import { Toaster } from "./components/ui/toaster.tsx";
-import RegisterPage from "./pages/auth/RegisterPage.tsx";
+import RegisterPage from "./pages/Register.tsx";
 import PhonePreview from "./components/Phone-preview.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
-import VerificationPage from "./pages/auth/VerificationPage.tsx";
-import { EmailVerifyRequest } from "./pages/auth/Email-verification-appeal.tsx";
-import { EmailContextProvider } from "./context/email-context.tsx";
+import VerificationPage from "./pages/Verification.tsx";
+import { EmailVerifyRequest } from "./pages/Appeal.tsx";
+import { EmailContextProvider } from "./app/context/email-context.tsx";
 
 function App() {
 	return (

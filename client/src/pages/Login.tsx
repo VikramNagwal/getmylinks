@@ -1,10 +1,9 @@
-import LoginForm from "@/components/forms/LoginForm";
+import LoginForm from "@/components/features/auth/LoginForm";
 
 const LoginPage = () => {
 	return (
 		<main className="h-screen overflow-hidden">
 			<div className="flex justify-between h-screen">
-				{/* form */}
 				<LoginForm />
 				<div className="hidden md:block flex-1 relative">
 					<a

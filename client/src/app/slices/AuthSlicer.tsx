@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
 	email: string;
+	name: string;
 	username: string;
 }
 
@@ -17,15 +18,13 @@ const initialState: AuthState = {
 	isVerified: false,
 };
 
-export const AuthSlicer = createSlice({
+export const authSlicer = createSlice({
 	name: "auth",
 	initialState,
 	reducers: {
 		setUser(state, action: PayloadAction<User>) {
 			state.user = action.payload;
-		},
-		setIsAuthenticated(state, action: PayloadAction<boolean>) {
-			state.isAuthenticated = action.payload;
+			state.isAuthenticated = true;
 		},
 		setIsVerified(state, action: PayloadAction<boolean>) {
 			state.isVerified = action.payload;
@@ -38,5 +37,5 @@ export const AuthSlicer = createSlice({
 	},
 });
 
-export const { setUser, setIsAuthenticated, setIsVerified, userLogout } =
-	AuthSlicer.actions;
+export const { setUser, setIsVerified, userLogout } = authSlicer.actions;
+export default authSlicer.reducer;

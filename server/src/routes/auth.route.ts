@@ -11,11 +11,10 @@ import {
 	generateUID,
 	validateOtpToken,
 } from "../services/otp-service";
-import { UserLoginSchema, UserRegisterSchema } from "../schemas/userSchema";
+import { UserLoginSchema, UserRegisterSchema } from "../zod/userSchema";
 import {
 	getIdFromMiddleware,
 	isUserEmailExist,
-	setAllCookies,
 } from "../services/user-service";
 
 const authRouter = new Hono();
@@ -161,13 +160,12 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 	try {
 		const uid = c.req.param("uid");
 		const { otp } = otpSchema.parse(await c.req.json());
-		const token = String(otp);
 
-		if (!token || !uid) {
+		if (!otp || !uid) {
 			return c.json(
 				{
 					success: false,
-					message: "Invalid OTP token",
+					message: otp ? "missing uid" : "missing otp",
 				},
 				HttpStatusCode.BadRequest,
 			);
@@ -176,12 +174,33 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 		const user = await db.user.findUnique({
 			where: { verificationUid: uid },
 			select: {
+				id: true,
 				secretToken: true,
 			},
 		});
 
-		const secret = user?.secretToken;
-		await validateOtpToken(token, secret!);
+		if (!user) {
+			return c.json(
+				{
+					message: "Invalid Uid user does not exist. make sure you register",
+				},
+				HttpStatusCode.NotFound,
+			);
+		}
+
+		const secret = user.secretToken;
+		if (!secret) return;
+		await validateOtpToken(otp, secret);
+
+		const { accessTokens, refreshTokens } =
+			await AuthHandler.generateRefreshandAccessToken(user.id);
+
+		setCookie(c, "accessTokens", accessTokens, {
+			expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+		});
+		setCookie(c, "refreshTokens", refreshTokens, {
+			expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+		});
 
 		const authenticUser = await db.user.update({
 			where: { verificationUid: uid },
@@ -189,6 +208,7 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 				emailVerified: true,
 				verificationUid: null,
 				emailVerifiedAt: new Date(),
+				refreshToken: refreshTokens,
 			},
 		});
 
@@ -201,11 +221,6 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 				HttpStatusCode.NotFound,
 			);
 		}
-
-		const { accessTokens, refreshTokens } =
-			await AuthHandler.generateRefreshandAccessToken(authenticUser.id);
-
-		await setAllCookies(c, accessTokens, refreshTokens);
 
 		return c.json(
 			{

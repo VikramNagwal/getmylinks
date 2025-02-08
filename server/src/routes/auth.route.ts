@@ -179,14 +179,17 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 			},
 		});
 
-		if(!user) {
-			return c.json({
-				message: "Invalid Uid user does not exist. make sure you register"
-			}, HttpStatusCode.NotFound)
+		if (!user) {
+			return c.json(
+				{
+					message: "Invalid Uid user does not exist. make sure you register",
+				},
+				HttpStatusCode.NotFound,
+			);
 		}
 
 		const secret = user.secretToken;
-		if(!secret) return
+		if (!secret) return;
 		await validateOtpToken(otp, secret);
 
 		const { accessTokens, refreshTokens } =

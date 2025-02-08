@@ -1,7 +1,7 @@
 import { ModeToggle } from "@/components/Mode-toggle";
-import { SidebarTrigger } from "../ui/sidebar";
-import { Separator } from "../ui/separator";
-import UserAvatar from "../profile/Avatar";
+import { SidebarTrigger } from "../../ui/sidebar";
+import { Separator } from "../../ui/separator";
+import UserAvatar from "../../commons/Avatar";
 
 const avatarImage = "https://avatar.iran.liara.run/public/boy"; //avatar url
 

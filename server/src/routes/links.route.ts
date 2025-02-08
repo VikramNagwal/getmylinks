@@ -1,6 +1,6 @@
 import db from "../config/dbConfig";
 import { Context, Hono } from "hono";
-import { LinkSchema, ShortUrlSchema } from "../schemas/link-schema";
+import { LinkSchema, ShortUrlSchema } from "../zod/link-schema";
 import { HttpStatusCode } from "../@types/types";
 import { authenticateJWT } from "../middlewares/auth-middleware";
 import { getIdFromMiddleware } from "../services/user-service";
@@ -13,6 +13,7 @@ urlRouter.post("/shorten", authenticateJWT, async (c: Context) => {
 	try {
 		const createdById = await getIdFromMiddleware(c);
 		const { url, title } = LinkSchema.parse(await c.req.json());
+		logger.info(url, title) //remove this line
 
 		const link = await linkService.createShortLink({
 			url,

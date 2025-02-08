@@ -3,8 +3,8 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useEmail } from "@/context/email-context";
-import { userLogout } from "@/redux/features/AuthSlicer";
+import { useEmail } from "@/app/context/email-context";
+import { userLogout } from "@/app/slices/AuthSlicer";
 
 const LogoutButton = () => {
 	const { toast } = useToast();

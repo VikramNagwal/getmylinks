@@ -1,5 +1,5 @@
+import LogoutButton from "./buttons/LogoutButton";
 import { ModeToggle } from "../Mode-toggle";
-import LogoutButton from "./LogoutButton";
 
 const Navbar = () => {
 	return (

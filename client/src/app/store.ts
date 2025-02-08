@@ -1,10 +1,10 @@
-import { AuthSlicer } from "@/redux/features/AuthSlicer";
-import { LinkSlicer } from "@/redux/features/LinkSlicer";
+import authReducer from "@/app/slices/AuthSlicer";
+import { LinkSlicer } from "@/app/slices/LinkSlicer";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
 	reducer: {
-		AuthSlicer: AuthSlicer.reducer,
+		AuthSlicer: authReducer,
 		LinkSlicer: LinkSlicer.reducer,
 	},
 });

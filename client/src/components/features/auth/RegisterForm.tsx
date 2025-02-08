@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Eye, EyeOff, CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { Eye, EyeOff, CheckCircle2, XCircle } from "lucide-react";
 import {
 	Card,
 	CardContent,
@@ -23,13 +23,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { signUpSchema } from "@/schemas/authentication-schema";
+import { signUpSchema } from "@/zod/authentication-schema";
 import { usePasswordStreanth } from "@/utils/use-password";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useEmail } from "@/context/email-context";
-import { useDispatch } from "react-redux";
-import { setUser } from "@/redux/features/AuthSlicer";
+import { useEmail } from "@/app/context/email-context";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import { logger } from "@/utils/logger";
 
 const useSignUpMutation = () => {
 	const { toast } = useToast();
@@ -38,7 +38,7 @@ const useSignUpMutation = () => {
 	return useMutation({
 		mutationFn: async (data: Omit<SignUpForm, "confirmPassword">) => {
 			return await axios.post(
-				"http://localhost:8080/api/v1/auth/register",
+				`${import.meta.env.VITE_BACKEND_URL}/auth/register`,
 				data,
 			);
 		},
@@ -50,12 +50,14 @@ const useSignUpMutation = () => {
 			navigate(`/request/verify-email`);
 		},
 
-		onError: () => {
+		onError(error, context) {
+			logger.error("erro while registering user", error);
 			toast({
 				title: "Registeration Failed",
 				description: "Something went wrong on our side. Please try later",
 				variant: "destructive",
 			});
+			logger.info(context);
 		},
 	});
 };
@@ -69,7 +71,6 @@ const SignUpForm = () => {
 
 	const { mutate } = useSignUpMutation();
 	const { setEmail, setUsername } = useEmail();
-	const dispatch = useDispatch();
 
 	const form = useForm<SignUpForm>({
 		resolver: zodResolver(signUpSchema),
@@ -94,7 +95,6 @@ const SignUpForm = () => {
 		setIsSubmitting(true);
 		setEmail(data.email);
 		setUsername(data.username);
-		dispatch(setUser({ email: data.email, username: data.username }));
 		mutate(data);
 		setIsSubmitting(false);
 	};
@@ -200,12 +200,12 @@ const SignUpForm = () => {
 												type="button"
 												variant="ghost"
 												size="icon"
-												className="absolute right-2 top-1/2 -translate-y-1/2"
+												className="absolute right-2 top-1/2 ring-0 border-none -translate-y-1/2"
 												onClick={() => setShowPassword(!showPassword)}
 												disabled={isSubmitting}
 											>
 												{showPassword ? (
-													<EyeOff size={16} />
+													<EyeOff size={16} fill="black" />
 												) : (
 													<Eye size={16} />
 												)}
@@ -306,7 +306,7 @@ const SignUpForm = () => {
 						<Button type="submit" className="w-full" disabled={isSubmitting}>
 							{isSubmitting ? (
 								<>
-									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									<LoadingSpinner />
 									Creating Account...
 								</>
 							) : (

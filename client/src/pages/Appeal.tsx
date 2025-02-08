@@ -1,4 +1,4 @@
-import { useEmail } from "@/context/email-context";
+import { useEmail } from "@/app/context/email-context";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 

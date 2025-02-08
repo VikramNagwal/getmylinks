@@ -73,7 +73,7 @@ export const authenticateJWT = createMiddleware(
 				);
 
 				const { accessTokens, refreshTokens } = newTokens;
-				await setAllCookies(accessTokens, refreshTokens, c);
+				await setAllCookies(c, accessTokens, refreshTokens);
 
 				await db.$transaction(async (tx) => {
 					await tx.user.update({

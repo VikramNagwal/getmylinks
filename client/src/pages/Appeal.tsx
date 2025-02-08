@@ -1,10 +1,8 @@
 import { useEmail } from "@/app/context/email-context";
-import { useAppSelector } from "@/app/hooks";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 
 export const EmailVerifyRequest = () => {
-	const data = useAppSelector((state) => state.auth);
 	const { toast } = useToast();
 	const { email } = useEmail();
 

@@ -63,7 +63,14 @@ authRouter.post("/register", async (c: Context) => {
 			);
 		}
 		await emailQueue.add("sendEmail", { email, otp, uid });
-		const { passwordHash: _, verificationUid, secretToken, id, refreshToken, ...userData } = user;
+		const {
+			passwordHash: _,
+			verificationUid,
+			secretToken,
+			id,
+			refreshToken,
+			...userData
+		} = user;
 		return c.json(
 			{
 				success: true,
@@ -298,7 +305,7 @@ authRouter.get("/get-user", authenticateJWT, async (c: Context) => {
 
 authRouter.get("/email/resend-otp", async (c: Context) => {
 	try {
-		const {email} = await c.req.json();
+		const { email } = await c.req.json();
 		const existingUser = await isUserEmailExist(email);
 		if (!existingUser) {
 			return c.json(

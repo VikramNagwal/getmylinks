@@ -33,15 +33,12 @@ import { logger } from "@/utils/logger";
 import { useAppDispatch } from "@/app/hooks";
 import { setUser } from "@/app/slices/AuthSlicer";
 
-
 const useSignUpMutation = () => {
 	const { toast } = useToast();
 	const navigate = useNavigate();
-	const dispatch = useAppDispatch()
-
+	const dispatch = useAppDispatch();
 
 	return useMutation({
-		
 		mutationFn: async (data: Omit<SignUpForm, "confirmPassword">) => {
 			return await axios.post(
 				`${import.meta.env.VITE_BACKEND_URL}/auth/register`,
@@ -50,12 +47,12 @@ const useSignUpMutation = () => {
 		},
 
 		onSuccess(context) {
-			dispatch(setUser(context.data))
+			dispatch(setUser(context.data));
 			toast({
-        title: "Just few steps away🎉",
-        description: "we've sent you a verification link!",
-      });
-      navigate(`/request/verify-email`);
+				title: "Just few steps away🎉",
+				description: "we've sent you a verification link!",
+			});
+			navigate(`/request/verify-email`);
 		},
 
 		onError(error) {

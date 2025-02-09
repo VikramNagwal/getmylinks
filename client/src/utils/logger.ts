@@ -14,6 +14,6 @@ export const logger = {
 		console.log(chalk.bgRed(...args));
 	},
 	logs: (...args: unknown[]) => {
-		console.log(chalk.grey(...args))
-	}
+		console.log(chalk.grey(...args));
+	},
 };

@@ -51,4 +51,4 @@ export const linkSlicer = createSlice({
 
 export const { getLinkById, getlinks, deleteLink, setExpiresAt } =
 	linkSlicer.actions;
-export default linkSlicer.reducer
+export default linkSlicer.reducer;

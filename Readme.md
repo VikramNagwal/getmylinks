@@ -1,2 +1,2 @@
-# auth app
+# getmylinks
 ~ a link in bio app

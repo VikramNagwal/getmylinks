@@ -13,4 +13,7 @@ export const logger = {
 	error: (...args: unknown[]) => {
 		console.log(chalk.bgRed(...args));
 	},
+	logs: (...args: unknown[]) => {
+		console.log(chalk.grey(...args))
+	}
 };

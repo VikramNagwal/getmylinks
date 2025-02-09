@@ -1,4 +1,4 @@
-import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
 	username: string;
@@ -16,16 +16,17 @@ interface Links {
 
 interface LinkState {
 	links: Links[];
-	user?: User | null;
+	user: User | null;
 	expiresAt?: Date | null;
 }
 
 const initialState: LinkState = {
 	links: [],
+	user: null,
 	expiresAt: null,
 };
 
-export const LinkSlicer = createSlice({
+export const linkSlicer = createSlice({
 	name: "links",
 	initialState,
 
@@ -49,4 +50,5 @@ export const LinkSlicer = createSlice({
 });
 
 export const { getLinkById, getlinks, deleteLink, setExpiresAt } =
-	LinkSlicer.actions;
+	linkSlicer.actions;
+export default linkSlicer.reducer

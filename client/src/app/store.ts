@@ -1,11 +1,11 @@
 import authReducer from "@/app/slices/AuthSlicer";
-import { LinkSlicer } from "@/app/slices/LinkSlicer";
+import linkReducer from "@/app/slices/LinkSlicer";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
 	reducer: {
 		auth: authReducer,
-		link: LinkSlicer.reducer,
+		link: linkReducer,
 	},
 });
 

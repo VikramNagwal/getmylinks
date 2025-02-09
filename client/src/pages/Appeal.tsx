@@ -1,5 +1,6 @@
 import { useEmail } from "@/app/context/email-context";
 import { useToast } from "@/hooks/use-toast";
+import { logger } from "@/utils/logger";
 import axios from "axios";
 
 export const EmailVerifyRequest = () => {
@@ -12,17 +13,14 @@ export const EmailVerifyRequest = () => {
 				`${import.meta.env.VITE_BACKEND_URL}/auth/email/resend-otp`,
 				email,
 			);
-			if (!response)
-				return toast({
-					title: "We are busy at the moment",
-					description: "Please try again after some time",
-				});
+			if (!response) return;
 
 			return toast({
 				title: `We have sent email on ${email}`,
 				description: "Please check your email",
 			});
 		} catch (error) {
+			logger.error("Unable to Re-send verification email");
 			return toast({
 				title: "Something went wrong on our side",
 			});
@@ -34,9 +32,8 @@ export const EmailVerifyRequest = () => {
 			<div className="flex flex-col space-y-10 items-center">
 				<h2 className="text-2xl">You are just one step away</h2>
 				<div className="text-center text-lg font-thin">
-					<p>We know its annoying but its ssential for your own security</p>
 					<p className="font-thin opacity-90">
-						We have sent you a Secret Code via email on your{" "}
+						We have sent you a temporary secret Code to{" "}
 						<span className="underline underline-offset-4 capitalize font-normal">
 							{email}
 						</span>

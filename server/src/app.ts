@@ -29,13 +29,12 @@ app.use(
 		maxAge: 864000,
 	}),
 );
+app.notFound((c) => c.json({ message: "Not Found", ok: false }, 404));
 
 // routes
 app.route("/api/v1/", appRouter);
 app.route("/admin/queues", dashboardApp);
-app.get("/", async (c: Context) => {
-	return c.text("Welcome to the URL shortener service");
-});
+
 app.get("/r/:shorturl", async (c: Context) => {
 	try {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));

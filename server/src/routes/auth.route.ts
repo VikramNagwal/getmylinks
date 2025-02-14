@@ -11,17 +11,17 @@ import {
 	generateUID,
 	validateOtpToken,
 } from "../services/otp-service";
-import { UserLoginSchema, UserRegisterSchema } from "../zod/userSchema";
 import {
 	getIdFromMiddleware,
 	isUserEmailExist,
 } from "../services/user-service";
+import {
+	UserLoginSchema,
+	UserRegisterSchema,
+	otpSchema,
+} from "../zod/userSchema";
 
 const authRouter = new Hono();
-
-const otpSchema = z.object({
-	otp: z.string().max(6).min(6),
-});
 
 authRouter.post("/register", async (c: Context) => {
 	try {
@@ -247,63 +247,7 @@ authRouter.post("/:uid/verify", async (c: Context) => {
 	}
 });
 
-authRouter.get("/logout", authenticateJWT, async (c: Context) => {
-	try {
-		const userId = await getIdFromMiddleware(c);
-		console.log(userId);
-		if (!userId) {
-			return c.json(
-				{
-					success: false,
-					message: "Unauthorized request! please login to continue",
-				},
-				HttpStatusCode.Unauthenticated,
-			);
-		}
-
-		deleteCookie(c, "accessTokens");
-		deleteCookie(c, "refreshTokens");
-
-		await db.user.update({
-			where: { id: userId },
-			data: { refreshToken: null },
-		});
-
-		return c.json(
-			{
-				success: true,
-				message: "User logged out successfully",
-			},
-			HttpStatusCode.Ok,
-		);
-	} catch (error) {
-		return c.json(
-			{
-				success: false,
-				message: "failed to logout user! Internal database error",
-			},
-			HttpStatusCode.InternalServerError,
-		);
-	}
-});
-
-authRouter.get("/get-user", authenticateJWT, async (c: Context) => {
-	try {
-		const user = await c.get("user");
-		if (Object.keys(user).length === 0) throw new Error("Unauthorized user");
-		return c.json({ user }, HttpStatusCode.Ok);
-	} catch (error) {
-		return c.json(
-			{
-				success: false,
-				message: "Unauthorized user",
-			},
-			HttpStatusCode.Unauthenticated,
-		);
-	}
-});
-
-authRouter.get("/email/resend-otp", async (c: Context) => {
+authRouter.post("/email/resend-otp", async (c: Context) => {
 	try {
 		const { email } = await c.req.json();
 		const existingUser = await isUserEmailExist(email);
@@ -347,6 +291,52 @@ authRouter.get("/email/resend-otp", async (c: Context) => {
 				message: "failed to resend otp",
 			},
 			HttpStatusCode.BadRequest,
+		);
+	}
+});
+
+authRouter.get("/logout", authenticateJWT, async (c: Context) => {
+	try {
+		const userId = await getIdFromMiddleware(c);
+
+		deleteCookie(c, "accessTokens");
+		deleteCookie(c, "refreshTokens");
+
+		await db.user.update({
+			where: { id: userId },
+			data: { refreshToken: null },
+		});
+
+		return c.json(
+			{
+				success: true,
+				message: "User logged out successfully",
+			},
+			HttpStatusCode.Ok,
+		);
+	} catch (error) {
+		return c.json(
+			{
+				success: false,
+				message: "failed to logout user! Internal database error",
+			},
+			HttpStatusCode.InternalServerError,
+		);
+	}
+});
+
+authRouter.get("/get-user", authenticateJWT, async (c: Context) => {
+	try {
+		const user = await c.get("user");
+		if (Object.keys(user).length === 0) throw new Error("Unauthorized user");
+		return c.json({ user }, HttpStatusCode.Ok);
+	} catch (error) {
+		return c.json(
+			{
+				success: false,
+				message: "Unauthorized user",
+			},
+			HttpStatusCode.Unauthenticated,
 		);
 	}
 });

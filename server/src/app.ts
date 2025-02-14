@@ -13,7 +13,6 @@ import { dashboardApp } from "./queues/dashboard";
 import { security } from "./middlewares/security-middleware";
 import { sentryMiddleware } from "./middlewares/sentry-middleware";
 
-
 const app = new Hono();
 
 // middlewares
@@ -30,7 +29,7 @@ app.use(
 		maxAge: 864000,
 	}),
 );
-app.notFound((c) => c.json({ message: 'Not Found', ok: false }, 404))
+app.notFound((c) => c.json({ message: "Not Found", ok: false }, 404));
 
 // routes
 app.route("/api/v1/", appRouter);

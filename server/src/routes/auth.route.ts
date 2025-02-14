@@ -15,8 +15,11 @@ import {
 	getIdFromMiddleware,
 	isUserEmailExist,
 } from "../services/user-service";
-import { UserLoginSchema, UserRegisterSchema, otpSchema } from "../zod/userSchema";
-
+import {
+	UserLoginSchema,
+	UserRegisterSchema,
+	otpSchema,
+} from "../zod/userSchema";
 
 const authRouter = new Hono();
 

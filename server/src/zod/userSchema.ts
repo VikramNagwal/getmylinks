@@ -20,17 +20,15 @@ const UserUpdateSchema = z
 	})
 	.strict();
 
-const EmailBodySchema = z
-	.object({
-		email: z.string().email("please provide a valid email address"),
-	})
+const EmailBodySchema = z.object({
+	email: z.string().email("please provide a valid email address"),
+});
 
-const UsernameBodySchema = z
-	.object({
-		username: z.string().regex(/^\S+$/, {
-			message: "The string must not contain spaces.",
-		}),
-	})
+const UsernameBodySchema = z.object({
+	username: z.string().regex(/^\S+$/, {
+		message: "The string must not contain spaces.",
+	}),
+});
 
 const otpSchema = z.object({
 	otp: z.string().max(6).min(6),
@@ -42,5 +40,5 @@ export {
 	UserUpdateSchema,
 	EmailBodySchema,
 	UsernameBodySchema,
-	otpSchema
+	otpSchema,
 };

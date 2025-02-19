@@ -12,7 +12,7 @@ const userRouter = new Hono();
 /* middleware to authenticate user */
 userRouter.use("*", authenticateJWT);
 
-userRouter.post("/account", async (c: Context) => {
+userRouter.post("/create", async (c: Context) => {
 	try {
 		const user = await c.get("user");
 		const userId = user.payload.id ?? null;
@@ -79,7 +79,7 @@ userRouter.put("/bio/update", async (c: Context) => {
 	}
 });
 
-userRouter.delete("/account/delete", async (c: Context) => {
+userRouter.delete("/delete", async (c: Context) => {
 	try {
 		const userId = await getIdFromMiddleware(c);
 
@@ -151,6 +151,54 @@ userRouter.post("/refresh-tokens", async (c: Context) => {
 			{
 				success: false,
 				message: "An error occurred while updating tokens",
+				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
+	}
+});
+
+userRouter.get("/:username/profile", async (c: Context) => {
+	try {
+		const username = c.req.param("username");
+		const user = await db.user.findFirst({
+			where: { username },
+			select: {
+				id: true,
+				username: true,
+				email: true,
+				createdAt: true,
+				updatedAt: true,
+				Account: {
+					select: {
+						bio: true,
+						avatar: true,
+					},
+				},
+			},
+		});
+		if (!user) {
+			return c.json(
+				{
+					success: false,
+					message: "user not found",
+				},
+				HttpStatusCode.NotFound,
+			);
+		}
+		return c.json(
+			{
+				success: true,
+				message: "user profile fetched successfully",
+				user,
+			},
+			HttpStatusCode.Ok,
+		);
+	} catch (error) {
+		return c.json(
+			{
+				success: false,
+				message: "An error occurred while fetching user profile",
 				error,
 			},
 			HttpStatusCode.InternalServerError,

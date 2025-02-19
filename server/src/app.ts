@@ -35,6 +35,7 @@ app.notFound((c) => c.json({ message: "Not Found", ok: false }, 404));
 app.route("/api/v1/", appRouter);
 app.route("/admin/queues", dashboardApp);
 
+// main short url router
 app.get("/r/:shorturl", async (c: Context) => {
 	try {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));

@@ -295,6 +295,22 @@ authRouter.post("/email/resend-otp", async (c: Context) => {
 	}
 });
 
+authRouter.get("/get-user", authenticateJWT, async (c: Context) => {
+	try {
+		const user = await c.get("user");
+		if (Object.keys(user).length === 0) throw new Error("Unauthorized user");
+		return c.json({ user }, HttpStatusCode.Ok);
+	} catch (error) {
+		return c.json(
+			{
+				success: false,
+				message: "Unauthorized user",
+			},
+			HttpStatusCode.Unauthenticated,
+		);
+	}
+});
+
 authRouter.get("/logout", authenticateJWT, async (c: Context) => {
 	try {
 		const userId = await getIdFromMiddleware(c);
@@ -325,20 +341,5 @@ authRouter.get("/logout", authenticateJWT, async (c: Context) => {
 	}
 });
 
-authRouter.get("/get-user", authenticateJWT, async (c: Context) => {
-	try {
-		const user = await c.get("user");
-		if (Object.keys(user).length === 0) throw new Error("Unauthorized user");
-		return c.json({ user }, HttpStatusCode.Ok);
-	} catch (error) {
-		return c.json(
-			{
-				success: false,
-				message: "Unauthorized user",
-			},
-			HttpStatusCode.Unauthenticated,
-		);
-	}
-});
 
 export { authRouter };

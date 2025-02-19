@@ -1,11 +1,11 @@
-import db from "../config/dbConfig";
+import db from "@lib/db";
 import { z } from "zod";
 import { Context, Hono } from "hono";
-import { HttpStatusCode } from "../@types/types";
-import { AuthHandler } from "../utils/tokens";
-import { emailQueue } from "../queues/email.queue";
+import { HttpStatusCode } from "@/types/global";
+import { AuthHandler } from "@utils/tokens";
+import { emailQueue } from "@/queues/email.queue";
 import { deleteCookie, setCookie } from "hono/cookie";
-import { authenticateJWT } from "../middlewares/auth-middleware";
+import { authenticateJWT } from "@/middlewares/auth-middleware";
 import {
 	generateOTP,
 	generateUID,
@@ -19,7 +19,7 @@ import {
 	UserLoginSchema,
 	UserRegisterSchema,
 	otpSchema,
-} from "../zod/userSchema";
+} from "../schema/userSchema";
 
 const authRouter = new Hono();
 
@@ -68,7 +68,6 @@ authRouter.post("/register", async (c: Context) => {
 			verificationUid,
 			secretToken,
 			id,
-			refreshToken,
 			...userData
 		} = user;
 		return c.json(
@@ -340,6 +339,5 @@ authRouter.get("/logout", authenticateJWT, async (c: Context) => {
 		);
 	}
 });
-
 
 export { authRouter };

@@ -1,11 +1,11 @@
-import db from "../config/dbConfig";
+import db from "@lib/db";
 import { Context, Hono } from "hono";
-import { LinkSchema, ShortUrlSchema } from "../zod/link-schema";
-import { HttpStatusCode } from "../@types/types";
-import { authenticateJWT } from "../middlewares/auth-middleware";
-import { getIdFromMiddleware } from "../services/user-service";
-import { logger } from "../utils/logger";
-import linkService from "../services/link-service";
+import { LinkSchema, ShortUrlSchema } from "@/schema/link-schema";
+import { HttpStatusCode } from "@/types/global";
+import { authenticateJWT } from "@/middlewares/auth-middleware";
+import { getIdFromMiddleware } from "@/services/user-service";
+import { logger } from "@utils/logger";
+import linkService from "@/services/link-service";
 
 const urlRouter = new Hono();
 

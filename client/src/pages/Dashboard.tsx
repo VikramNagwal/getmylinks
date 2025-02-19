@@ -1,9 +1,9 @@
-import Header from "@/components/features/dashboard/Header";
-import { AppSidebar } from "@/components/features/dashboard/AppSidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import SettingPage from "./Settings";
 import { useState } from "react";
 import LinkShortenForm from "@/components/features/forms/LinkShortenForm";
+import Header from "@/components/dashboard/Header";
+import { AppSidebar } from "@/components/dashboard/AppSidebar";
 
 export interface AllTabContentProps {
 	shortlinks: JSX.Element;

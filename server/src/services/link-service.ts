@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
-import db from "../config/dbConfig";
+import db from "@lib/db";
 import { UAParser } from "ua-parser-js";
-import { logger } from "../utils/logger";
+import { logger } from "@/utils/logger";
 
 function getUserDetails(req: any) {
 	const uaParser = new UAParser(req.header("User-Agent"));

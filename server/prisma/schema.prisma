@@ -22,7 +22,8 @@ model User {
   updatedAt       DateTime  @updatedAt
 
   links   link[]
-  Profile Profile?
+  Account Account?
+  Page    Page[]
 
   @@index([email, id])
   @@map("users")
@@ -42,6 +43,8 @@ model link {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   analytics Analytics?
+  Page      Page?      @relation(fields: [pageId], references: [id])
+  pageId    String?
 
   @@index([userId, shortUrl])
   @@map("links")
@@ -66,15 +69,32 @@ model Analytics {
   @@map("analytics")
 }
 
-model Profile {
-  id        String   @id @default(cuid())
-  userId    String   @unique
-  bio       String?
-  avatar    String?  @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Account {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  bio           String?
+  links         Int      @default(0)
+  avatar        String?  @db.Text
+  refersh_token String?  @db.Text
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id])
 
-  @@map("profiles")
+  @@map("Accounts")
+}
+
+model Page {
+  id          String    @id @default(cuid())
+  userId      String
+  description String?   @db.Text
+  links       link[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  expires_at  DateTime?
+  sfw         Boolean   @default(true)
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("pages")
 }

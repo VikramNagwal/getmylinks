@@ -6,8 +6,8 @@ import "./queues/worker/email.worker";
 
 // router imports
 import { appRouter } from "./routes/index.route";
-import { HttpStatusCode } from "./@types/types";
-import { ShortUrlSchema } from "./zod/link-schema";
+import { HttpStatusCode } from "./types/global";
+import { ShortUrlSchema } from "./schema/link-schema";
 import linkService, { getUserDetails } from "./services/link-service";
 import { dashboardApp } from "./queues/dashboard";
 import { security } from "./middlewares/security-middleware";

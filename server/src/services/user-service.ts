@@ -1,10 +1,10 @@
 import { Context } from "hono";
-import db from "../config/dbConfig";
-import { emailQueue } from "../queues/email.queue";
+import db from "@lib/db";
+import { emailQueue } from "@/queues/email.queue";
 import { generateOTP, generateUID } from "./otp-service";
-import redis from "../lib/redis";
+import redis from "@/lib/redis";
 import { setCookie } from "hono/cookie";
-import { logger } from "../utils/logger";
+import { logger } from "@/utils/logger";
 
 // config
 const USERNAME_PREFIX = "username";
@@ -37,15 +37,6 @@ async function getRecordById(id: string): Promise<any> {
 	} catch (error) {
 		logger.error(`Error in getting record by id: ${error}`);
 		throw new Error("Unable to get record by id! db operation failed");
-	}
-}
-
-async function deleteUserById(id: string): Promise<void> {
-	try {
-		const deletedUser = await db.user.delete({ where: { id } });
-	} catch (error) {
-		logger.error(`Error in deleting user by id: ${error}`);
-		throw new Error("Unable to delete user by id! db operation");
 	}
 }
 
@@ -169,7 +160,6 @@ export {
 	isUserIdExist,
 	isUserEmailExist,
 	getRecordById,
-	deleteUserById,
 	updateUserProfile,
 	updateUserEmail,
 	getIdFromMiddleware,

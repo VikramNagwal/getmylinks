@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEmail } from "@/app/context/email-context";
-import { userLogout } from "@/app/slices/AuthSlicer";
+import { userLogout } from "@/app/features/AuthSlicer";
 
 const LogoutButton = () => {
 	const { toast } = useToast();

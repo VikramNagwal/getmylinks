@@ -1,5 +1,5 @@
-import authReducer from "@/app/slices/AuthSlicer";
-import linkReducer from "@/app/slices/LinkSlicer";
+import authReducer from "@/app/features/AuthSlicer";
+import linkReducer from "@/app/features/LinkSlicer";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({

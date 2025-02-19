@@ -31,7 +31,7 @@ import { useEmail } from "@/app/context/email-context";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { logger } from "@/utils/logger";
 import { useAppDispatch } from "@/app/hooks";
-import { setUser } from "@/app/slices/AuthSlicer";
+import { setUser } from "@/app/features/AuthSlicer";
 
 const useSignUpMutation = () => {
 	const { toast } = useToast();

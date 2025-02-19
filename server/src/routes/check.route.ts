@@ -1,8 +1,8 @@
 import { Context, Hono } from "hono";
-import db from "../config/dbConfig";
-import { EmailBodySchema, UsernameBodySchema } from "../zod/userSchema";
-import { logger } from "../utils/logger";
-import { HttpStatusCode } from "../@types/types";
+import db from "@lib/db";
+import { EmailBodySchema, UsernameBodySchema } from "@/schema/userSchema";
+import { logger } from "@utils/logger";
+import { HttpStatusCode } from "@/types/global";
 
 const checkRouter = new Hono();
 
@@ -54,7 +54,7 @@ checkRouter.post("/username", async (c: Context) => {
 					success: true,
 					isUsernameAvailable: false,
 				},
-				HttpStatusCode.Conflict,
+				HttpStatusCode.Ok,
 			);
 		}
 

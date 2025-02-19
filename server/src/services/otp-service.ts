@@ -1,6 +1,6 @@
 import { authenticator, totp } from "otplib";
 import { randomUUIDv7 } from "bun";
-import { logger } from "../utils/logger";
+import { logger } from "@utils/logger";
 
 totp.options = {
 	step: 1800,

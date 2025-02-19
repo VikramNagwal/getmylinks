@@ -3,6 +3,13 @@
     "strict": true,
      "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@utils/*": ["src/utils/*"],
+      "@lib/*": ["src/lib/*"],
+      "@tests/*": ["src/test/*"],
+    }
+  },
 }

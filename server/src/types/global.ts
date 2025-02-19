@@ -42,3 +42,7 @@ export type TokenPaylod = {
 	name: string;
 	email: string;
 };
+
+export type userId = {
+	userId: string | null;
+};

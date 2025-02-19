@@ -174,7 +174,7 @@ userRouter.get("/:username/profile", async (c: Context) => {
 						bio: true,
 						avatar: true,
 					},
-				}
+				},
 			},
 		});
 		if (!user) {
@@ -195,12 +195,15 @@ userRouter.get("/:username/profile", async (c: Context) => {
 			HttpStatusCode.Ok,
 		);
 	} catch (error) {
-		return c.json({
-			success: false,
-			message: "An error occurred while fetching user profile",
-			error,
-		}, HttpStatusCode.InternalServerError);
+		return c.json(
+			{
+				success: false,
+				message: "An error occurred while fetching user profile",
+				error,
+			},
+			HttpStatusCode.InternalServerError,
+		);
 	}
-})
+});
 
 export { userRouter };

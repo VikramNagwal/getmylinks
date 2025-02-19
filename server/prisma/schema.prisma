@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum type {
+  public
+  private
+}
+
 model User {
   id              String    @id @default(cuid())
   username        String    @unique
@@ -40,11 +45,11 @@ model link {
   expiresAt  DateTime?
   updatedAt  DateTime  @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   analytics Analytics?
-  Page      Page?      @relation(fields: [pageId], references: [id])
   pageId    String?
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Page      Page?      @relation(fields: [pageId], references: [id])
 
   @@index([userId, shortUrl])
   @@map("links")
@@ -93,6 +98,7 @@ model Page {
   updatedAt   DateTime  @updatedAt
   expires_at  DateTime?
   sfw         Boolean   @default(true)
+  type        type      @default(public)
 
   user User @relation(fields: [userId], references: [id])
 

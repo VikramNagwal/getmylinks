@@ -45,42 +45,42 @@ export function AppSidebar({
 	...props
 }: React.ComponentProps<typeof Sidebar> & AppSidebarProps) {
 	return (
-    <Sidebar {...props}>
-      <SidebarHeader>
-        <a
-          href="/"
-          className="font-Gloock md:text-2xl text-start p-3 text-pretty"
-        >
-          getmylinks
-        </a>
-      </SidebarHeader>
-      <SidebarContent className="mt-8">
-        {/* We create a SidebarGroup for each parent. */}
-        {data.items.map((item) => (
-          <SidebarGroupContent key={item.title}>
-            <SidebarMenu className="mx-auto" key={item.id}>
-              <SidebarMenuItem key={item.title} className="px-2">
-                <div
-                  key={item.title}
-                  onClick={() =>
-                    setActiveTab(
-                      item.tab.toLowerCase() as keyof AllTabContentProps
-                    )
-                  }
-                >
-                  <SidebarMenuButton
-                    className={`hover:opacity-95 duration-300 ease-in-out p-5 border font-sans`}
-                    key={item.title}
-                  >
-                    {item.icon} {item.title}
-                  </SidebarMenuButton>
-                </div>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        ))}
-      </SidebarContent>
-      <SidebarRail />
-    </Sidebar>
-  );
+		<Sidebar {...props}>
+			<SidebarHeader>
+				<a
+					href="/"
+					className="font-Gloock md:text-2xl text-start p-3 text-pretty"
+				>
+					getmylinks
+				</a>
+			</SidebarHeader>
+			<SidebarContent className="mt-8">
+				{/* We create a SidebarGroup for each parent. */}
+				{data.items.map((item) => (
+					<SidebarGroupContent key={item.title}>
+						<SidebarMenu className="mx-auto" key={item.id}>
+							<SidebarMenuItem key={item.title} className="px-2">
+								<div
+									key={item.title}
+									onClick={() =>
+										setActiveTab(
+											item.tab.toLowerCase() as keyof AllTabContentProps,
+										)
+									}
+								>
+									<SidebarMenuButton
+										className={`hover:opacity-95 duration-300 ease-in-out p-5 border font-sans`}
+										key={item.title}
+									>
+										{item.icon} {item.title}
+									</SidebarMenuButton>
+								</div>
+							</SidebarMenuItem>
+						</SidebarMenu>
+					</SidebarGroupContent>
+				))}
+			</SidebarContent>
+			<SidebarRail />
+		</Sidebar>
+	);
 }

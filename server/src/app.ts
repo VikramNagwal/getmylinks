@@ -40,7 +40,7 @@ app.get("/r/:shorturl", async (c: Context) => {
 	try {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));
 		const userAgentInfo = getUserDetails(c.req);
-		console.log(shortUrl)
+		console.log(shortUrl);
 
 		const response = await linkService.checkUrlExists(shortUrl);
 

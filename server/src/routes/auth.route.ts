@@ -91,7 +91,7 @@ authRouter.post("/register", async (c: Context) => {
 
 authRouter.post("/login", async (c: Context) => {
 	try {
-		const { email, password } = UserLoginSchema.parse( await c.req.json());
+		const { email, password } = UserLoginSchema.parse(await c.req.json());
 
 		const user = await db.user.findUnique({
 			where: { email },

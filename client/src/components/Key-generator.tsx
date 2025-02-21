@@ -24,7 +24,8 @@ const KeyGenerator = ({
 						variant={"outline"}
 						className="cursor-pointer border-l-2 border-none"
 					>
-						Generate titles<Sparkles />
+						Generate titles
+						<Sparkles />
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent>Generate random key</TooltipContent>

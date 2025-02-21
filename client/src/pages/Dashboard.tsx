@@ -1,7 +1,7 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import SettingPage from "./Settings";
 import { useState } from "react";
-import LinkShortenForm from "@/components/features/forms/LinkShortenForm";
+import LinkForm from "@/components/features/forms/LinkShortenForm";
 import Header from "@/components/dashboard/Header";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
 
@@ -15,7 +15,7 @@ const Dashboard = () => {
 		useState<keyof AllTabContentProps>("shortlinks");
 
 	const allTabContent: AllTabContentProps = {
-		shortlinks: <LinkShortenForm />,
+		shortlinks: <LinkForm />,
 		settings: <SettingPage />,
 	};
 	return (

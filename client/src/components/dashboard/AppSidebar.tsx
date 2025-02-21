@@ -69,7 +69,7 @@ export function AppSidebar({
 									}
 								>
 									<SidebarMenuButton
-										className={`hover:bg-[#3FCF8E] p-5 border font-sans`}
+										className={`hover:opacity-95 duration-300 ease-in-out p-5 border font-sans`}
 										key={item.title}
 									>
 										{item.icon} {item.title}

@@ -1,9 +1,9 @@
-import db from "../config/dbConfig";
+import db from "@lib/db";
 import { createMiddleware } from "hono/factory";
 import { Context, Next } from "hono";
 import { verify } from "hono/jwt";
 import { HttpStatusCode } from "../types/global";
-import { AuthHandler } from "../utils/tokens";
+import { AuthHandler } from "@utils/tokens";
 import { setAllCookies } from "../services/user-service";
 
 interface Tokens {

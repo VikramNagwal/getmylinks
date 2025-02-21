@@ -1,5 +1,5 @@
 import { Context, Hono } from "hono";
-import db from "./config/dbConfig";
+import db from "@lib/db";
 import { logger } from "hono/logger";
 import { cors } from "hono/cors";
 import "./queues/worker/email.worker";
@@ -40,8 +40,10 @@ app.get("/r/:shorturl", async (c: Context) => {
 	try {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));
 		const userAgentInfo = getUserDetails(c.req);
+		console.log(shortUrl);
 
 		const response = await linkService.checkUrlExists(shortUrl);
+
 		if (!response) {
 			return c.json(
 				{ message: "Short url not found" },

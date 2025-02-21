@@ -12,8 +12,7 @@ const urlRouter = new Hono();
 urlRouter.post("/shorten", authenticateJWT, async (c: Context) => {
 	try {
 		const createdById = await getIdFromMiddleware(c);
-		const { url, title } = LinkSchema.parse(await c.req.json());
-		logger.info(url, title); //remove this line
+		const { url, title } = LinkSchema.parse(await c.req.parseBody());
 
 		const link = await linkService.createShortLink({
 			url,
@@ -25,7 +24,7 @@ urlRouter.post("/shorten", authenticateJWT, async (c: Context) => {
 			{
 				success: true,
 				message: "short link successfully generated",
-				shortUrl: `http://localhost:8080/r/${link.shortUrl}`,
+				shortUrl: link.shortUrl,
 			},
 			HttpStatusCode.Created,
 		);

@@ -1,5 +1,4 @@
 [imports]
 '@lib/*': 'src/lib/*'
 '@utils/*': 'src/utils/*'
-'@tests/*: 'src/tests/*'
 '@/*': 'src/*'

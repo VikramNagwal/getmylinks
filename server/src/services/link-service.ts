@@ -33,7 +33,7 @@ class LinkService {
 				if (existingTitle) {
 					return {
 						message: "title already exists",
-						shortUrl: `http://localhost:8080/r/${title}`,
+						shortUrl: `${Bun.env.BASE_URL}/r/${title}`, //bcknd url
 					};
 				}
 			}
@@ -42,7 +42,7 @@ class LinkService {
 			if (existingUrl) {
 				return {
 					message: "Short url already exists",
-					shortUrl: `http://localhost:8080/r/${existingUrl}`,
+					shortUrl: `${Bun.env.BASE_URL}/r/${existingUrl}`,
 				};
 			}
 
@@ -58,7 +58,7 @@ class LinkService {
 			return {
 				success: true,
 				message: "creared",
-				shortUrl: `http://localhost:8080/r/${shortCode}`,
+				shortUrl: `${Bun.env.BASE_URL}/r/${shortCode}`,
 			};
 		} catch (error) {
 			logger.error("Error while creating short link", error);
@@ -86,8 +86,8 @@ class LinkService {
 
 	async checkUrlExists(url: string) {
 		try {
-			const response = await db.link.findFirst({
-				where: { url },
+			const response = await db.link.findUnique({
+				where: { shortUrl: url },
 				select: {
 					id: true,
 					isActive: true,

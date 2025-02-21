@@ -1,5 +1,5 @@
 import { sign, verify } from "hono/jwt";
-import db from "../config/dbConfig";
+import db from "@lib/db";
 
 class AuthHandler {
 	static async hashPassword(password: string): Promise<string> {

@@ -22,9 +22,9 @@ const KeyGenerator = ({
 						type="button"
 						onClick={handleNamesGeneration}
 						variant={"outline"}
-						className="cursor-pointer mx-2"
+						className="cursor-pointer border-l-2 border-none"
 					>
-						<Sparkles />
+						Generate titles<Sparkles />
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent>Generate random key</TooltipContent>

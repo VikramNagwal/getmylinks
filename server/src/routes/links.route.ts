@@ -12,7 +12,7 @@ const urlRouter = new Hono();
 urlRouter.post("/shorten", authenticateJWT, async (c: Context) => {
 	try {
 		const createdById = await getIdFromMiddleware(c);
-		const { url, title } = LinkSchema.parse(await c.req.parseBody());
+		const { url, title } = LinkSchema.parse(await c.req.json());
 
 		const link = await linkService.createShortLink({
 			url,

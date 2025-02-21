@@ -1,6 +1,8 @@
 import axios from "axios";
 
-export default axios.create({
+axios.defaults.withCredentials = true;
+
+export const fireCall = axios.create({
 	withCredentials: true,
 	baseURL: import.meta.env.VITE_BACKEND_URL,
 });

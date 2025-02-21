@@ -1,16 +1,46 @@
 import KeyGenerator from "@/components/Key-generator";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import { useToast } from "@/hooks/use-toast";
+import { fireCall } from "@/lib/axios.config";
+import { logger } from "@/utils/logger";
 import { useState } from "react";
 
 const LinkForm = () => {
 	const [key, setKey] = useState<string>("");
-	// const [url, setUrl] = useState<string>("");
+	const [loading, setLoading] = useState<boolean>(false);
 
-	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+	const { toast } = useToast();
+
+	async function handleSubmit(
+		e: React.FormEvent<HTMLFormElement>,
+	): Promise<void> {
+		setLoading(true);
 		e.preventDefault();
 		const data = new FormData(e.target as HTMLFormElement);
 		const link = data.get("url");
-		const title = data.get("title");
-		console.log("Form submitted", link, title);
+		const title = data.get("title") ? data.get("title") : key;
+
+		try {
+			const response = await fireCall.post("/url/shorten", {
+				url: link,
+				title,
+			});
+			console.log(response); // eslint-disable-line
+			if(response.status !== 200) {
+				throw new Error("Unable to shorten link");
+			}
+			setLoading(false);
+			toast({
+				title: "Link shortened successfully",
+				description: response.data.shortUrl || "you can now share your link",
+			})
+		} catch (error) {
+			logger.logs("Unable to make api call");
+			toast({
+				title: "Something went wrong :(",
+				description: "Please try again later",
+			});
+		}
 	}
 
 	return (
@@ -20,25 +50,25 @@ const LinkForm = () => {
 			</h2>
 			<form
 				onSubmit={handleSubmit}
-				className="flex flex-col w-full mx-auto gap-4 mt-[30%] md:mt-12"
+				className="flex flex-col max-w-[800px] mx-auto gap-4 mt-[30%] md:mt-12"
 			>
 				<input
 					type="text"
 					name="url"
-					placeholder="https://getmylinks/really-long-url"
-					className="w-full p-4 pl-6 rounded-full border border-gray-400 text-black dark:text-white bg-background"
+					placeholder="example: https://getmylinks/really-long-url"
+					className="w-full p-4 pl-6 rounded-full bg-slate-100 dark:bg-background border border-gray-400 text-black dark:text-white placeholder:italic"
 				/>
 				<div className="flex justify-between p-2 rounded-full border border-gray-400 max-w-[400px]">
 					<input
 						type="text"
 						name="title"
-						className="p-2 text-black bg-background focus:outline-none dark:text-white"
+						className="p-2 rounded-full dark:bg-background placeholder-black dark:placeholder-white text-black bg-slate-100 focus:outline-none dark:text-white"
 						placeholder={key}
 					/>
 					<KeyGenerator setnames={setKey} />
 				</div>
-				<button type="submit" className="primary-btn rounded-full">
-					Shorten
+				<button type="submit" className="primary-btn rounded-full mt-6" disabled={loading}>
+					{loading ? <LoadingSpinner />  : "Shorten" }
 				</button>
 			</form>
 		</div>

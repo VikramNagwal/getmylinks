@@ -26,14 +26,14 @@ const LinkForm = () => {
 				title,
 			});
 			console.log(response); // eslint-disable-line
-			if(response.status !== 200) {
+			if (response.status !== 200) {
 				throw new Error("Unable to shorten link");
 			}
 			setLoading(false);
 			toast({
 				title: "Link shortened successfully",
 				description: response.data.shortUrl || "you can now share your link",
-			})
+			});
 		} catch (error) {
 			logger.logs("Unable to make api call");
 			toast({
@@ -67,8 +67,12 @@ const LinkForm = () => {
 					/>
 					<KeyGenerator setnames={setKey} />
 				</div>
-				<button type="submit" className="primary-btn rounded-full mt-6" disabled={loading}>
-					{loading ? <LoadingSpinner />  : "Shorten" }
+				<button
+					type="submit"
+					className="primary-btn rounded-full mt-6"
+					disabled={loading}
+				>
+					{loading ? <LoadingSpinner /> : "Shorten"}
 				</button>
 			</form>
 		</div>

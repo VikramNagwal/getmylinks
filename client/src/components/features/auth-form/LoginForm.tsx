@@ -1,40 +1,39 @@
-import axios from "axios";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoginSchema } from "@/zod/authentication-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { logger } from "@/utils/logger";
+import { fireCall } from "@/lib/axios.config";
 
 type LogInForm = z.infer<typeof LoginSchema>;
 
 const useLoginMutation = () => {
 	const { toast } = useToast();
 	const navigate = useNavigate();
-	const uid = crypto.randomUUID();
 
 	return useMutation({
 		mutationFn: (data: LogInForm) => {
-			return axios.post(`http://localhost:8080/api/v1/auth/login`, data, {
-				withCredentials: true,
-			});
+			return fireCall.post(`/auth/login`, data);
 		},
 
 		onSuccess: () => {
 			toast({
-				title: "Welcome Back🥳",
+				title: "Welcome Back 🥳",
 			});
-			navigate(`/${uid}/dashboard`);
+			navigate(`/admin`);
 		},
 
-		onError: () => {
+		onError: (error) => {
+			logger.error(error);
 			toast({
 				title: "Email does not exists",
 				description: "Please check your credentials",

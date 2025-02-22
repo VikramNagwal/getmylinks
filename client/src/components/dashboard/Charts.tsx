@@ -1,5 +1,9 @@
 const Charts = () => {
-	return <div>Charts</div>;
+	return (
+		<div>
+			<h1>Charts</h1>
+		</div>
+	);
 };
 
 export default Charts;

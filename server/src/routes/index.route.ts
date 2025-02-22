@@ -9,6 +9,6 @@ const appRouter = new Hono();
 appRouter.route("/auth", authRouter);
 appRouter.route("/url", urlRouter);
 appRouter.route("/account", userRouter);
-appRouter.route("/check", checkRouter);
+appRouter.route("/checks", checkRouter);
 
 export { appRouter };

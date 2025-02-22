@@ -102,7 +102,7 @@ authRouter.post("/login", async (c: Context) => {
 				passwordHash: true,
 				refreshToken: true,
 				emailVerified: true,
-				email: true
+				email: true,
 			},
 		});
 		if (!user) {
@@ -135,7 +135,7 @@ authRouter.post("/login", async (c: Context) => {
 			expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
 		});
 
-		const { passwordHash: _, id,...details } = user;
+		const { passwordHash: _, id, ...details } = user;
 
 		return c.json(
 			{

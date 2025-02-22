@@ -31,7 +31,6 @@ app.use(
 );
 app.notFound((c: Context) => c.json({ message: "Not Found", ok: false }, 404));
 
-
 app.route("/api/v1/", appRouter);
 app.route("/admin/queues", dashboardApp);
 

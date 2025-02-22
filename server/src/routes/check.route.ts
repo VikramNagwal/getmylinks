@@ -3,6 +3,7 @@ import db from "@lib/db";
 import { EmailBodySchema, UsernameBodySchema } from "@/schema/userSchema";
 import { logger } from "@utils/logger";
 import { HttpStatusCode } from "@/types/global";
+import { getConnInfo } from 'hono/bun'
 
 const checkRouter = new Hono();
 
@@ -78,4 +79,9 @@ checkRouter.post("/username", async (c: Context) => {
 	}
 });
 
+checkRouter.get("/request", async (c: Context) => {
+	const info = getConnInfo(c) // info is `ConnInfo`
+	console.log(info)
+  	return c.text(`Your remote address is ${info.remote.address}`)
+})
 export { checkRouter };

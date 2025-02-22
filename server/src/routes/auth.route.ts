@@ -92,6 +92,7 @@ authRouter.post("/register", async (c: Context) => {
 authRouter.post("/login", async (c: Context) => {
 	try {
 		const { email, password } = UserLoginSchema.parse(await c.req.json());
+		// const userAgent = c.req.header/
 
 		const user = await db.user.findUnique({
 			where: { email },
@@ -99,6 +100,9 @@ authRouter.post("/login", async (c: Context) => {
 				id: true,
 				username: true,
 				passwordHash: true,
+				refreshToken: true,
+				emailVerified: true,
+				email: true
 			},
 		});
 		if (!user) {
@@ -131,13 +135,13 @@ authRouter.post("/login", async (c: Context) => {
 			expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
 		});
 
-		const { passwordHash: _, ...userData } = user;
+		const { passwordHash: _, id,...details } = user;
 
 		return c.json(
 			{
 				success: true,
 				message: "User logged in successfully",
-				data: userData,
+				details,
 			},
 			HttpStatusCode.Ok,
 		);

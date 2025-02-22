@@ -30,6 +30,7 @@ const LinkForm = () => {
 				throw new Error("Unable to shorten link");
 			}
 			setLoading(false);
+
 			toast({
 				title: "Link shortened successfully",
 				description: response.data.shortUrl || "you can now share your link",
@@ -50,7 +51,7 @@ const LinkForm = () => {
 			</h2>
 			<form
 				onSubmit={handleSubmit}
-				className="flex flex-col max-w-[800px] mx-auto gap-4 mt-[30%] md:mt-12"
+				className="flex flex-col max-w-[600px] mx-auto gap-4 mt-[30%] md:mt-12"
 			>
 				<input
 					type="text"
@@ -69,7 +70,7 @@ const LinkForm = () => {
 				</div>
 				<button
 					type="submit"
-					className="primary-btn rounded-full mt-6"
+					className="primary-btn rounded-full mt-6 text-center flex justify-center items-center"
 					disabled={loading}
 				>
 					{loading ? <LoadingSpinner /> : "Shorten"}

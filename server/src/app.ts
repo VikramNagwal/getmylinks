@@ -29,22 +29,21 @@ app.use(
 		maxAge: 864000,
 	}),
 );
-app.notFound((c) => c.json({ message: "Not Found", ok: false }, 404));
+app.notFound((c: Context) => c.json({ message: "Not Found", ok: false }, 404));
 
-// routes
+
 app.route("/api/v1/", appRouter);
 app.route("/admin/queues", dashboardApp);
 
 // main short url router
-app.get("/r/:shorturl", async (c: Context) => {
+app.get("/r/:shortId", async (c: Context) => {
 	try {
-		const shortUrl = ShortUrlSchema.parse(c.req.param("shorturl"));
+		const shortUrl = ShortUrlSchema.parse(c.req.param("shortId"));
 		const userAgentInfo = getUserDetails(c.req);
-		console.log(shortUrl);
 
-		const response = await linkService.checkUrlExists(shortUrl);
+		const link = await linkService.checkUrlExists(shortUrl);
 
-		if (!response) {
+		if (!link) {
 			return c.json(
 				{ message: "Short url not found" },
 				HttpStatusCode.NotFound,
@@ -54,24 +53,23 @@ app.get("/r/:shorturl", async (c: Context) => {
 		await db.$transaction(async (tx) => {
 			await tx.link.update({
 				where: {
-					id: response.id,
+					id: link.id,
 				},
 				data: { totalViews: { increment: 1 } },
 			}),
 				await tx.analytics.create({
 					data: {
-						linkId: response.id,
+						linkId: link.id,
 						...userAgentInfo,
 					},
 				});
 		});
 
-		return c.redirect(response.url);
+		return c.redirect(link.url); //redirection
 	} catch (error) {
 		return c.json(
 			{
 				success: false,
-				isOperationl: true,
 				message: "Error while redirecting to short url",
 				error,
 			},

@@ -12,6 +12,9 @@ const LoginPage = () => {
 					>
 						getmylinks
 					</a>
+					<div>
+						<p className="z-20 absolute bottom-8 left-12 font-passage text-2xl text-white">this is awesome.</p>
+					</div>
 					<img
 						src="../images/spiral.webp"
 						alt="seashore-img"

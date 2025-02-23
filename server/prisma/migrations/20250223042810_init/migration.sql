@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "type" AS ENUM ('public', 'private');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
@@ -27,6 +30,7 @@ CREATE TABLE "links" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "expiresAt" TIMESTAMP(3),
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "pageId" TEXT,
 
     CONSTRAINT "links_pkey" PRIMARY KEY ("id")
 );
@@ -49,15 +53,31 @@ CREATE TABLE "analytics" (
 );
 
 -- CreateTable
-CREATE TABLE "profiles" (
+CREATE TABLE "Accounts" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "bio" TEXT,
+    "links" INTEGER NOT NULL DEFAULT 0,
     "avatar" TEXT,
+    "refersh_token" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "profiles_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Accounts_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "pages" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "description" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "expires_at" TIMESTAMP(3),
+    "sfw" BOOLEAN NOT NULL DEFAULT true,
+    "type" "type" NOT NULL DEFAULT 'public',
+
+    CONSTRAINT "pages_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -88,13 +108,19 @@ CREATE UNIQUE INDEX "analytics_linkId_key" ON "analytics"("linkId");
 CREATE INDEX "analytics_linkId_idx" ON "analytics"("linkId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "profiles_userId_key" ON "profiles"("userId");
+CREATE UNIQUE INDEX "Accounts_userId_key" ON "Accounts"("userId");
 
 -- AddForeignKey
 ALTER TABLE "links" ADD CONSTRAINT "links_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "links" ADD CONSTRAINT "links_pageId_fkey" FOREIGN KEY ("pageId") REFERENCES "pages"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "analytics" ADD CONSTRAINT "analytics_linkId_fkey" FOREIGN KEY ("linkId") REFERENCES "links"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "profiles" ADD CONSTRAINT "profiles_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Accounts" ADD CONSTRAINT "Accounts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "pages" ADD CONSTRAINT "pages_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

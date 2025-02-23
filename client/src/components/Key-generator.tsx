@@ -1,12 +1,7 @@
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { Sparkles } from "lucide-react";
 import { Button } from "./ui/button";
 import { generateRandomNames } from "@/utils/names";
+import Peekaboo from "./commons/tooltip";
 
 const KeyGenerator = ({
 	setnames,
@@ -15,23 +10,23 @@ const KeyGenerator = ({
 		setnames(generateRandomNames());
 	};
 	return (
-		<TooltipProvider>
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<Button
-						type="button"
-						onClick={handleNamesGeneration}
-						variant={"outline"}
-						className="cursor-pointer border-l-2 border-none"
-					>
-						Generate titles
-						<Sparkles />
-					</Button>
-				</TooltipTrigger>
-				<TooltipContent>Generate random key</TooltipContent>
-			</Tooltip>
-		</TooltipProvider>
-	);
+    <Peekaboo
+      children={
+        <div>
+          <Button
+            type="button"
+            onClick={handleNamesGeneration}
+            variant="ghost"
+            className="cursor-pointer hover:bg-background border-none"
+          >
+            Generate titles
+            <Sparkles />
+          </Button>
+        </div>
+      }
+	  description="Generate randon names"
+    />
+  );
 };
 
 export default KeyGenerator;

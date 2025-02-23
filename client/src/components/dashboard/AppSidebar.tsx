@@ -10,8 +10,9 @@ import {
 	SidebarRail,
 } from "@/components/ui/sidebar";
 import { Settings, LinkIcon, BarChart2, User } from "lucide-react";
-import { AllTabContentProps } from "@/pages/Dashboard";
-
+import { AllTabContentProps } from "@/views/dashboard/Dashboard";
+import path from "path";
+ 
 const data = {
 	items: [
 		{ id: 1, title: "Short links", tab: "shortLinks", icon: <LinkIcon /> },
@@ -20,18 +21,21 @@ const data = {
 			title: "Analytics",
 			tab: "analytics",
 			icon: <BarChart2 />,
+			path: () => path.join("/dashboard", "analytics"),
 		},
 		{
 			id: 3,
 			title: "Settings",
 			tab: "settings",
 			icon: <Settings />,
+			path: () => path.join("/dashboard", "settings"),
 		},
 		{
 			id: 4,
 			title: "Profile",
 			tab: "profile",
 			icon: <User />,
+			Path: () => path.join("/dashboard", "profile"),
 		},
 	],
 };
@@ -49,13 +53,13 @@ export function AppSidebar({
 			<SidebarHeader>
 				<a
 					href="/"
-					className="font-Gloock md:text-2xl text-start p-3 text-pretty"
+					className="logo"
 				>
 					getmylinks
 				</a>
 			</SidebarHeader>
 			<SidebarContent className="mt-8">
-				{/* We create a SidebarGroup for each parent. */}
+				
 				{data.items.map((item) => (
 					<SidebarGroupContent key={item.title}>
 						<SidebarMenu className="mx-auto" key={item.id}>

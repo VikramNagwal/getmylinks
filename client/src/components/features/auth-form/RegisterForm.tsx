@@ -28,7 +28,7 @@ import { usePasswordStreanth } from "@/utils/use-password";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useEmail } from "@/app/context/email-context";
-import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import LoadingSpinner from "@/components/loaders/LoadingSpinner";
 import { logger } from "@/utils/logger";
 import { useAppDispatch } from "@/app/hooks";
 import { setUser } from "@/app/features/AuthSlicer";

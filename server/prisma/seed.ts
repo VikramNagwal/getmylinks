@@ -13,9 +13,10 @@ async function main() {
     },
   })
 
-  const profile = await prisma.profile.create({
+  const profile = await prisma.account.create({
     data: {
       bio: 'solo traveller',
+      avatar: 'https://www.google.com',
       user: {
         connect: { id: user.id },
       },

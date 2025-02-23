@@ -75,6 +75,14 @@ export default {
   				'Tauri',
   				'sans-serif'
   			],
+			inter: [
+				'Inter',
+				'sans-serif'
+			],
+			rubik: [
+				'Rubik',
+				'sans-serif'
+			]
   		},
 		 keyframes: {
         "caret-blink": {

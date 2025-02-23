@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+// import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoginSchema } from "@/zod/authentication-schema";
@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { logger } from "@/utils/logger";
-import { fireCall } from "@/lib/axios.config";
+import { fireCall } from "@/lib/axiosConfig";
 
 type LogInForm = z.infer<typeof LoginSchema>;
 
@@ -156,7 +156,7 @@ const LoginForm = () => {
 					</Button>
 				</form>
 
-				<div className="mt-6 link text-blue-700 text-sm flex justify-center items-center space-x-4">
+				{/* <div className="mt-6 link text-violet-800 text-sm flex flex-col items-start space-y-1">
 					<a href="/forgot-password" className="hover:opacity-90">
 						Forgot Password?
 					</a>
@@ -164,7 +164,7 @@ const LoginForm = () => {
 					<a href="/forgot-username" className="hover:opacity-90">
 						Forgot Username?
 					</a>
-				</div>
+				</div> */}
 
 				<p className="capitalize text-sm mt-8 text-center leading-relaxed">
 					Don't have an account?{" "}

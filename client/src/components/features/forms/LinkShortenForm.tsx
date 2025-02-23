@@ -1,7 +1,7 @@
 import KeyGenerator from "@/components/Key-generator";
-import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import LoadingSpinner from "@/components/loaders/LoadingSpinner";
 import { useToast } from "@/hooks/use-toast";
-import { fireCall } from "@/lib/axios.config";
+import { fireCall } from "@/lib/axiosConfig";
 import { logger } from "@/utils/logger";
 import { useState } from "react";
 
@@ -53,18 +53,23 @@ const LinkForm = () => {
 				onSubmit={handleSubmit}
 				className="flex flex-col max-w-[600px] mx-auto gap-4 mt-[30%] md:mt-12"
 			>
-				<input
-					type="text"
-					name="url"
-					placeholder="example: https://getmylinks/really-long-url"
-					className="w-full p-4 pl-6 rounded-full bg-slate-100 dark:bg-background border border-gray-400 text-black dark:text-white placeholder:italic"
-				/>
-				<div className="flex justify-between p-2 rounded-full border border-gray-400 max-w-[400px]">
+				<div>
+					<label htmlFor="url" className="ml-4 pb-4 font-passage">
+						Enter your link
+					</label>
+					<input
+						type="text"
+						name="url"
+						placeholder="example: https://getmylinks/really-long-url"
+						className="w-full p-4 pl-6 rounded-full bg-slate-100 dark:bg-background border border-gray-400 text-black dark:text-white placeholder:italic"
+					/>
+				</div>
+				<div className="flex justify-between p-2 rounded-full border border-gray-400 max-w-[450px]">
 					<input
 						type="text"
 						name="title"
-						className="p-2 rounded-full dark:bg-background placeholder-black dark:placeholder-white text-black bg-slate-100 focus:outline-none dark:text-white"
-						placeholder={key}
+						className="p-2 pl-4 rounded-full dark:bg-background dark:placeholder-white text-black bg-slate-100 focus:outline-none dark:text-white"
+						placeholder={key ? key : "custom title (optional)"}
 					/>
 					<KeyGenerator setnames={setKey} />
 				</div>

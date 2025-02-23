@@ -1,6 +1,5 @@
 import Navbar from "@/components/commons/Navbar";
 
-
 const HomePage = () => {
 	return (
 		<main className="px-2">
@@ -11,7 +10,7 @@ const HomePage = () => {
 				<h1 className="text-3xl font-semibold text-center mt-8">
 					Welcome to GetMyLink
 				</h1>
-				
+
 				<p className="text-center mt-4">
 					To get started,{" "}
 					<a href="/register" className="text-blue-700">

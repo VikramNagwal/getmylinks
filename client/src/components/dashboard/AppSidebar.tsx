@@ -12,7 +12,7 @@ import {
 import { Settings, LinkIcon, BarChart2, User } from "lucide-react";
 import { AllTabContentProps } from "@/views/dashboard/Dashboard";
 import path from "path";
- 
+
 const data = {
 	items: [
 		{ id: 1, title: "Short links", tab: "shortLinks", icon: <LinkIcon /> },
@@ -51,15 +51,11 @@ export function AppSidebar({
 	return (
 		<Sidebar {...props}>
 			<SidebarHeader>
-				<a
-					href="/"
-					className="logo"
-				>
+				<a href="/" className="logo">
 					getmylinks
 				</a>
 			</SidebarHeader>
 			<SidebarContent className="mt-8">
-				
 				{data.items.map((item) => (
 					<SidebarGroupContent key={item.title}>
 						<SidebarMenu className="mx-auto" key={item.id}>

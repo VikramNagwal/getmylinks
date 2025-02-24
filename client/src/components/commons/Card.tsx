@@ -32,8 +32,8 @@ export default function LinkCard({
 		if (copyLink.current) {
 			await navigator.clipboard.writeText(copyLink.current.href);
 			toast({
-				title: "Link copied to clipboard"
-			})
+				title: "Link copied to clipboard",
+			});
 		}
 	}
 
@@ -62,7 +62,7 @@ export default function LinkCard({
 							children={
 								<div>
 									<IoMdCopy
-									onClick={handleCopyLink}
+										onClick={handleCopyLink}
 										size={30}
 										className="p-[3px] cursor-pointer border box-border border-gray-300 rounded-full opacity-80 hover:opacity-100"
 									/>

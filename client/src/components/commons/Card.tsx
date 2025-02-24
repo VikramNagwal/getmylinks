@@ -2,9 +2,9 @@ import { LuMousePointerClick } from "react-icons/lu";
 import { IoMdCopy, IoMdLink } from "react-icons/io";
 import { IoReturnDownForward } from "react-icons/io5";
 import { PiShareFat } from "react-icons/pi";
-
-import { ReactElement } from "react";
+import { ReactElement, useRef } from "react";
 import Peekaboo from "./tooltip";
+import { useToast } from "@/hooks/use-toast";
 
 interface LinkCardProps {
 	shortLink: string;
@@ -17,7 +17,9 @@ export default function LinkCard({
 	destination,
 	clicks,
 }: LinkCardProps): ReactElement {
-	// const copyBtn = useRef<HTMLDivElement>(null);
+	const copyLink = useRef<HTMLAnchorElement>(null);
+
+	const { toast } = useToast();
 
 	const getTitlefromLink = (link: string) => {
 		const url = new URL(link);
@@ -25,6 +27,15 @@ export default function LinkCard({
 	};
 	const host = getTitlefromLink(shortLink);
 	const source = destination.split("//")[1].replace("www.", "");
+
+	async function handleCopyLink() {
+		if (copyLink.current) {
+			await navigator.clipboard.writeText(copyLink.current.href);
+			toast({
+				title: "Link copied to clipboard",
+			});
+		}
+	}
 
 	return (
 		<div className="flex justify-between items-center px-4 py-2 md:px-6 m-2 max-w-[1280px] mx-auto text-sm border border-gray-200 dark:border-none rounded-xl shadow-md dark:bg-[#212020]">
@@ -34,6 +45,7 @@ export default function LinkCard({
 						<a
 							href={shortLink}
 							target="_blank"
+							ref={copyLink}
 							className="text-blue-700 font-semibold flex items-center"
 						>
 							<IoMdLink
@@ -50,6 +62,7 @@ export default function LinkCard({
 							children={
 								<div>
 									<IoMdCopy
+										onClick={handleCopyLink}
 										size={30}
 										className="p-[3px] cursor-pointer border box-border border-gray-300 rounded-full opacity-80 hover:opacity-100"
 									/>

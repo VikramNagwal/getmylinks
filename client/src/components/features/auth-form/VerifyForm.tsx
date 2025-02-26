@@ -46,18 +46,20 @@ const VerifyForm = () => {
 	const onFormSubmit = async (data: any) => {
 		setSubmitting(true);
 		try {
-			const res = await axios.post(
-				`http://localhost:8080/api/v1/auth/${uuid}/verify`,
-				data,
-			);
-			if (!res) return;
+			const res = await axios.post(`/auth/${uuid}/verify`, data);
+			if (!res) {
+				return toast({
+					title: "Verification Failed",
+					variant: "destructive",
+				});
+			}
+
 			toast({
 				title: `Account Verified Successfully`,
 				description: "Your account has been verified",
 			});
-			return navigate(`/${uid}/dashboard`);
+			return navigate(`/admin`);
 		} catch (error) {
-			console.log(error);
 			toast({
 				title:
 					error instanceof Error

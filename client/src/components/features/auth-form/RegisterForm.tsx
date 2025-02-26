@@ -72,6 +72,7 @@ const SignUpForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [geolocation, setGeoLocation] = useState({});
 
 	const { mutate } = useSignUpMutation();
 	const { setEmail } = useEmail();
@@ -95,12 +96,22 @@ const SignUpForm = () => {
 		usePasswordStreanth(password);
 
 	const onSubmit = async (data: SignUpForm) => {
+		fetchLocation();
 		if (isSubmitting) return;
 		setIsSubmitting(true);
 		setEmail(data.email);
-		mutate(data);
+		mutate(data, geolocation);
 		return setIsSubmitting(false);
 	};
+
+	async function fetchLocation() {
+		await navigator.geolocation.getCurrentPosition((position) => {
+			setGeoLocation({
+				latitude: position.coords.latitude,
+				longitude: position.coords.longitude,
+			});
+		});
+	}
 
 	return (
 		<Card className="w-full border-0 shadow-none max-w-md mx-auto">

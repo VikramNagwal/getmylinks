@@ -25,6 +25,8 @@ const authRouter = new Hono();
 
 authRouter.post("/register", async (c: Context) => {
 	try {
+		const { geolocation } = c.req.json();
+		console.log(geolocation); // remove this line
 		const { username, name, email, password } = UserRegisterSchema.parse(
 			await c.req.json(),
 		);

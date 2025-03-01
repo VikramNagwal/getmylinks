@@ -15,7 +15,13 @@ import path from "path";
 
 const data = {
 	items: [
-		{ id: 1, title: "Short links", tab: "shortLinks", icon: <LinkIcon /> },
+		{
+			id: 1,
+			title: "Short links",
+			tab: "shortLinks",
+			icon: <LinkIcon />,
+			path: () => path.join("/dashboard", "short-links"),
+		},
 		{
 			id: 2,
 			title: "Analytics",

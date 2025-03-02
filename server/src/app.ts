@@ -40,7 +40,16 @@ app.get("/r/:shortId", async (c: Context) => {
 		const shortUrl = ShortUrlSchema.parse(c.req.param("shortId"));
 		const userAgentInfo = getUserDetails(c.req);
 
-		const link = await linkService.checkUrlExists(shortUrl);
+		const link = await db.link.findUnique({
+			where: { shortUrl },
+			select: {
+				id: true,
+				url: true,
+				shortUrl: true,
+				totalViews: true,
+				createdAt: true,
+			},
+		})
 
 		if (!link) {
 			return c.json(

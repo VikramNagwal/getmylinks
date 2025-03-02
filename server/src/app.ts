@@ -49,7 +49,7 @@ app.get("/r/:shortId", async (c: Context) => {
 				totalViews: true,
 				createdAt: true,
 			},
-		})
+		});
 
 		if (!link) {
 			return c.json(

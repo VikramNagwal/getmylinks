@@ -21,7 +21,6 @@ function getUserDetails(req: any) {
 export { getUserDetails };
 
 class LinkService {
-
 	async createShortLink(params: {
 		url: string;
 		title?: string;
@@ -34,7 +33,7 @@ class LinkService {
 				if (existingTitle) {
 					return {
 						message: "title already exists",
-						shortUrl: title, 
+						shortUrl: title,
 					};
 				}
 			}
@@ -99,13 +98,15 @@ class LinkService {
 
 			if (!response) return false; // Everything is okay
 
-			if (response.expiresAt && new Date(response.expiresAt || !response.isActive) < new Date()) {
+			if (
+				response.expiresAt &&
+				new Date(response.expiresAt || !response.isActive) < new Date()
+			) {
 				await db.link.delete({ where: { id: response.id } });
 				return false;
 			}
 
 			return response.shortUrl; // url exists
-			
 		} catch (error) {
 			logger.error("Error while fetching short link", error);
 			throw new Error("Error while fetching short link");

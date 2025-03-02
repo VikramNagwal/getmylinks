@@ -16,7 +16,7 @@ const LinkForm = () => {
 	): Promise<void> {
 		e.preventDefault();
 		setLoading(true);
-		
+
 		const data = new FormData(e.target as HTMLFormElement);
 		const link = data.get("url");
 		const title = data.get("title") ? data.get("title") : key;
@@ -26,7 +26,7 @@ const LinkForm = () => {
 				url: link,
 				title,
 			});
-			
+
 			if (response.data.success) {
 				throw new Error("Unable to shorten link");
 			}
@@ -41,10 +41,9 @@ const LinkForm = () => {
 				title: "Something went wrong :(",
 				description: "Please try again later",
 			});
-		}
-		 finally {
+		} finally {
 			setLoading(false);
-		 }
+		}
 	}
 
 	return (

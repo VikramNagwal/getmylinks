@@ -39,7 +39,7 @@ model link {
   id         String    @id @default(cuid())
   userId     String
   shortUrl   String    @unique @db.VarChar(400)
-  url        String
+  url        String     @unique
   totalViews Int       @default(0)
   isActive   Boolean   @default(true)
   createdAt  DateTime  @default(now())

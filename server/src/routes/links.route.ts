@@ -24,7 +24,7 @@ urlRouter.post("/shorten", authenticateJWT, async (c: Context) => {
 			{
 				success: true,
 				message: "short link successfully generated",
-				shortUrl: link.shortUrl,
+				shortUrl: link.shortUrl, // returning short code like (hghjgnh)
 			},
 			HttpStatusCode.Created,
 		);

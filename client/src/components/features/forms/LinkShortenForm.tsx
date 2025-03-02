@@ -1,5 +1,5 @@
 import KeyGenerator from "@/components/Key-generator";
-import LoadingSpinner from "@/components/loaders/LoadingSpinner";
+import LoadingSpinner from "@/components/commons/spinners/LoadingSpinner";
 import { useToast } from "@/hooks/use-toast";
 import { fireCall } from "@/lib/axiosConfig";
 import { logger } from "@/utils/logger";
@@ -14,8 +14,9 @@ const LinkForm = () => {
 	async function handleSubmit(
 		e: React.FormEvent<HTMLFormElement>,
 	): Promise<void> {
-		setLoading(true);
 		e.preventDefault();
+		setLoading(true);
+
 		const data = new FormData(e.target as HTMLFormElement);
 		const link = data.get("url");
 		const title = data.get("title") ? data.get("title") : key;
@@ -25,15 +26,14 @@ const LinkForm = () => {
 				url: link,
 				title,
 			});
-			console.log(response); // eslint-disable-line
-			if (response.status !== 200) {
+
+			if (response.data.success) {
 				throw new Error("Unable to shorten link");
 			}
-			setLoading(false);
-
+			const shortLink = `${import.meta.env.BASE_URL}/${response.data.shortUrl}`;
 			toast({
 				title: "Link shortened successfully",
-				description: response.data.shortUrl || "you can now share your link",
+				description: shortLink || "you can now share your link",
 			});
 		} catch (error) {
 			logger.logs("Unable to make api call");
@@ -41,6 +41,8 @@ const LinkForm = () => {
 				title: "Something went wrong :(",
 				description: "Please try again later",
 			});
+		} finally {
+			setLoading(false);
 		}
 	}
 

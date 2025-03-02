@@ -33,7 +33,7 @@ class LinkService {
 				if (existingTitle) {
 					return {
 						message: "title already exists",
-						shortUrl: `${Bun.env.BASE_URL}/r/${title}`, //bcknd url
+						shortUrl: title,
 					};
 				}
 			}
@@ -46,7 +46,7 @@ class LinkService {
 				};
 			}
 
-			const shortCode = title || nanoid(8);
+			const shortCode = title || nanoid(6);
 			await db.link.create({
 				data: {
 					url,
@@ -57,8 +57,8 @@ class LinkService {
 
 			return {
 				success: true,
-				message: "creared",
-				shortUrl: `${Bun.env.BASE_URL}/r/${shortCode}`,
+				message: "short link created",
+				shortUrl: shortCode,
 			};
 		} catch (error) {
 			logger.error("Error while creating short link", error);
@@ -87,33 +87,33 @@ class LinkService {
 	async checkUrlExists(url: string) {
 		try {
 			const response = await db.link.findUnique({
-				where: { shortUrl: url },
+				where: { url: url },
 				select: {
 					id: true,
 					isActive: true,
 					expiresAt: true,
-					url: true,
 					shortUrl: true,
 				},
 			});
-			if (!response) return false;
 
-			if (response.expiresAt && new Date(response.expiresAt) < new Date()) {
+			if (!response) return false; // Everything is okay
+
+			if (
+				response.expiresAt &&
+				new Date(response.expiresAt || !response.isActive) < new Date()
+			) {
 				await db.link.delete({ where: { id: response.id } });
 				return false;
 			}
-			if (!response.isActive) {
-				return false;
-			}
 
-			return response;
+			return response.shortUrl; // url exists
 		} catch (error) {
 			logger.error("Error while fetching short link", error);
 			throw new Error("Error while fetching short link");
 		}
 	}
 
-	private async checkTitleExists(title: string) {
+	async checkTitleExists(title: string) {
 		try {
 			const response = await db.link.findFirst({
 				where: { shortUrl: title },
@@ -121,9 +121,9 @@ class LinkService {
 					isActive: true,
 				},
 			});
-			if (!response) return false;
+			if (!response) return false; //Everything is okay
 
-			return true;
+			return true; // title exists
 		} catch (error) {
 			logger.error("Error while fetching short link title", error);
 			throw new Error("Error while fetching short link title");

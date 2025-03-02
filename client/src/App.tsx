@@ -14,7 +14,8 @@ function App() {
 		<>
 			<EmailContextProvider>
 				<Routes>
-					<Route index element={<HomePage />} />
+					<Route element={<HomePage />} index />
+					<Route path="/:id" />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/register" element={<RegisterPage />} />
 					<Route path="/:uuid/verify" element={<VerificationPage />} />
